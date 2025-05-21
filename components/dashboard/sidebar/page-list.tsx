@@ -13,18 +13,34 @@ const PageList = () => {
   const pathname = usePathname();
 
   useEffect(() => {
-    console.log("pathname", pathname);  
+    console.log("pathname =>", pathname);  
+    const pathNameArray = pathname.split("/");
+    console.log("pathNameArray =>", pathNameArray);
 
-    const page = pages.find((page: Page) => {
-      return pathname === page.href;
-    }); 
+    if (pathNameArray.length > 2) {
+      const pageName = pathNameArray[2];
+      const page = pages.find((page: Page) => {
+        return pageName === page.name.toLowerCase();
+      });
 
-    console.log("Page", page);
-    if (page) {
-      setActivePage(page.name);
-    } else {
+      if (page) {
+        setActivePage(page.name);
+      } else {
+        setActivePage("Dashboard");
+      }
+    }else {
       setActivePage("Dashboard");
     }
+
+    // const page = pages.find((page: Page) => {
+    //   return pathname === page.href;
+    // }); 
+
+    // if (page) {
+    //   setActivePage(page.name);
+    // } else {
+    //   setActivePage("Dashboard");
+    // }
 
   }, [pathname]); 
 

@@ -51,3 +51,4 @@ export async function fetchUsers(page = 1, pageSize = 10) {
     total: users.length,
   }
 }
+
