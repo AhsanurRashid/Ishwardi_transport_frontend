@@ -4,8 +4,8 @@ import { Page } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { motion } from "motion/react"
 
 const PageList = () => {
   const [activePage, setActivePage] = useState<string>();

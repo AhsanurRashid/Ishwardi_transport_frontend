@@ -1,6 +1,5 @@
 import { UsersTable } from '@/components/dashboard/user-table'
 import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
 
 import {
   Dialog,
@@ -13,6 +12,7 @@ import {
 } from "@/components/ui/dialog"
 import AddUserForm from '@/components/forms/add-user-form'
 import { Suspense } from 'react'
+import { Plus } from 'lucide-react'
 
 const Drivers = () => {
   return (
