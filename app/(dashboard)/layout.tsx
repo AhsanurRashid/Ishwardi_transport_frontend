@@ -7,7 +7,7 @@ export default function DashboardLayout({
 }) {
   return (
     <section className="flex">
-      <div className="2xl:min-w-[320px] min-w-[250px] h-screen bg-white shadow-md p-4 overflow-y-auto">
+      <div className="2xl:min-w-[320px] min-w-[250px] min-h-screen bg-white shadow-md p-4 overflow-y-auto">
         <Sidebar />
       </div>
       <div className="p-4 w-full">
