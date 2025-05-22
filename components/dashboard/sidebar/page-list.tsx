@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
-import path from "path";
 
 const PageList = () => {
   const [activePage, setActivePage] = useState<string>();
