@@ -2,7 +2,7 @@ import { UsersTable } from '@/components/dashboard/user-table'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import Link from 'next/link'
-import React from 'react'
+import { Suspense } from 'react'
 
 const VehiclesPage = () => {
   return (
@@ -15,7 +15,9 @@ const VehiclesPage = () => {
               </Button>
             </Link>
         </div>
-        <UsersTable />
+        <Suspense fallback={<div>Loading...</div>}>
+          <UsersTable />
+        </Suspense>
     </div>
   )
 }

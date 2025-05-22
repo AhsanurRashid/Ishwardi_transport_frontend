@@ -12,6 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import AddUserForm from '@/components/forms/add-user-form'
+import { Suspense } from 'react'
 
 const User = () => {
   return (
@@ -32,7 +33,9 @@ const User = () => {
               </DialogContent>
             </Dialog>
         </div>
-      <UsersTable />
+        <Suspense fallback={<div>Loading...</div>}>
+          <UsersTable />
+        </Suspense>
     </div>
   )
 }
