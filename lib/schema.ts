@@ -16,3 +16,11 @@ export const AddUserFormSchema = z.object({
     .array(z.any()) // You can be more specific if needed
     .min(1, "At least one document is required"),
 })
+
+// export const AddVehicleFormSchema = z.object({
+//     number: z.string().min(1, "Contact is required"),
+//     documents: z
+//     .array(z.any()) // You can be more specific if needed
+//     .min(1, "At least one document is required"),
+//     driver
+// })

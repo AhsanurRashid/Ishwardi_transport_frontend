@@ -1,6 +1,6 @@
 
 import { Page } from "./types";
-import { User, LayoutDashboard, Truck, Phone } from "lucide-react";
+import { Users, LayoutDashboard, Truck, Phone, ShipWheel } from "lucide-react";
 
 export const pages: Page[] = [ 
 {
@@ -10,8 +10,13 @@ export const pages: Page[] = [
   },                           
   {
     name: "User",
-    icon: User,
+    icon: Users,
     href: "/dashboard/user",    
+  },
+  {
+    name: "Drivers",
+    icon: ShipWheel,
+    href: "/dashboard/drivers",
   },
   {
     name: "Vehicles",
