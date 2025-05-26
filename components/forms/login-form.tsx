@@ -113,7 +113,7 @@ const LoginForm = () => {
             )}
           />
           <Button 
-            className="w-full" 
+            className="w-full cursor-pointer" 
             type="submit"
             disabled={isPending}
           >
