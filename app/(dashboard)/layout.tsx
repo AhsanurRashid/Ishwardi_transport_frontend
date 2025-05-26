@@ -1,3 +1,4 @@
+import Navbar from "@/components/dashboard/navbar/navbar"
 import Sidebar from "@/components/dashboard/sidebar/side-bar"
 
 export default function DashboardLayout({
@@ -11,6 +12,7 @@ export default function DashboardLayout({
         <Sidebar />
       </div>
       <div className="p-4 w-full">
+        <Navbar />
         {children}
       </div>
     </section>

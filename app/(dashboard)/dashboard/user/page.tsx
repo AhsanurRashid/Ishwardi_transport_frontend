@@ -17,25 +17,25 @@ import { Suspense } from 'react'
 const User = () => {
   return (
     <div className='w-full'>
-        <div className='flex items-center justify-between mb-4'>
-            <h1 className='text-2xl font-bold'>Users</h1>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className='cursor-pointer'>
-                  <Plus />Create User
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px] boxed">
-                <DialogHeader>
-                  <DialogTitle className='text-center'>Add User</DialogTitle>
-                </DialogHeader>
-                <AddUserForm />
-              </DialogContent>
-            </Dialog>
-        </div>
-        <Suspense fallback={<div>Loading...</div>}>
-          <UsersTable />
-        </Suspense>
+      <div className='flex items-center justify-between mb-4'>
+          <h1 className='text-2xl font-bold'>Users</h1>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className='cursor-pointer'>
+                <Plus />Create User
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px] boxed">
+              <DialogHeader>
+                <DialogTitle className='text-center'>Add User</DialogTitle>
+              </DialogHeader>
+              <AddUserForm />
+            </DialogContent>
+          </Dialog>
+      </div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <UsersTable />
+      </Suspense>
     </div>
   )
 }

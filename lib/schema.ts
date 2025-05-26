@@ -1,9 +1,10 @@
 import { z } from "zod";
 
 export const LoginFormSchema = z.object({
-    id: z.string().min(2, {
-        message: "Username must be at least 2 characters.",
-    }),
+    phone: z.string().regex(
+        /^(\+?88)?01[3-9]\d{8}$/,
+        "Invalid phone number. Please use a valid Bangladeshi phone number format."
+    ),
     password: z.string().min(8, {
         message: "Password must be at least 8 characters.",
     }),

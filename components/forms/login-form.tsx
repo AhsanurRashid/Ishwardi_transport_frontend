@@ -5,13 +5,9 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 
 import { toast } from "sonner"
+
 import {
   Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import {
@@ -25,28 +21,65 @@ import {
 import { Input } from "@/components/ui/input"
 import { LoginFormSchema } from "@/lib/schema"
 import { useRouter } from "next/navigation"
+import { logInSubmitFormAction } from "@/app/actions/loginActions"
+import { useTransition } from "react"
+import { Loader2 } from "lucide-react"
 
 const LoginForm = () => {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   
   const form = useForm<z.infer<typeof LoginFormSchema>>({
     resolver: zodResolver(LoginFormSchema),
     defaultValues: {
-      id: "",
+      phone: "",
       password: "",
     },
   })
 
-  function onSubmit(data: z.infer<typeof LoginFormSchema>) {
-    toast.success(
-      `Username: ${data.id}, Password: ${data.password}`,
-      {
-        description: "Login successful",
-        duration: 2000,
+  async function onSubmit(data: z.infer<typeof LoginFormSchema>) {
+
+    const formData = new FormData();
+    formData.append("phone", data.phone);
+    formData.append("password", data.password);
+
+    startTransition(async () => {
+      const result = await logInSubmitFormAction(formData);
+
+      console.log('result =>', result);
+
+      if (result.error) {
+        toast.error(result.error, {
+          description: "Login failed",
+          duration: 2000,
+        });
+        return;
       }
-    )
-    // push to dashboard
-    router.push("/dashboard")
+
+      if (result?.code === 400) {
+        toast.error(
+          `Login with: ${data.phone}`,
+          {
+            description: result?.message || "Invalid credentials",
+            duration: 2000,
+          }
+        );  
+        return;
+      }
+
+      if( result?.code === 200 ) {
+        toast.success(
+          `Login with: ${data.phone}`,
+          {
+            description: "Login successful",
+            duration: 2000,
+          }
+        );
+        // push to dashboard
+        router.push("/dashboard");
+        router.refresh();
+      } 
+    })
   }
 
   return (
@@ -55,12 +88,12 @@ const LoginForm = () => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
           <FormField
             control={form.control}
-            name="id"
+            name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Employee ID</FormLabel>
+                <FormLabel>Phone Number</FormLabel>
                 <FormControl>
-                  <Input type="text" {...field} />
+                  <Input type="text" {...field}/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -79,7 +112,14 @@ const LoginForm = () => {
               </FormItem>
             )}
           />
-          <Button className="w-full" type="submit">LogIn</Button>
+          <Button 
+            className="w-full" 
+            type="submit"
+            disabled={isPending}
+          >
+            {isPending ?  <Loader2 className="animate-spin" /> : null}
+            {isPending ? "Logging in..." : "Login"}
+          </Button>
         </form>
       </Form>
     </Card>
