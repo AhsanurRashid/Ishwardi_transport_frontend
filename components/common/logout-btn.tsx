@@ -14,8 +14,6 @@ const LogoutBtn = () => {
     startTransition(async () => { 
       const result = await logoutAction()
 
-      console.log("result =>", result);
-
       if (result.error) {
         toast.error(result.error, {
           description: "Login failed",

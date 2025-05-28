@@ -15,9 +15,9 @@ const VehiclesPage = () => {
               </Button>
             </Link>
         </div>
-        <Suspense fallback={<div>Loading...</div>}>
+        {/* <Suspense fallback={<div>Loading...</div>}>
           <UsersTable />
-        </Suspense>
+        </Suspense> */}
     </div>
   )
 }

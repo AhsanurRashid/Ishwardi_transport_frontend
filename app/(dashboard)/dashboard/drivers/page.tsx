@@ -33,9 +33,9 @@ const Drivers = () => {
               </DialogContent>
             </Dialog>
         </div>
-        <Suspense fallback={<div>Loading...</div>}>
+        {/* <Suspense fallback={<div>Loading...</div>}>
           <UsersTable />
-        </Suspense>
+        </Suspense> */}
     </div>
   )
 }

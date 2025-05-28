@@ -1,7 +1,6 @@
 import { getUserDataAction } from "@/app/actions/getUserdataAction";
 import LogoutBtn from "@/components/common/logout-btn";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 
 import {
   DropdownMenu,
@@ -11,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogOut, User } from "lucide-react";
+import Link from "next/link";
 
 const UserInfo = async () => {
   const user = await getUserDataAction();
@@ -37,9 +37,11 @@ const UserInfo = async () => {
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-32" align="end">
-          <DropdownMenuItem className="cursor-pointer gap-2">
-            <User /> Profile
-          </DropdownMenuItem>
+          <Link href="/dashboard/profile">
+            <DropdownMenuItem className="cursor-pointer gap-2">
+              <User /> Profile
+            </DropdownMenuItem>
+          </Link>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="p-0">
             <LogoutBtn />

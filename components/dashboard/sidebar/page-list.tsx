@@ -12,9 +12,7 @@ const PageList = () => {
   const pathname = usePathname();
 
   useEffect(() => {
-    console.log("pathname =>", pathname);  
     const pathNameArray = pathname.split("/");
-    console.log("pathNameArray =>", pathNameArray);
 
     if (pathNameArray.length > 2) {
       const pageName = pathNameArray[2];

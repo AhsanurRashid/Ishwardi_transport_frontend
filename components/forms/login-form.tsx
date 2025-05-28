@@ -46,8 +46,6 @@ const LoginForm = () => {
     startTransition(async () => {
       const result = await logInSubmitFormAction(formData);
 
-      console.log('result =>', result);
-
       if (result.error) {
         toast.error(result.error, {
           description: "Login failed",
