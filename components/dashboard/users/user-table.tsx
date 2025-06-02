@@ -22,6 +22,7 @@ import {
   MapPin,
   CreditCard,
 } from "lucide-react";
+import Image from "next/image";
 
 interface UserTableProps {
   users: User[];
@@ -178,19 +179,24 @@ export default function UserTable({
                   </TableCell>
                   <TableCell>
                     {user.nid ? (
-                      <div className="flex items-center space-x-2">
-                        <CreditCard className="h-3 w-3 text-muted-foreground" />
-                        <span className="text-xs font-medium">{user.nid}</span>
+                      <div className="flex flex-col items-start gap-2">
+                        <div className="flex space-x-2">
+                          <CreditCard className="h-3 w-3 text-muted-foreground" />
+                          <span className="text-xs font-medium">
+                            {user.nid}
+                          </span>
+                        </div>
                         {user.nid_image && (
-                          <Badge variant="outline" className="text-xs">
-                            Image
-                          </Badge>
+                          <Image
+                            src={user.nid_image}
+                            alt="NID"
+                            width={100}
+                            height={100}
+                          />
                         )}
                       </div>
                     ) : (
-                      <span className="text-red-500 text-xs">
-                        No NID
-                      </span>
+                      <span className="text-red-500 text-xs">No NID</span>
                     )}
                   </TableCell>
                   <TableCell className="text-right">
