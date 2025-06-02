@@ -10,7 +10,7 @@ export async function logoutAction() {
   }
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/logout`,
+      `${process.env.API_URL}/logout`,
       {},
       {
         headers: {

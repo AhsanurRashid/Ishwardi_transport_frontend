@@ -1,11 +1,19 @@
 "use client";
+import EditUserProfileForm from "@/components/forms/edit-user-profile-form";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { UserProfile } from "@/lib/types";
+import { PermissionMap, UserProfile } from "@/lib/types";
+import { Separator } from "@radix-ui/react-dropdown-menu";
 import { ArrowLeft, Edit } from "lucide-react";
 import { useState } from "react";
 
-const EditProfile = ({ profile }: { profile: UserProfile }) => {
+const EditProfile = ({
+  profile,
+  permissions,  
+}: {
+  profile: UserProfile;
+  permissions: PermissionMap;
+}) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const handleEditClick = () => {
@@ -13,7 +21,7 @@ const EditProfile = ({ profile }: { profile: UserProfile }) => {
   };
 
   return (
-    <Card className="p-4 flex items-center justify-center h-full relative">
+    <Card className="p-4 flex items-center justify-center w-full h-full relative">
       {isEditing && (
         <Button
           variant="ghost"
@@ -24,12 +32,10 @@ const EditProfile = ({ profile }: { profile: UserProfile }) => {
         </Button>
       )}
       {isEditing ? (
-        <div className="text-center">
+        <div className="text-center w-full">
           <h2 className="text-lg font-semibold mb-4">Edit Profile</h2>
-          {/* Here you can add your form for editing profile */}
-          <p className="text-sm text-gray-500">
-            Form to edit profile will go here.
-          </p>
+          <Separator />
+          <EditUserProfileForm permissions={permissions as PermissionMap} profile={profile} />
         </div>
       ) : (
         <Button onClick={handleEditClick} className="cursor-pointer">

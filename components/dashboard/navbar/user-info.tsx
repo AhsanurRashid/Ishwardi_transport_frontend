@@ -1,4 +1,5 @@
 import { getUserDataAction } from "@/app/actions/getUserdataAction";
+import DataFetchingFailed from "@/components/common/date-fetching-failed";
 import LogoutBtn from "@/components/common/logout-btn";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -9,11 +10,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, User } from "lucide-react";
+import { User } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
 
 const UserInfo = async () => {
   const user = await getUserDataAction();
+
+  if (user.error) return <DataFetchingFailed error={user.error} />;
 
   return (
     <div>
@@ -31,9 +35,13 @@ const UserInfo = async () => {
                   : "U"}
               </AvatarFallback>
             </Avatar>
-            <p className="text-xs font-light">
-              {user?.profile?.name || "user"}
-            </p>
+            <Suspense
+              fallback={
+                <div className="h-4 w-16 animate-pulse rounded bg-muted"></div>
+              }
+            >
+              <p className="text-xs font-light">{user?.profile?.name || "user"}</p>
+            </Suspense>
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-32" align="end">

@@ -24,15 +24,19 @@ const ViewProfile = async ({ profile }: { profile: UserProfile }) => {
           </AvatarFallback>
         </Avatar>
         <div className="flex flex-row gap-6">
-          <div className="leading-6 tracking-wide space-y-1">
+          <div className="leading-6 tracking-wider space-y-1">
             <h1 className="text-sm font-light">
               <strong className="font-semibold">Name: </strong>
               {profile?.name}
             </h1>
             <h3 className="text-sm font-light">
-              <strong className="font-semibold">Number: </strong>
+              <strong className="font-semibold">Phone: </strong>
               {profile?.phone}
             </h3>
+            <h4 className="text-sm font-light">
+              <strong className="font-semibold">NID: </strong>
+              {profile?.nid}
+            </h4>
             <p className="text-sm font-light">
               <strong className="font-semibold">Address: </strong>
               {profile?.address}

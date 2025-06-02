@@ -1,5 +1,4 @@
 "use client"
-import React from 'react'
 import { FileUploader } from '../common/file-uploader'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'

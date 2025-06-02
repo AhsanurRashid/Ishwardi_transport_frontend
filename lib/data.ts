@@ -1,17 +1,22 @@
 
 import { Page } from "./types";
-import { Users, LayoutDashboard, Truck, Phone, ShipWheel } from "lucide-react";
+import { Users, LayoutDashboard, Truck, ShipWheel, UserCog } from "lucide-react";
 
-export const pages: Page[] = [ 
-{
+export const pages: Page[] = [
+  {
     name: "Dashboard",
     icon: LayoutDashboard,
-    href: "/dashboard",    
-  },                           
+    href: "/dashboard",
+  },
   {
-    name: "User",
+    name: "Users",
     icon: Users,
-    href: "/dashboard/user",    
+    href: "/dashboard/users",
+  },
+  {
+    name: "Roles",
+    icon: UserCog,
+    href: "/dashboard/roles",
   },
   {
     name: "Drivers",
@@ -21,9 +26,9 @@ export const pages: Page[] = [
   {
     name: "Vehicles",
     icon: Truck,
-    href: "/dashboard/vehicles",    
-  }
-]
+    href: "/dashboard/vehicles",
+  },
+];
 
 
 // Mock user data

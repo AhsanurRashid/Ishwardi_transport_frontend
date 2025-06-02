@@ -29,16 +29,6 @@ const PageList = () => {
       setActivePage("Dashboard");
     }
 
-    // const page = pages.find((page: Page) => {
-    //   return pathname === page.href;
-    // }); 
-
-    // if (page) {
-    //   setActivePage(page.name);
-    // } else {
-    //   setActivePage("Dashboard");
-    // }
-
   }, [pathname]); 
 
   return (

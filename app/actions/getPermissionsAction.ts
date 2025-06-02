@@ -2,30 +2,31 @@
 
 import { getToken } from "@/lib/auth";
 
-export const getUserDataAction = async () => {
+export async function getPermissionsAction() {
   const token = await getToken();
   if (!token) {
     return { error: "Unauthorized access, please log in." };
   }
   try {
-    const response = await fetch(`${process.env.API_URL}/profile`, {
+    const response = await fetch(`${process.env.API_URL}/permission/list`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
       },
       cache: "force-cache",
-      next: { tags: ["user-data"] },
+      next: { tags: ["permission-list"] },
     });
-    
+
     if (!response.ok) {
-      return { error: "Failed to fetch user data" };
-    };
+      return { error: "Failed to fetch permission list data" };
+    }
+    
     return response.json();
   } catch (error: any) {
     return (
       error.response?.data || {
-        error: "An error occurred while fetching user data",
+        error: "An error occurred while fetching permissions",
       }
     );
   }
-};
+}

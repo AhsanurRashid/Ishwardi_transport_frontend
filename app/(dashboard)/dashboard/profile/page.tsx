@@ -1,30 +1,38 @@
+import { getPermissionsAction } from "@/app/actions/getPermissionsAction";
 import { getUserDataAction } from "@/app/actions/getUserdataAction";
+import DataFetchingFailed from "@/components/common/date-fetching-failed";
 import EditProfile from "@/components/dashboard/profile/edit-profile";
 import ViewProfile from "@/components/dashboard/profile/view-profile";
 import EditProfileSkeleton from "@/components/skeletons/edit-profile-skeleton";
 import ViewProfileSkeleton from "@/components/skeletons/view-profile-skeleton.tsx";
-import { UserProfile } from "@/lib/types";
+import { PermissionMap, UserProfile } from "@/lib/types";
 import { Suspense } from "react";
 
-const ProfilePage = async() => {
-    const profile = await getUserDataAction();
+const ProfilePage = async () => {
+  const profile = await getUserDataAction();
+  const permissions = await getPermissionsAction();
 
-    if (!profile?.profile) {
-      return <div className="text-red-500 text-center">Unable to load profile data!</div>;
-    }
-
-    return (
-      <div className="grid grid-cols-2 gap-4">
+  if (profile.error) return <DataFetchingFailed error={profile.error} />;
+  return (
+    <div className="grid grid-cols-2 gap-4">
+      <div>
         <Suspense fallback={<ViewProfileSkeleton />}>
           <ViewProfile profile={profile?.profile as UserProfile} />
         </Suspense>
-        {profile?.profile?.permissions?.includes("user_edit") && (
-          <Suspense fallback={<EditProfileSkeleton />}>
-            <EditProfile profile={profile?.profile as UserProfile} />
-          </Suspense>
-        )}
       </div>
-    );
+
+      {profile?.profile?.permissions?.includes("user_edit") && (
+        <div className="w-full">
+          <Suspense fallback={<EditProfileSkeleton />}>
+            <EditProfile
+              permissions={permissions?.list as PermissionMap}
+              profile={profile?.profile as UserProfile}
+            />
+          </Suspense>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default ProfilePage;

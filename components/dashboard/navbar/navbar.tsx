@@ -1,4 +1,3 @@
-import ThemeSwitcher from "@/components/common/theme-switcher";
 import { Card } from "@/components/ui/card";
 import React from "react";
 import UserInfo from "./user-info";

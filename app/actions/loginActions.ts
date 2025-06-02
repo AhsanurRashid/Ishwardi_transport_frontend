@@ -16,7 +16,10 @@ export async function logInSubmitFormAction(formData: FormData) {
   }
 
   try {
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/login`, validatedData.data);
+    const response = await axios.post(
+      `${process.env.API_URL}/login`,
+      validatedData.data
+    );
 
     if(response.data?.code === 200) {
       await setToken(response.data.token);
