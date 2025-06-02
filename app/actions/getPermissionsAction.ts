@@ -8,19 +8,22 @@ export async function getPermissionsAction() {
     return { error: "Unauthorized access, please log in." };
   }
   try {
-    const response = await fetch(`${process.env.API_URL}/permission/list`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      cache: "force-cache",
-      next: { tags: ["permission-list"] },
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/permission/list`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        cache: "force-cache",
+        next: { tags: ["permission-list"] },
+      }
+    );
 
     if (!response.ok) {
       return { error: "Failed to fetch permission list data" };
     }
-    
+
     return response.json();
   } catch (error: any) {
     return (

@@ -24,20 +24,23 @@ export async function updateProfileAction(formData: FormData) {
   });
   if (!validatedData.success) {
     return { error: "Invalid input", details: validatedData.error.errors };
-    }
-    
-    console.log("validatedData =>", validatedData);
+  }
+
+  console.log("validatedData =>", validatedData);
 
   // api call execution
   try {
-    const response = await fetch(`${process.env.API_URL}/profile/update`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(validatedData.data),
-    });
-      console.log("response =>", response);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/profile/update`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(validatedData.data),
+      }
+    );
+    console.log("response =>", response);
     // if (!response.ok) {
     //   return { error: "Failed to update user profile" };
     // }
@@ -45,7 +48,7 @@ export async function updateProfileAction(formData: FormData) {
     revalidateTag("user-data");
     return response.json();
   } catch (error: any) {
-      console.log("error =>", error);
+    console.log("error =>", error);
     return (
       error.response?.data || {
         error: "An error occurred while updating user profile",

@@ -1,11 +1,10 @@
-'use server'
+"use server";
 
 import { setToken } from "@/lib/auth";
 import { LoginFormSchema } from "@/lib/schema";
 import axios from "axios";
 
 export async function logInSubmitFormAction(formData: FormData) {
-
   const validatedData = LoginFormSchema.safeParse({
     phone: formData.get("phone")?.toString(),
     password: formData.get("password")?.toString(),
@@ -17,16 +16,15 @@ export async function logInSubmitFormAction(formData: FormData) {
 
   try {
     const response = await axios.post(
-      `${process.env.API_URL}/login`,
+      `${process.env.NEXT_PUBLIC_API_URL}/login`,
       validatedData.data
     );
 
-    if(response.data?.code === 200) {
+    if (response.data?.code === 200) {
       await setToken(response.data.token);
     }
 
     return response.data;
-
   } catch (error: any) {
     return error.response?.data || { error: "An error occurred during login" };
   }

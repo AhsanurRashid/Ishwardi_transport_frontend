@@ -1,18 +1,15 @@
 "use server";
 import { getToken } from "@/lib/auth";
 
-export async function getUserListAction(
-  { 
-    query = '',
-    page = 1,
-    limit = 10
-  }: {
-    query?: string;
-    page?: number;
-    limit?: number;
-  }
-) {
-
+export async function getUserListAction({
+  query = "",
+  page = 1,
+  limit = 10,
+}: {
+  query?: string;
+  page?: number;
+  limit?: number;
+}) {
   //token checking
   const token = await getToken();
   if (!token) {
@@ -23,7 +20,9 @@ export async function getUserListAction(
   try {
     ("use cache");
     const response = await fetch(
-      `${process.env.API_URL}/user/list?query=${encodeURIComponent(query)}&page=${page}&limit=${limit}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/user/list?query=${encodeURIComponent(
+        query
+      )}&page=${page}&limit=${limit}`,
       {
         method: "GET",
         headers: {
@@ -36,7 +35,7 @@ export async function getUserListAction(
 
     if (!response.ok) {
       return { error: "Failed to fetch user list" };
-    };
+    }
     return response.json();
   } catch (error: any) {
     return (

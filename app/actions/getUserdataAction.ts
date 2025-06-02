@@ -8,7 +8,7 @@ export const getUserDataAction = async () => {
     return { error: "Unauthorized access, please log in." };
   }
   try {
-    const response = await fetch(`${process.env.API_URL}/profile`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profile`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -16,10 +16,10 @@ export const getUserDataAction = async () => {
       cache: "force-cache",
       next: { tags: ["user-data"] },
     });
-    
+
     if (!response.ok) {
       return { error: "Failed to fetch user data" };
-    };
+    }
     return response.json();
   } catch (error: any) {
     return (
