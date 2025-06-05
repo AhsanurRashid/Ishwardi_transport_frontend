@@ -28,7 +28,6 @@ export async function getUserListAction({
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        cache: "force-cache",
         next: { tags: ["user-list"] },
       }
     );

@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "www.ishwarditransport.com",
-        pathname: "/storage/uploads/**",
+        pathname: "/storage/**",
       },
     ],
   },

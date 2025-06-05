@@ -29,7 +29,7 @@ export interface UserType {
   role: ["admin", "user", "moderator", "editor"] | null;
   role_id: number | null;
 }
-export interface User {
+export interface UserData {
   id: number | null;
   name: string | null;
   email: string | null;
@@ -46,7 +46,7 @@ export interface User {
 export interface UserListResponse {
   code: number;
   message: string;
-  list: User[];
+  list: UserData[];
   error?: string;
 }
 
@@ -55,7 +55,33 @@ export interface UserSearchParams {
   page?: number;
   limit?: number;
 }
-
+export interface PermissionListResponse {
+  code: number;
+  message: string;
+  list: PermissionList;
+  error?: string;
+}
 export interface PermissionMap {
   [key: string]: string;
 }
+
+export interface PermissionList {
+  user_list: string;
+  user_create: string;
+  user_edit: string;
+  user_delete: string;
+  permission_list: string;
+  permission_edit: string;
+  permission_create: string;
+  permission_delete: string;
+  role_list: string;
+  role_create: string;
+  role_edit: string;
+  role_delete: string;
+  user_profile: string;
+  driver_list: string;
+  driver_create: string;
+  driver_edit: string;
+  driver_delete: string;
+}
+

@@ -1,125 +1,104 @@
 "use client";
 
-import * as React from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { ImageIcon, UploadCloud } from "lucide-react";
-import Image from "next/image";
+import { Upload, X } from "lucide-react";
 
-export interface ImageUploadProps {
-  onChange?: (file?: File) => void;
-  value?: string;
-  maxSize?: number; // in MB
-  disabled?: boolean;
-  className?: string;
-  // Allow passing other div props
-  [key: string]: any;
+interface ImageUploadProps {
+  onChange: (file: File | string) => void;
+  onRemove: () => void;
+  maxSize?: number;
+  preview?: string | null;
 }
 
-export function ImageUpload({
+export const ImageUpload = ({
   onChange,
-  value,
-  maxSize = 5,
-  disabled = false,
-  className,
-  ...props
-}: ImageUploadProps) {
-  const [preview, setPreview] = React.useState<string | undefined>(value);
-  const [error, setError] = React.useState<string>();
+  onRemove,
+  maxSize = 1,
+  preview,
+}: ImageUploadProps) => {
+  const [file, setFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const onDrop = React.useCallback(
+  // Use the preview prop if provided
+  useEffect(() => {
+    if (preview !== undefined) {
+      setPreviewUrl(preview);
+    }
+  }, [preview]);
+
+  const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      setError(undefined);
       const file = acceptedFiles[0];
 
-      if (file) {
-        if (file.size > maxSize * 1024 * 1024) {
-          setError(`File size must be less than ${maxSize}MB`);
-          return;
-        }
-
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setPreview(reader.result as string);
-        };
-        reader.readAsDataURL(file);
-        onChange?.(file);
+      if (file.size > maxSize * 1024 * 1024) {
+        setError(`File size should be less than ${maxSize}MB`);
+        return;
       }
+
+      setFile(file);
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        setPreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+
+      onChange(file);
+      setError(null);
     },
     [maxSize, onChange]
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
+  const { getRootProps, getInputProps } = useDropzone({
     accept: {
-      "image/*": [".png", ".jpg", ".jpeg", ".gif"],
+      "image/*": [".jpeg", ".png", ".jpg", ".gif", ".svg"],
     },
-    maxFiles: 1,
-    disabled,
+    onDrop,
+    multiple: false,
   });
 
-  const removeImage = () => {
-    setPreview(undefined);
-    onChange?.(undefined);
+  const handleRemove = () => {
+    setFile(null);
+    setPreviewUrl(null);
+    setError(null);
+    onRemove();
   };
 
   return (
-    <div className={cn("space-y-2", className)} {...props}>
-      <div
-        {...getRootProps()}
-        className={cn(
-          "relative flex min-h-[200px] cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed transition-colors",
-          isDragActive
-            ? "border-primary/50 bg-primary/5"
-            : "border-muted-foreground/25 hover:bg-primary/5",
-          disabled && "cursor-not-allowed opacity-60",
-          className
-        )}
-      >
-        <input {...getInputProps()} />
-        {preview ? (
-          <div className="relative aspect-square h-full w-full">
-            <Image
-              src={preview}
+    <div className="space-y-4 w-full">
+      <div className="border-2 border-dashed border-gray-300 p-4 rounded-md">
+        {previewUrl ? (
+          <div className="relative">
+            <img
+              src={previewUrl || "/placeholder.svg"}
               alt="Preview"
-              className="rounded-lg object-cover"
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="w-full h-auto max-h-40 object-contain"
             />
+            <button
+              type="button"
+              onClick={handleRemove}
+              className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full"
+            >
+              <X className="h-4 w-4" />
+            </button>
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center space-y-2 p-4 text-center">
-            {isDragActive ? (
-              <UploadCloud className="h-10 w-10 text-primary" />
-            ) : (
-              <ImageIcon className="h-10 w-10 text-muted-foreground" />
-            )}
-            <div className="text-sm">
-              <span className="font-semibold text-primary">
-                Click to upload
-              </span>{" "}
-              or drag and drop
-            </div>
-            <div className="text-xs text-muted-foreground">
-              PNG, JPG, GIF (max. {maxSize}MB)
-            </div>
+          <div
+            {...getRootProps()}
+            className="flex flex-col items-center justify-center py-4 cursor-pointer"
+          >
+            <input {...getInputProps()} />
+            <Upload className="h-10 w-10 text-gray-400" />
+            <p className="mt-2 text-sm text-gray-500">
+              Drag & drop an image here, or click to select
+            </p>
+            <p className="text-xs text-gray-400 mt-1">Max size: {maxSize}MB</p>
           </div>
         )}
       </div>
-      {error && <p className="text-sm text-destructive">{error}</p>}
-      {preview && (
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={removeImage}
-          className="mt-2"
-          disabled={disabled}
-        >
-          Remove Image
-        </Button>
-      )}
+      {error && <p className="text-red-500 text-sm">{error}</p>}
     </div>
   );
-}
+};

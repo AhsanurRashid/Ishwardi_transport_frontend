@@ -1,6 +1,6 @@
 "use client";
 
-import type { User } from "@/lib/types";
+import type { UserData } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -23,9 +23,11 @@ import {
   CreditCard,
 } from "lucide-react";
 import Image from "next/image";
+import { userDeleteAction } from "@/app/actions/userDeleteAction";
+import { toast } from "sonner";
 
 interface UserTableProps {
-  users: User[];
+  users: UserData[];
   isLoading?: boolean;
 }
 
@@ -111,6 +113,23 @@ export default function UserTable({
     );
   }
 
+  //delete user
+  const handleDeleteUser = async (userId: number) => {
+    const data = await userDeleteAction(userId);
+
+    if (data.code === 200) {
+      toast.success(data.message, {
+        description: data.message || "User deleted successfully",
+        duration: 2000,
+      });
+    } else {
+      toast.error(data.message, {
+        description: data.message || "User not deleted",
+        duration: 2000,
+      });
+    }
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -159,12 +178,6 @@ export default function UserTable({
                         <Phone className="h-3 w-3 mr-1 text-muted-foreground" />
                         {user.phone || "No Phone"}
                       </div>
-                      {/* {user.email && (
-                        <div className="flex items-center text-sm text-muted-foreground">
-                          <Mail className="h-3 w-3 mr-1" />
-                          {user.email}
-                        </div>
-                      )} */}
                       {user.address && (
                         <div className="flex items-center text-muted-foreground">
                           <MapPin className="h-3 w-3 mr-1" />
@@ -205,9 +218,14 @@ export default function UserTable({
                         <Edit className="h-4 w-4" />
                       </Button>
                       <Button
+                        onClick={() =>
+                          user.id !== null &&
+                          handleDeleteUser(user.id as number)
+                        }
                         variant="ghost"
                         size="sm"
                         className="text-destructive hover:text-destructive"
+                        disabled={user.id === null}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>

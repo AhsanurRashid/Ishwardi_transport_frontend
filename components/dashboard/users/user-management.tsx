@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useTransition } from "react";
 import { getUserListAction } from "@/app/actions/getUserListAction";
-import type { User, UserListResponse } from "@/lib/types";
+import type { UserData, UserListResponse } from "@/lib/types";
 import UserTable from "./user-table";
 import Pagination from "./pagination";
 import UserSearch from "./user-search";
@@ -13,7 +13,7 @@ interface UserManagementProps {
 }
 
 export default function UserManagement({ initialData }: UserManagementProps) {
-  const [users, setUsers] = useState<User[]>(initialData.list || []);
+  const [users, setUsers] = useState<UserData[]>(initialData.list || []);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [searchQuery, setSearchQuery] = useState("");

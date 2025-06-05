@@ -1,5 +1,4 @@
 "use client";
-import EditUserProfileForm from "@/components/forms/edit-user-profile-form";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PermissionMap, UserProfile } from "@/lib/types";
@@ -35,7 +34,6 @@ const EditProfile = ({
         <div className="text-center w-full">
           <h2 className="text-lg font-semibold mb-4">Edit Profile</h2>
           <Separator />
-          <EditUserProfileForm permissions={permissions as PermissionMap} profile={profile} />
         </div>
       ) : (
         <Button onClick={handleEditClick} className="cursor-pointer">

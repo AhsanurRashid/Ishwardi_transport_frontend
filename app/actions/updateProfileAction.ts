@@ -6,7 +6,7 @@ import { revalidateTag } from "next/cache";
 
 export async function updateProfileAction(formData: FormData) {
   //token checking
-  const token = getToken();
+  const token = await getToken();
   if (!token) {
     return { error: "Unauthorized access, please log in." };
   }
@@ -25,8 +25,6 @@ export async function updateProfileAction(formData: FormData) {
   if (!validatedData.success) {
     return { error: "Invalid input", details: validatedData.error.errors };
   }
-
-  console.log("validatedData =>", validatedData);
 
   // api call execution
   try {
