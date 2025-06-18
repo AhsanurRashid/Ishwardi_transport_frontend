@@ -1,4 +1,3 @@
-import UserManagement from "@/components/dashboard/users/user-management";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 
@@ -10,15 +9,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import AddUserForm from "@/components/forms/add-user-form";
-import { getUserListAction } from "@/app/actions/getUserListAction";
-import { Separator } from "@radix-ui/react-dropdown-menu";
+import NewUserTable from "@/components/dashboard/users/new-user-table";
 
-const User = async () => {
-  const initialData = await getUserListAction({
-    query: "",
-    page: 1,
-    limit: 10,
-  });
+const User = () => {
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-4 border-b pb-4">
@@ -38,7 +31,7 @@ const User = async () => {
           </DialogContent>
         </Dialog>
       </div>
-      <UserManagement initialData={initialData} />
+      <NewUserTable />
     </div>
   );
 };

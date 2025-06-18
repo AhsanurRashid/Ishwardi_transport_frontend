@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import AddUserForm from "@/components/forms/add-user-form";
-import NewUserTable from "@/components/dashboard/new-users/new-user-table";
+import NewUserTable from "@/components/dashboard/users/new-user-table";
 import { Suspense } from "react";
 
 const User = () => {

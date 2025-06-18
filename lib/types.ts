@@ -38,7 +38,7 @@ export interface UserData {
   nid_image: string | null;
   address: string | null;
   thumbnail: string | null;
-  status: string | null;
+  status: Status | null;
   role: string | null;
   role_id: number | null;
 }
@@ -85,3 +85,14 @@ export interface PermissionList {
   driver_delete: string;
 }
 
+export type Status = "0" | "1";
+
+export interface Driver {
+  id: number;
+  name: string;
+  phone: string;
+  nid: string;
+  nid_image: string;
+  address: string;
+  status: Status;
+}

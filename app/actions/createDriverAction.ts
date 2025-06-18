@@ -1,35 +1,32 @@
 "use server";
 
 import { getToken } from "@/lib/auth";
-import { UserCreationFromSchema } from "@/lib/schema";
+import { DriverCreationFromSchema } from "@/lib/schema";
 import { revalidateTag } from "next/cache";
 
-export const createUserAction = async (formData: FormData) => {
-  //check token
+export const createDriverAction = async (formData: FormData) => {
+  // Check token
   const token = await getToken();
   if (!token) {
     return { error: "Unauthorized access, please log in." };
   }
 
-  //data validation
-  const userData = {
+  // Data validation
+  const driverData = {
     name: formData.get("name") as string,
     phone: formData.get("phone") as string,
-    password: formData.get("password") as string,
-    address: formData.get("address") as string,
-    role_id: Number(formData.get("role_id")),
-    status: Number(formData.get("status")),
     nid: formData.get("nid") as string,
+    address: formData.get("address") as string,
+    status: Number(formData.get("status")),
   };
 
-  const validatedData = UserCreationFromSchema.safeParse(userData);
+  const validatedData = DriverCreationFromSchema.safeParse(driverData);
   if (!validatedData.success) {
     return { error: "Invalid input", details: validatedData.error.errors };
   }
 
   // Get file data
-  const nidImage = formData.get("nid_image") as File;
-  const thumbnail = formData.get("thumbnail") as File;
+  const nidImage = formData.get("nidimage") as File;
 
   // Add validated data
   const apiFormData = new FormData();
@@ -38,13 +35,12 @@ export const createUserAction = async (formData: FormData) => {
   });
 
   // Add files
-  apiFormData.append("nid_image", nidImage);
-  apiFormData.append("thumbnail", thumbnail);
+  apiFormData.append("nidimage", nidImage);
 
-  // api call execution
+  // API call execution
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/user/create`,
+      `${process.env.NEXT_PUBLIC_API_URL}/driver/create`,
       {
         method: "POST",
         headers: {
@@ -56,9 +52,9 @@ export const createUserAction = async (formData: FormData) => {
 
     if (response.ok) {
       try {
-        revalidateTag("user-list");
+        revalidateTag("driver-list");
       } catch (err) {
-        console.error("Revalidate failed:", err);
+        console.error("Revalidation failed:", err);
       }
     }
     const data = await response.json();

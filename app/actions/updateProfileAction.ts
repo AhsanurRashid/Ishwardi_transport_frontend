@@ -38,7 +38,6 @@ export async function updateProfileAction(formData: FormData) {
         body: JSON.stringify(validatedData.data),
       }
     );
-    console.log("response =>", response);
     // if (!response.ok) {
     //   return { error: "Failed to update user profile" };
     // }

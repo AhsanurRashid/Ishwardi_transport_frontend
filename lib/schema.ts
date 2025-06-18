@@ -1,3 +1,4 @@
+import { Driver } from './types';
 import { z } from "zod";
 
 export const LoginFormSchema = z.object({
@@ -92,9 +93,32 @@ export const UserCreationFromSchema = z.object({
     .max(20, {
       message: "NID must not exceed 20 characters.",
     }),
-  address: z.string().min(5, {
-    message: "Address must be at least 5 characters.", 
+  address: z.string().min(2, {
+    message: "Address must be at least 2 characters.", 
   }),
   role_id: z.coerce.number().int().positive(),
+  status: z.coerce.number().int().min(0).max(1),
+});
+
+
+export const DriverCreationFromSchema = z.object({
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
+  phone: z.string().regex(bdPhoneRegex, {
+    message:
+      "Please enter a valid Bangladesh phone number (e.g., 01712345678 or +8801712345678).",
+  }),
+  nid: z
+    .string()
+    .min(5, {
+      message: "NID must be at least 5 characters.",
+    })
+    .max(20, {
+      message: "NID must not exceed 20 characters.",
+    }),
+  address: z.string().min(2, {
+    message: "Address must be at least 2 characters.",
+  }),
   status: z.coerce.number().int().min(0).max(1),
 });

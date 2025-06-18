@@ -3,15 +3,14 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import AddUserForm from "@/components/forms/add-user-form";
 import { Suspense } from "react";
 import { Plus } from "lucide-react";
+import DriverTable from "@/components/dashboard/drivers/driver-table";
+import AddDriverForm from "@/components/forms/add-driver-form";
 
 const Drivers = () => {
   return (
@@ -29,10 +28,11 @@ const Drivers = () => {
             <DialogHeader>
               <DialogTitle className="text-center">Add Driver</DialogTitle>
             </DialogHeader>
-            <AddUserForm />
+            <AddDriverForm />
           </DialogContent>
         </Dialog>
       </div>
+      <DriverTable />
     </div>
   );
 };

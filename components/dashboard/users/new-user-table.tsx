@@ -10,10 +10,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { UserData } from "@/lib/types";
-import { IdCard, MoreHorizontal, Phone, Trash2 } from "lucide-react";
+import { IdCard, Phone } from "lucide-react";
 import { Suspense } from "react";
 import Image from "next/image";
 import UserActions from "./user-actions";
+import GetStatusBadge from "@/components/common/get-status-badge";
 
 const NewUserTable = async () => {
   const userData = await getUserListAction({
@@ -30,36 +31,6 @@ const NewUserTable = async () => {
       .slice(0, 2);
   };
 
-  const getStatusBadge = (status: UserData["status"]) => {
-    const variants = {
-      "1": "default",
-      "0": "secondary",
-    } as const;
-
-    const colors = {
-      "1": "bg-green-100 text-green-800 hover:bg-green-100",
-      "0": "bg-red-100 text-red-800 hover:bg-red-100",
-    };
-
-    if (!status || !(status in variants) || !(status in colors)) {
-      return (
-        <Badge
-          variant="outline"
-          className="bg-gray-100 text-red-500 hover:bg-gray-100"
-        >
-          Unknown
-        </Badge>
-      );
-    }
-    return (
-      <Badge
-        variant={variants[status as keyof typeof variants]}
-        className={colors[status as keyof typeof colors]}
-      >
-        {status === "1" ? "Active" : "Inactive"}
-      </Badge>
-    );
-  };
 
   const getRoleBadge = (role: UserData["role"]) => {
     if (!role)
@@ -95,8 +66,11 @@ const NewUserTable = async () => {
       </TableHeader>
       <TableBody>
         <Suspense fallback={<div>Loading...</div>}>
-          {userData?.list.map((user: UserData) => (
-            <TableRow key={user.id} className="hover:bg-muted/50">
+          {userData?.list?.map((user: UserData) => (
+            <TableRow
+              key={`user_table_row_${user.id}`}
+              className="hover:bg-muted/50"
+            >
               <TableCell>
                 <div className="flex items-center space-x-3">
                   <Avatar className="h-10 w-10">
@@ -156,7 +130,11 @@ const NewUserTable = async () => {
                 </span>
               </TableCell>
               <TableCell>
-                {user.status ? getStatusBadge(user.status) : "No status"}
+                {user.status ? (
+                  <GetStatusBadge status={user.status} />
+                ) : (
+                  "No status"
+                )}
               </TableCell>
               <TableCell>
                 {user.role ? getRoleBadge(user.role) : "No role"}

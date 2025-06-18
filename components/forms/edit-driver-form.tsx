@@ -11,7 +11,7 @@ import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { UserCreationFromSchema } from "@/lib/schema";
+import { DriverCreationFromSchema } from "@/lib/schema";
 import type { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ImageUpload } from "../common/image-upload";
@@ -23,37 +23,36 @@ import {
   SelectValue,
 } from "../ui/select";
 import { useState, useTransition } from "react";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { createUserAction } from "@/app/actions/createUserAction";
+import { Loader2 } from "lucide-react";
 import { Textarea } from "../ui/textarea";
 import { toast } from "sonner";
+import { Driver } from "@/lib/types";
+import { updateDriverAction } from "@/app/actions/editDriverAction";
 
-const AddUserForm = () => {
-  const [showPassword, setShowPassword] = useState(false);
+const EditDriverForm = ({ driver }: { driver: Driver }) => {
   const [isPending, startTransition] = useTransition();
 
   const [nidImageFile, setNidImageFile] = useState<File | null>(null);
-  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<{
     nidImage?: string;
-    thumbnail?: string;
   }>({});
 
-  const [nidImagePreview, setNidImagePreview] = useState<string | null>(null);
-  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
+  const [nidImagePreview, setNidImagePreview] = useState<string | null>(
+    driver.nid_image || null
+  );
 
-  const form = useForm<z.infer<typeof UserCreationFromSchema>>({
-    resolver: zodResolver(UserCreationFromSchema),
+  const form = useForm<z.infer<typeof DriverCreationFromSchema>>({
+    resolver: zodResolver(DriverCreationFromSchema),
     defaultValues: {
-      name: "",
-      phone: "",
-      password: "",
-      nid: "",
-      address: "",
-      role_id: 1,
-      status: 1,
+      name: driver.name || "",
+      phone: driver.phone || "",
+      nid: driver.nid || "",
+      address: driver.address || "",
+      status: Number(driver.status),
     },
   });
+
+  console.log("Driver data:", form.getValues());
 
   const handleNidImageChange = (file: File) => {
     if (file) {
@@ -70,22 +69,6 @@ const AddUserForm = () => {
     }
   };
 
-  // Handle thumbnail file change
-  const handleThumbnailChange = (file: File) => {
-    if (file) {
-      if (!file.type.startsWith("image/")) {
-        setFileError((prev) => ({
-          ...prev,
-          thumbnail: "File must be an image",
-        }));
-        return;
-      }
-      setThumbnailFile(file);
-      setThumbnailPreview(URL.createObjectURL(file));
-      setFileError((prev) => ({ ...prev, thumbnail: undefined }));
-    }
-  };
-
   const handleRemoveNid = () => {
     setNidImageFile(null);
     if (nidImagePreview) {
@@ -94,37 +77,22 @@ const AddUserForm = () => {
     }
   };
 
-  const handleRemoveThumbnail = () => {
-    setThumbnailFile(null);
-    if (thumbnailPreview) {
-      URL.revokeObjectURL(thumbnailPreview);
-      setThumbnailPreview(null);
-    }
-  };
-
-  const onSubmit = async (data: z.infer<typeof UserCreationFromSchema>) => {
-    if (!nidImageFile) {
-      setFileError((prev) => ({ ...prev, nidImage: "NID image is required" }));
-      return;
-    }
-
-    if (!thumbnailFile) {
-      setFileError((prev) => ({ ...prev, thumbnail: "Thumbnail is required" }));
-      return;
-    }
-
+  const onSubmit = async (data: z.infer<typeof DriverCreationFromSchema>) => {
+    
     const formData = new FormData();
 
     Object.entries(data).forEach(([key, value]) => {
       formData.append(key, value.toString());
     });
-
-    formData.append("nid_image", nidImageFile);
-    formData.append("thumbnail", thumbnailFile);
+  
+    {
+      if (nidImageFile) {
+        formData.append("nidimage", nidImageFile);
+      }
+    }
 
     startTransition(async () => {
-      const res = await createUserAction(formData);
-      console.log("res =>", res);
+      const res = await updateDriverAction(formData, driver.id);
       if (res.errors) {
         if (res.errors?.phone) {
           toast.error(res.message, {
@@ -137,9 +105,8 @@ const AddUserForm = () => {
       if (res.code === 200) {
         form.reset();
         handleRemoveNid();
-        handleRemoveThumbnail();
         toast.success(res.message, {
-          description: res.message || "User created successfully",
+          description: res.message || "Driver updated successfully",
           duration: 2000,
         });
       }
@@ -179,43 +146,6 @@ const AddUserForm = () => {
               </FormItem>
             )}
           />
-          <div className="relative">
-            <div
-              onClick={() => setShowPassword((prev) => !prev)}
-              className="absolute bottom-2.5 right-3 cursor-pointer"
-            >
-              {showPassword ? (
-                <Eye className="w-4 h-4" />
-              ) : (
-                <EyeOff className="w-4 h-4" />
-              )}
-            </div>
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password:</FormLabel>
-                  <FormControl>
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="space-y-1">
-            <div className="text-sm font-medium">Thumbnail:</div>
-            <ImageUpload
-              onChange={(file) => handleThumbnailChange(file as File)}
-              onRemove={handleRemoveThumbnail}
-              maxSize={1}
-              preview={thumbnailPreview}
-            />
-          </div>
           <FormField
             control={form.control}
             name="nid"
@@ -238,30 +168,6 @@ const AddUserForm = () => {
               preview={nidImagePreview}
             />
           </div>
-          <FormField
-            control={form.control}
-            name="role_id"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Role:</FormLabel>
-                <Select
-                  onValueChange={(value) => field.onChange(Number(value))}
-                  value={field?.value?.toString()}
-                >
-                  <FormControl className="w-full">
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a role" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="1">Admin</SelectItem>
-                    <SelectItem value="2">User</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <FormField
             control={form.control}
             name="status"
@@ -305,7 +211,7 @@ const AddUserForm = () => {
             {isPending ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : (
-              "Create User"
+              "Create Driver"
             )}
           </Button>
         </form>
@@ -314,4 +220,4 @@ const AddUserForm = () => {
   );
 };
 
-export default AddUserForm;
+export default EditDriverForm;
