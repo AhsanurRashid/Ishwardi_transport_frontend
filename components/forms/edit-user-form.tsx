@@ -104,7 +104,7 @@ const EditUserFrom = ({ user }: { user: UserData }) => {
   };
 
   const onSubmit = async (data: z.infer<typeof EditUserProfileFormSchema>) => {
-    const formData = new FormData()
+    const formData = new FormData();
 
     Object.entries(data).forEach(([key, value]) => {
       formData.append(key, value.toString());
