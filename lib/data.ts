@@ -62,3 +62,19 @@ export async function fetchUsers(page = 1, pageSize = 10) {
   }
 }
 
+
+
+/**
+ * Returns an array of years from the given start year to the given end year (inclusive)
+ *
+ * @param {number} [start=1952] - The start year of the range
+ * @param {number} [end=2025] - The end year of the range
+ * @returns {number[]} - An array of years in the given range
+ */
+export function getYearsArray(start = 1952, end = 2025) {
+  const years = [];
+  for (let year = start; year <= end; year++) {
+    years.push(year);
+  }
+  return years;
+}

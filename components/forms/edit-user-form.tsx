@@ -11,7 +11,7 @@ import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { UserCreationFromSchema } from "@/lib/schema";
+import { EditUserProfileFormSchema } from "@/lib/schema";
 import type { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ImageUpload } from "../common/image-upload";
@@ -23,13 +23,13 @@ import {
   SelectValue,
 } from "../ui/select";
 import { useState, useTransition } from "react";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { createUserAction } from "@/app/actions/createUserAction";
+import { Loader2 } from "lucide-react";
 import { Textarea } from "../ui/textarea";
 import { toast } from "sonner";
+import { UserData } from "@/lib/types";
+import { updateUserAction } from "@/app/actions/editUserAction";
 
-const AddUserForm = () => {
-  const [showPassword, setShowPassword] = useState(false);
+const EditUserFrom = ({ user }: { user: UserData }) => {
   const [isPending, startTransition] = useTransition();
 
   const [nidImageFile, setNidImageFile] = useState<File | null>(null);
@@ -39,19 +39,20 @@ const AddUserForm = () => {
     thumbnail?: string;
   }>({});
 
-  const [nidImagePreview, setNidImagePreview] = useState<string | null>(null);
+  const [nidImagePreview, setNidImagePreview] = useState<string | null>(
+    user.nid_image || null
+  );
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
 
-  const form = useForm<z.infer<typeof UserCreationFromSchema>>({
-    resolver: zodResolver(UserCreationFromSchema),
+  const form = useForm<z.infer<typeof EditUserProfileFormSchema>>({
+    resolver: zodResolver(EditUserProfileFormSchema),
     defaultValues: {
-      name: "",
-      phone: "",
-      password: "",
-      nid: "",
-      address: "",
-      role_id: 1,
-      status: 1,
+      name: user.name || "",
+      phone: user.phone || "",
+      nid: user.nid || "",
+      address: user.address || "",
+      role_id: Number(user.role_id),
+      status: Number(user.status),
     },
   });
 
@@ -102,28 +103,23 @@ const AddUserForm = () => {
     }
   };
 
-  const onSubmit = async (data: z.infer<typeof UserCreationFromSchema>) => {
-    if (!nidImageFile) {
-      setFileError((prev) => ({ ...prev, nidImage: "NID image is required" }));
-      return;
-    }
-
-    // if (!thumbnailFile) {
-    //   setFileError((prev) => ({ ...prev, thumbnail: "Thumbnail is required" }));
-    //   return;
-    // }
-
+  const onSubmit = async (data: z.infer<typeof EditUserProfileFormSchema>) => {
     const formData = new FormData();
 
     Object.entries(data).forEach(([key, value]) => {
       formData.append(key, value.toString());
     });
 
-    formData.append("nidimage", nidImageFile);
-    // formData.append("thumbnail", thumbnailFile);
+    if (nidImageFile) {
+      formData.append("nidimage", nidImageFile);
+    }
+
+    if (thumbnailFile) {
+      formData.append("thumbnail", thumbnailFile);
+    }
 
     startTransition(async () => {
-      const res = await createUserAction(formData);
+      const res = await updateUserAction(formData, user.id);
       if (res.errors) {
         if (res.errors?.phone) {
           toast.error(res.message, {
@@ -135,8 +131,16 @@ const AddUserForm = () => {
 
       if (res.code === 200) {
         form.reset();
+        form.reset({
+          name: "",
+          phone: "",
+          nid: "",
+          address: "",
+          role_id: 1,
+          status: 1,
+        });
         handleRemoveNid();
-        // handleRemoveThumbnail();
+        handleRemoveThumbnail();
         toast.success(res.message, {
           description: res.message || "User created successfully",
           duration: 2000,
@@ -178,35 +182,7 @@ const AddUserForm = () => {
               </FormItem>
             )}
           />
-          <div className="relative">
-            <div
-              onClick={() => setShowPassword((prev) => !prev)}
-              className="absolute bottom-2.5 right-3 cursor-pointer"
-            >
-              {showPassword ? (
-                <Eye className="w-4 h-4" />
-              ) : (
-                <EyeOff className="w-4 h-4" />
-              )}
-            </div>
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password:</FormLabel>
-                  <FormControl>
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          {/* <div className="space-y-1">
+          <div className="space-y-1">
             <div className="text-sm font-medium">Thumbnail:</div>
             <ImageUpload
               onChange={(file) => handleThumbnailChange(file as File)}
@@ -214,7 +190,7 @@ const AddUserForm = () => {
               maxSize={1}
               preview={thumbnailPreview}
             />
-          </div> */}
+          </div>
           <FormField
             control={form.control}
             name="nid"
@@ -304,7 +280,7 @@ const AddUserForm = () => {
             {isPending ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : (
-              "Create User"
+              "Edit User"
             )}
           </Button>
         </form>
@@ -313,4 +289,4 @@ const AddUserForm = () => {
   );
 };
 
-export default AddUserForm;
+export default EditUserFrom;

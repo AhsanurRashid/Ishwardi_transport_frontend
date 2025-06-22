@@ -30,7 +30,7 @@ export interface UserType {
   role_id: number | null;
 }
 export interface UserData {
-  id: number | null;
+  id: number;
   name: string | null;
   email: string | null;
   phone: string | null;

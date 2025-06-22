@@ -45,7 +45,6 @@ export async function updateProfileAction(formData: FormData) {
     revalidateTag("user-data");
     return response.json();
   } catch (error: any) {
-    console.log("error =>", error);
     return (
       error.response?.data || {
         error: "An error occurred while updating user profile",

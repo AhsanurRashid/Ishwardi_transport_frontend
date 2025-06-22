@@ -8,14 +8,25 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Edit, Loader2, MoreHorizontal, Trash2 } from "lucide-react";
 import { useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
+import { getUserForEditAction } from "@/app/actions/getUserForEditAction";
+import { UserData } from "@/lib/types";
+import EditUserFrom from "@/components/forms/edit-user-form";
 
 const UserActions = ({ userId }: { userId: number }) => {
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
   const actionSuccessful = useRef(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [user, setUser] = useState<UserData | null>(null);
 
   const handleAction = async () => {
     startTransition(async () => {
@@ -52,38 +63,65 @@ const UserActions = ({ userId }: { userId: number }) => {
       setOpen(true);
     }
   };
+
+  const handleClick = async () => {
+    const res = await getUserForEditAction(userId);
+    if (res.code === 200) {
+      setUser(res.data);
+    }
+    setEditDialogOpen(true);
+    setOpen(false);
+  };
+
   return (
-    <DropdownMenu open={open} onOpenChange={handleOpenChange}>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="h-8 w-8 p-0">
-          <span className="sr-only">Open menu</span>
-          <MoreHorizontal className="h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem
-          className="cursor-pointer text-primary hover:text-primary-foreground"
-          //   onClick={() => handleAction("edit", user)}
-        >
-          <Edit className="mr-2 h-4 w-4" />
-          Edit User
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={handleAction}
-          className="text-red-600 focus:text-red-600"
-        >
-          {isPending ? (
-            <div className="flex justify-center w-full">
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            </div>
+    <>
+      <DropdownMenu open={open} onOpenChange={handleOpenChange}>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem
+            className="cursor-pointer text-primary hover:text-primary-foreground"
+            onClick={handleClick}
+          >
+            <Edit className="mr-2 h-4 w-4" />
+            Edit User
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={handleAction}
+            className="text-red-600 focus:text-red-600"
+          >
+            {isPending ? (
+              <div className="flex justify-center w-full">
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              </div>
+            ) : (
+              <>
+                <Trash2 className="mr-2 h-4 w-4 text-red-600" /> Delete User
+              </>
+            )}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="text-center">
+              Edit User: #{userId}
+            </DialogTitle>
+          </DialogHeader>
+          {user ? (
+            <EditUserFrom user={user as UserData} />
           ) : (
-            <>
-              <Trash2 className="mr-2 h-4 w-4 text-red-600" /> Delete User
-            </>
+            "No user data available!"
           )}
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 

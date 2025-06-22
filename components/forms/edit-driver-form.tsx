@@ -52,8 +52,6 @@ const EditDriverForm = ({ driver }: { driver: Driver }) => {
     },
   });
 
-  console.log("Driver data:", form.getValues());
-
   const handleNidImageChange = (file: File) => {
     if (file) {
       if (!file.type.startsWith("image/")) {
@@ -104,6 +102,13 @@ const EditDriverForm = ({ driver }: { driver: Driver }) => {
 
       if (res.code === 200) {
         form.reset();
+        form.reset({
+          name: "",
+          phone: "",
+          nid: "",
+          address: "",
+          status: 1,
+        });
         handleRemoveNid();
         toast.success(res.message, {
           description: res.message || "Driver updated successfully",

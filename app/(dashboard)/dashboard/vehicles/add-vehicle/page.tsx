@@ -1,11 +1,14 @@
-import React from 'react'
+import AddVehicleForm from "@/components/forms/add-vehicle-form";
+import { VehicleRegistrationForm } from "@/components/forms/vehicle-registration-form";
 
 const AddVehicle = () => {
   return (
-    <div>
-      this is add vehicle page
-    </div>
-  )
-}
+    <>
+      {/* <AddVehicleForm /> */}
+      <VehicleRegistrationForm />
+    </>
+    
+  );
+};
 
-export default AddVehicle
+export default AddVehicle;

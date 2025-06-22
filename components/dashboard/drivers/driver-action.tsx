@@ -86,7 +86,6 @@ const DriverActions = ({ driverId }: { driverId: number }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuItem
             className="cursor-pointer text-primary hover:text-primary-foreground"
-            // onClick={() => setEditDialogOpen(true)}
             onClick={handleClick}
           >
             <Edit className="mr-2 h-4 w-4" />
