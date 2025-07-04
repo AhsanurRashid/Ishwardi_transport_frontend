@@ -6,4 +6,4 @@ const AddVehicle = () => {
   );
 };
 
-export default AddVehicle;
+export default AddVehicle
