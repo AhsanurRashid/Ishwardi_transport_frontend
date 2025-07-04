@@ -2,10 +2,7 @@ import { VehicleRegistrationForm } from "@/components/forms/vehicle-registration
 
 const AddVehicle = () => {
   return (
-    <>
       <VehicleRegistrationForm />
-    </>
-    
   );
 };
 
