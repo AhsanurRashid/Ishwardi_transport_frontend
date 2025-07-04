@@ -3,7 +3,7 @@
 import { getToken } from "@/lib/auth";
 import { revalidateTag } from "next/cache";
 
-export const deleteDriverAction = async (id: number) => {
+export const deleteVehicleAction = async (id: number) => {
   // Check token
   const token = await getToken();
   if (!token) {
@@ -18,7 +18,7 @@ export const deleteDriverAction = async (id: number) => {
     // API call to delete driver
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/driver/delete/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/vehicle/delete/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -28,7 +28,7 @@ export const deleteDriverAction = async (id: number) => {
     );
 
     if (res.ok) {
-      revalidateTag("driver-list");
+      revalidateTag("vehicle-list");
       const data = await res.json();
       return data;
     } else {

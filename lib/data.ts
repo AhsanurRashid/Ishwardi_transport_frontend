@@ -78,3 +78,17 @@ export function getYearsArray(start = 1952, end = 2025) {
   }
   return years;
 }
+
+
+export function convertDate(dateStr: string | Date): string {
+  const date = new Date(dateStr);
+  const formatted = `${date.getFullYear()}-${
+    date.getMonth() + 1
+  }-${date.getDate()}`;
+  return formatted;
+}
+
+export function deconvertDate(formatted: string): Date {
+  const [year, month, day] = formatted.split("-").map(Number);
+  return new Date(year, month - 1, day); // month is 0-indexed in JS
+}

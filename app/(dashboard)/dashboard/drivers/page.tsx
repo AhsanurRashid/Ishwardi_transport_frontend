@@ -7,7 +7,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Suspense } from "react";
 import { Plus } from "lucide-react";
 import DriverTable from "@/components/dashboard/drivers/driver-table";
 import AddDriverForm from "@/components/forms/add-driver-form";

@@ -1,3 +1,4 @@
+import VehicleTable from "@/components/dashboard/vehicle/vehicle-tbale";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
@@ -15,6 +16,7 @@ const VehiclesPage = () => {
           </Button>
         </Link>
       </div>
+      <VehicleTable />
     </div>
   );
 };

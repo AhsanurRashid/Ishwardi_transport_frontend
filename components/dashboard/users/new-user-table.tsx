@@ -22,6 +22,7 @@ const NewUserTable = async () => {
     page: 1,
     limit: 10,
   });
+
   const getInitials = (name: string) => {
     return name
       .split(" ")
@@ -30,7 +31,6 @@ const NewUserTable = async () => {
       .toUpperCase()
       .slice(0, 2);
   };
-
 
   const getRoleBadge = (role: UserData["role"]) => {
     if (!role)
@@ -66,7 +66,7 @@ const NewUserTable = async () => {
       </TableHeader>
       <TableBody>
         <Suspense fallback={<div>Loading...</div>}>
-          {userData?.list?.map((user: UserData) => (
+          {userData.list.map((user: UserData) => (
             <TableRow
               key={`user_table_row_${user.id}`}
               className="hover:bg-muted/50"
@@ -113,7 +113,7 @@ const NewUserTable = async () => {
                   )}
                   {user.nid_image ? (
                     <Image
-                      src={user.nid_image}
+                      src={user.nid_image || ""}
                       alt="NID"
                       width={100}
                       height={50}

@@ -96,3 +96,28 @@ export interface Driver {
   address: string;
   status: Status;
 }
+
+export interface IVehicle {
+  id: number;
+  registration_number: string;
+  chassis_number: string;
+  engine_number: string;
+  vehicle_type: string;
+  brand: string;
+  model: string;
+  manufacture_year: string; // Consider changing to `Date` if you parse it as a Date object
+  color: string;
+  fitness_certificate_number: string;
+  fitness_certificate_expiry_date: string; // Same here, could be Date
+  tax_token_number: string;
+  tax_token_expiry_date: string; // Same here, could be Date
+  insurance_policy_number: string | null;
+  insurance_policy_expiry_date: string | null;
+  owner_name: string;
+  owner_phone: string;
+  owner_nid: string;
+  owner_address: string;
+  status: string; // You can use a union type like: "0" | "1" if status is limited
+  remarks: string;
+  image: string | null;
+}

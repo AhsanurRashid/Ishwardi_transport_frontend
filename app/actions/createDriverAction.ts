@@ -60,6 +60,6 @@ export const createDriverAction = async (formData: FormData) => {
     const data = await response.json();
     return data;
   } catch (error: any) {
-    return error.response?.data || { error: "An error occurred during login" };
+    return error.response?.data || { error: "An error occurred during driver creation" };
   }
 };

@@ -46,6 +46,8 @@ import { convertDate, deconvertDate } from "@/lib/data";
 import { ImageUpload } from "../common/image-upload";
 import { toast } from "sonner";
 import { createVehicleAction } from "@/app/actions/createVehicleAction";
+import { IVehicle } from "@/lib/types";
+import { EditVehicleAction } from "@/app/actions/editVehicleAction";
 
 const vehicle_types = [
   "Truck",
@@ -101,39 +103,41 @@ const colors = [
   "Others",
 ];
 
-export function VehicleRegistrationForm() {
+export function EditVehicleForm({ vehicle }: { vehicle: IVehicle }) {
   const [isPending, startTransition] = useTransition();
   const [vehicleImageFile, setVehicleImageFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<{
     vehicleImageFile?: string;
   }>({});
   const [vehicleImagePreview, setVehicleImagePreview] = useState<string | null>(
-    null
+    vehicle.image || null
   );
 
   const form = useForm<z.infer<typeof VehicleCreationFromSchema>>({
     resolver: zodResolver(VehicleCreationFromSchema),
     defaultValues: {
-      registration_number: "",
-      chassis_number: "",
-      engine_number: "",
-      vehicle_type: "",
-      brand: "",
-      model: "",
-      manufacture_year: "",
-      color: "",
-      fitness_certificate_number: "",
-      fitness_certificate_expiry_date: undefined,
-      tax_token_number: "",
-      tax_token_expiry_date: undefined,
-      insurance_policy_number: "",
-      insurance_policy_expiry_date: null,
-      owner_name: "",
-      owner_phone: "",
-      owner_nid: "",
-      owner_address: "",
-      status: 0,
-      remarks: "",
+      registration_number: vehicle.registration_number,
+      chassis_number: vehicle.chassis_number,
+      engine_number: vehicle.engine_number,
+      vehicle_type: vehicle.vehicle_type,
+      brand: vehicle.brand,
+      model: vehicle.model,
+      manufacture_year: vehicle.manufacture_year,
+      color: vehicle.color,
+      fitness_certificate_number: vehicle.fitness_certificate_number,
+      fitness_certificate_expiry_date: deconvertDate(
+        vehicle.fitness_certificate_expiry_date
+      ),
+      tax_token_number: vehicle.tax_token_number,
+      tax_token_expiry_date: deconvertDate(vehicle?.tax_token_expiry_date),
+      insurance_policy_number: vehicle?.insurance_policy_number || "",
+      insurance_policy_expiry_date: vehicle?.insurance_policy_expiry_date ? deconvertDate(vehicle?.insurance_policy_expiry_date) : null,
+      owner_name: vehicle.owner_name,
+      owner_phone: vehicle.owner_phone,
+      owner_nid: vehicle.owner_nid,
+      owner_address: vehicle.owner_address,
+      status: Number(vehicle.status),
+      remarks: vehicle?.remarks || "",
     },
   });
 
@@ -182,7 +186,7 @@ export function VehicleRegistrationForm() {
     }
 
     startTransition(async () => {
-      const res = await createVehicleAction(formData);
+      const res = await EditVehicleAction(formData, vehicle.id);
       if (res.errors) {
         if (res.errors?.phone) {
           toast.error(res.message, {
@@ -196,7 +200,7 @@ export function VehicleRegistrationForm() {
         form.reset();
         handleRemoveVehicleImage();
         toast.success(res.message, {
-          description: res.message || "vehicle created successfully",
+          description: res.message || "vehicle updated successfully",
           duration: 2000,
         });
       }
@@ -207,12 +211,8 @@ export function VehicleRegistrationForm() {
     <div className="container mx-auto py-8 px-4 max-w-4xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight">
-          Vehicle Registration
+          Edit Vehicle #{vehicle.id}
         </h1>
-        <p className="text-muted-foreground mt-2">
-          Register a new vehicle in the system with all required documentation
-          and details.
-        </p>
       </div>
 
       <Form {...form}>
@@ -820,7 +820,7 @@ export function VehicleRegistrationForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Status</FormLabel>
-                    <Select onValueChange={field.onChange}>
+                    <Select value={field.value.toString()} onValueChange={field.onChange}>
                       <FormControl>
                         <SelectTrigger className="w-full md:w-[300px]">
                           <SelectValue placeholder="Select status" />
