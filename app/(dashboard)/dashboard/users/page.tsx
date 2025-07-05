@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 
 import {
   Dialog,
@@ -10,8 +10,22 @@ import {
 } from "@/components/ui/dialog";
 import AddUserForm from "@/components/forms/add-user-form";
 import NewUserTable from "@/components/dashboard/users/new-user-table";
+import { getUserListAction } from "@/app/actions/getUserListAction";
+import { Suspense } from "react";
 
-const User = () => {
+const User = async ({
+  searchParams,
+}: {
+  searchParams?: { query?: string; page?: string; limit?: string };
+  }) => {
+    const query = searchParams?.query || "";
+    const page = parseInt(searchParams?.page || "1", 10);
+  const limit = parseInt(searchParams?.limit || "5", 10);
+  const userData = await getUserListAction({
+    query,
+    page,
+    limit
+  });
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-4 border-b pb-4">
@@ -31,7 +45,20 @@ const User = () => {
           </DialogContent>
         </Dialog>
       </div>
-      <NewUserTable />
+      <Suspense
+        fallback={
+          <div className="flex justify-center w-full">
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          </div>
+        }
+      >
+        <NewUserTable
+          users={userData.list}
+          query={query}
+          page={page}
+          limit={limit}
+        />
+      </Suspense>
     </div>
   );
 };
