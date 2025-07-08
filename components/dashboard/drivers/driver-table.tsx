@@ -13,11 +13,19 @@ import { IdCard, Phone } from "lucide-react";
 import Image from "next/image";
 import DriverActions from "./driver-action";
 
-const DriverTable = async () => {
+const DriverTable = async ({
+  query,
+  page,
+  limit,
+}: {
+  query: string;
+  page: number;
+  limit: number;
+}) => {
   const driverData = await getDriverListAction({
-    query: "",
-    page: 1,
-    limit: 10,
+    query,
+    page,
+    limit,
   });
   return (
     <Table>
@@ -32,7 +40,7 @@ const DriverTable = async () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {driverData?.list?.map((driver: Driver) => (
+        {driverData?.list.map((driver: Driver) => (
           <TableRow
             key={`driver_table_row_${driver.id}`}
             className="hover:bg-muted/50"

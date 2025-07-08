@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+// import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
@@ -210,7 +210,7 @@ export default function Component() {
               </CardTitle>
               <CardDescription>Choose the truck that best fits your needs</CardDescription>
             </CardHeader>
-            <CardContent>
+            {/* <CardContent>
               <RadioGroup defaultValue="pickup" className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {truckTypes.map((truck) => (
                   <div key={truck.id}>
@@ -231,7 +231,7 @@ export default function Component() {
                   </div>
                 ))}
               </RadioGroup>
-            </CardContent>
+            </CardContent> */}
           </Card>
 
           {/* Driver Information */}

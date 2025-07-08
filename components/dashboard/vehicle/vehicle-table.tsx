@@ -6,11 +6,11 @@ import PlaceHolderImage from "@/assets/images/placeholder-image.svg";
 import { getVehicleListAction } from "@/app/actions/getVehcileListAction";
 import VehicleAction from "./vehicle-action";
 
-const VehicleTable = async () => {
+const VehicleTable = async ({ query, page, limit }: { query: string; page: number; limit: number }) => {
   const vehicleData = await getVehicleListAction({
-    query: "",
-    page: 1,
-    limit: 10,
+    query,
+    page,
+    limit,
   });
 
   return (

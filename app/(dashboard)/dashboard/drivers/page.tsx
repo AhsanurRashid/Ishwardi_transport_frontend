@@ -8,10 +8,19 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
-import DriverTable from "@/components/dashboard/drivers/driver-table";
+import DriverTableWrapper from "@/components/dashboard/drivers/driver-table-wrapper";
 import AddDriverForm from "@/components/forms/add-driver-form";
+import { Driver } from "@/lib/types";
 
-const Drivers = () => {
+const Drivers = async ({
+  searchParams,
+}: {
+  searchParams?: Promise<{ query?: string; page?: string; limit?: string }>;
+}) => {
+  const params = await searchParams;
+  const query = params?.query || "";
+  const page = parseInt(params?.page || "1", 10);
+  const limit = parseInt(params?.limit || "5", 10);
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-4">
@@ -31,7 +40,11 @@ const Drivers = () => {
           </DialogContent>
         </Dialog>
       </div>
-      <DriverTable />
+      <DriverTableWrapper
+        query={query}
+        page={page}
+        limit={limit}
+      />
     </div>
   );
 };

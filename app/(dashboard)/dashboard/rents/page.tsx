@@ -1,9 +1,8 @@
-import VehicleTableWrapper from "@/components/dashboard/vehicle/vehicle-table-wrapper";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 
-const VehiclesPage = async ({
+const RentPage = async ({
   searchParams,
 }: {
   searchParams?: Promise<{ query?: string; page?: string; limit?: string }>;
@@ -12,21 +11,20 @@ const VehiclesPage = async ({
   const query = params?.query || "";
   const page = parseInt(params?.page || "1", 10);
   const limit = parseInt(params?.limit || "5", 10);
-  
+
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold">Vehicle Management</h1>
-        <Link href="/dashboard/vehicles/add-vehicle">
+        <h1 className="text-2xl font-bold">Rent Management</h1>
+        <Link href="/dashboard/rents/add-rent">
           <Button className="cursor-pointer">
             <Plus />
-            Add Vehicle
+            Rent
           </Button>
         </Link>
       </div>
-      <VehicleTableWrapper query={query} page={page} limit={limit} />
     </div>
   );
 };
 
-export default VehiclesPage;
+export default RentPage;
