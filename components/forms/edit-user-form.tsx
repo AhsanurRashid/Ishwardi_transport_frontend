@@ -120,13 +120,24 @@ const EditUserFrom = ({ user }: { user: UserData }) => {
 
     startTransition(async () => {
       const res = await updateUserAction(formData, user.id);
+      
       if (res.errors) {
-        if (res.errors?.phone) {
-          toast.error(res.message, {
-            description: res.errors?.phone[0],
-            duration: 2000,
-          });
-        }
+        const errorList: string[] = [];
+
+        Object.entries(res.errors).forEach(([key, value]: any) => {
+          errorList.push(value[0]);
+        });
+
+        toast.error(res.message, {
+          description: (
+            <ul className="list-disc list-inside space-y-1">
+              {errorList.map((err, index) => (
+                <li key={index}>{err}</li>
+              ))}
+            </ul>
+          ),
+          duration: 2000,
+        });
       }
 
       if (res.code === 200) {
@@ -150,7 +161,7 @@ const EditUserFrom = ({ user }: { user: UserData }) => {
   };
 
   return (
-    <ScrollArea className="h-[430px] pr-2">
+    <ScrollArea className="w-full max-h-[calc(100vh-100px)] pr-2">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

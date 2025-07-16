@@ -7,6 +7,7 @@ import {
   ShipWheel,
   UserCog,
   BadgeDollarSign,
+  Building2Icon,
 } from "lucide-react";
 
 export const pages: Page[] = [
@@ -19,6 +20,11 @@ export const pages: Page[] = [
     name: "Users",
     icon: Users,
     href: "/dashboard/users",
+  },
+  {
+    name: "Companies",
+    icon: Building2Icon,
+    href: "/dashboard/companies",
   },
   {
     name: "Roles",
@@ -36,7 +42,7 @@ export const pages: Page[] = [
     href: "/dashboard/vehicles",
   },
   {
-    name: "Rent",
+    name: "Rents",
     icon: BadgeDollarSign,
     href: "/dashboard/rents",
   },
@@ -104,3 +110,15 @@ export function deconvertDate(formatted: string): Date {
   const [year, month, day] = formatted.split("-").map(Number);
   return new Date(year, month - 1, day); // month is 0-indexed in JS
 }
+
+export const places = [
+  "ঈশ্বরদী",
+  "ঢাকা",
+  "চট্টগ্রাম",
+  "রংপুর",
+  "রাজশাহী",
+  "খুলনা",
+  "বরিশাল",
+  "সিলেট",
+  "ময়মনসিংহ",
+];

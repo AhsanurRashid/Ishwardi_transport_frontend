@@ -1,6 +1,6 @@
 "use server";
 
-import { setToken } from "@/lib/auth";
+import { setRole, setToken } from "@/lib/auth";
 import { LoginFormSchema } from "@/lib/schema";
 import axios from "axios";
 
@@ -22,6 +22,7 @@ export async function logInSubmitFormAction(formData: FormData) {
 
     if (response.data?.code === 200) {
       await setToken(response.data.token);
+      await setRole(response.data.role[0]);
     }
 
     return response.data;

@@ -131,7 +131,9 @@ export function EditVehicleForm({ vehicle }: { vehicle: IVehicle }) {
       tax_token_number: vehicle.tax_token_number,
       tax_token_expiry_date: deconvertDate(vehicle?.tax_token_expiry_date),
       insurance_policy_number: vehicle?.insurance_policy_number || "",
-      insurance_policy_expiry_date: vehicle?.insurance_policy_expiry_date ? deconvertDate(vehicle?.insurance_policy_expiry_date) : null,
+      insurance_policy_expiry_date: vehicle?.insurance_policy_expiry_date
+        ? deconvertDate(vehicle?.insurance_policy_expiry_date)
+        : null,
       owner_name: vehicle.owner_name,
       owner_phone: vehicle.owner_phone,
       owner_nid: vehicle.owner_nid,
@@ -187,13 +189,24 @@ export function EditVehicleForm({ vehicle }: { vehicle: IVehicle }) {
 
     startTransition(async () => {
       const res = await EditVehicleAction(formData, vehicle.id);
+
       if (res.errors) {
-        if (res.errors?.phone) {
-          toast.error(res.message, {
-            description: res.errors?.phone[0],
-            duration: 2000,
-          });
-        }
+        const errorList: string[] = [];
+
+        Object.entries(res.errors).forEach(([key, value]: any) => {
+          errorList.push(value[0]);
+        });
+
+        toast.error(res.message, {
+          description: (
+            <ul className="list-disc list-inside space-y-1">
+              {errorList.map((err, index) => (
+                <li key={index}>{err}</li>
+              ))}
+            </ul>
+          ),
+          duration: 2000,
+        });
       }
 
       if (res.code === 200) {
@@ -820,7 +833,10 @@ export function EditVehicleForm({ vehicle }: { vehicle: IVehicle }) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Status</FormLabel>
-                    <Select value={field.value.toString()} onValueChange={field.onChange}>
+                    <Select
+                      value={field.value.toString()}
+                      onValueChange={field.onChange}
+                    >
                       <FormControl>
                         <SelectTrigger className="w-full md:w-[300px]">
                           <SelectValue placeholder="Select status" />

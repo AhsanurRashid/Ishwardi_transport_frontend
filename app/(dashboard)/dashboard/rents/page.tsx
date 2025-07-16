@@ -1,3 +1,5 @@
+import GenerateButton from "@/components/common/generate-button";
+import AddRentForm from "@/components/forms/add-rent-form";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
@@ -16,12 +18,15 @@ const RentPage = async ({
     <div className="w-full">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">Rent Management</h1>
-        <Link href="/dashboard/rents/add-rent">
+        {/* <Link href="/dashboard/rents/add-rent">
           <Button className="cursor-pointer">
             <Plus />
-            Rent
+            Create Rent
           </Button>
-        </Link>
+        </Link> */}
+        <GenerateButton title="Create Rent" size="md">
+          <AddRentForm />
+        </GenerateButton>
       </div>
     </div>
   );

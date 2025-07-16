@@ -5,8 +5,10 @@ import { Loader2, LogOut, SplineIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { logoutAction } from "@/app/actions/logoutAction";
 import { toast } from "sonner";
+import { useRoleStore } from "@/store/roleStore";
 
 const LogoutBtn = () => {
+  const { clearRoleValue } = useRoleStore();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -23,6 +25,7 @@ const LogoutBtn = () => {
       }
 
       if (result?.code === 200) {
+        clearRoleValue()
         toast.success("Logout successful", {
           description: result?.message || "You have been logged out",
           duration: 2000,

@@ -8,15 +8,21 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Edit, Loader2, MoreHorizontal, Trash2 } from "lucide-react";
+import { Edit, Loader2, MoreHorizontal, Trash2, TriangleAlert } from "lucide-react";
 import { useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 import Link from "next/link";
+import { useRoleStore } from "@/store/roleStore";
 
 const VehicleAction = ({ vehicleId }: { vehicleId: number }) => {
+  const {roleValue} = useRoleStore()
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
   const actionSuccessful = useRef(false);
+
+  if (roleValue !== "Admin") {
+    return null
+  }
 
   const handleAction = async () => {
     startTransition(async () => {

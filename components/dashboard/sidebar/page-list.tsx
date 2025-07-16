@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { motion } from "motion/react"
+import { motion } from "motion/react";
 
 const PageList = () => {
   const [activePage, setActivePage] = useState<string>();
@@ -25,25 +25,23 @@ const PageList = () => {
       } else {
         setActivePage("Dashboard");
       }
-    }else {
+    } else {
       setActivePage("Dashboard");
     }
-
-  }, [pathname]); 
+  }, [pathname]);
 
   return (
     <div className="py-6 flex flex-col gap-1">
       {pages.map((page: Page) => (
         <Link href={page.href} key={page.name}>
           <motion.div
-            whileHover={{ 
-                transition: { 
-                duration: 0.2, 
-                ease: "easeInOut" 
-                } 
+            whileHover={{
+              transition: {
+                duration: 0.2,
+                ease: "easeInOut",
+              },
             }}
             whileTap={{ transition: { duration: 0.1 } }}
-
             className={cn(
               activePage === page.name && "bg-primary text-primary-foreground",
               "flex items-center gap-2 p-2 rounded-md cursor-pointer hover:bg-primary hover:text-primary-foreground"

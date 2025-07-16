@@ -5,14 +5,24 @@ import Image from "next/image";
 import PlaceHolderImage from "@/assets/images/placeholder-image.svg";
 import { getVehicleListAction } from "@/app/actions/getVehcileListAction";
 import VehicleAction from "./vehicle-action";
+import DataFetchingFailed from "@/components/common/date-fetching-failed";
 
-const VehicleTable = async ({ query, page, limit }: { query: string; page: number; limit: number }) => {
+const VehicleTable = async ({
+  query,
+  page,
+  limit,
+}: {
+  query: string;
+  page: number;
+  limit: number;
+}) => {
   const vehicleData = await getVehicleListAction({
     query,
     page,
     limit,
   });
-
+  if (vehicleData?.error)
+    return <DataFetchingFailed error={vehicleData?.error} />;
   return (
     <div className="space-y-2">
       {vehicleData?.list?.map((vehicle: IVehicle) => (

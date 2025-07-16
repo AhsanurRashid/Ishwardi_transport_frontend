@@ -24,10 +24,12 @@ import { useRouter } from "next/navigation"
 import { logInSubmitFormAction } from "@/app/actions/loginActions"
 import { useTransition } from "react"
 import { Loader2 } from "lucide-react"
+import { useRoleStore } from "@/store/roleStore"
 
 const LoginForm = () => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const { setRoleValue } = useRoleStore();
   
   const form = useForm<z.infer<typeof LoginFormSchema>>({
     resolver: zodResolver(LoginFormSchema),
@@ -65,7 +67,8 @@ const LoginForm = () => {
         return;
       }
 
-      if( result?.code === 200 ) {
+      if (result?.code === 200) {
+        setRoleValue(result?.role[0]);
         toast.success(
           `Login with: ${data.phone}`,
           {

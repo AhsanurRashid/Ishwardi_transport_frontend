@@ -1,7 +1,5 @@
+import CreateVehicleBtn from "@/components/dashboard/vehicle/create-vehicle-btn";
 import VehicleTableWrapper from "@/components/dashboard/vehicle/vehicle-table-wrapper";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import Link from "next/link";
 
 const VehiclesPage = async ({
   searchParams,
@@ -17,12 +15,7 @@ const VehiclesPage = async ({
     <div className="w-full">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">Vehicle Management</h1>
-        <Link href="/dashboard/vehicles/add-vehicle">
-          <Button className="cursor-pointer">
-            <Plus />
-            Add Vehicle
-          </Button>
-        </Link>
+        <CreateVehicleBtn />
       </div>
       <VehicleTableWrapper query={query} page={page} limit={limit} />
     </div>

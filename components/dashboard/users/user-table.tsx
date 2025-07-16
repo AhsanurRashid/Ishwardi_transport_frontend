@@ -14,6 +14,7 @@ import UserActions from "./user-actions";
 import GetStatusBadge from "@/components/common/get-status-badge";
 import { Badge } from "@/components/ui/badge";
 import { getUserListAction } from "@/app/actions/getUserListAction";
+import DataFetchingFailed from "@/components/common/date-fetching-failed";
 
 const UserTable = async ({
     query,
@@ -29,6 +30,10 @@ const UserTable = async ({
       page,
       limit,
     });
+  
+  if (userData?.error)
+    return <DataFetchingFailed error={userData?.error} />;
+  
   const getInitials = (name: string) => {
     return name
       .split(" ")

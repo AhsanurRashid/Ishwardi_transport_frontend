@@ -10,7 +10,7 @@ const Sidebar = () => {
       <Link href={'/dashboard'} >
         <Card className='flex flex-row items-center gap-2 p-2'>
           <Logo className='w-[30px] h-[30px]' />
-          <p className='text-xs font-semibold tracking-wide'>ISWARDI TRANSPORT AND AGENCY</p>
+          <p className='text-xs font-semibold tracking-wide'>ISHWARDI TRANSPORT AND AGENCY</p>
         </Card>
       </Link>
       <PageList />

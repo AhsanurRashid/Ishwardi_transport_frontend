@@ -1,6 +1,5 @@
 "use client";
 
-import { deleteDriverAction } from "@/app/actions/deleteDriver";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -24,18 +23,19 @@ import {
 import { useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 import EditDriverForm from "@/components/forms/edit-driver-form";
-import { get } from "http";
-import { getDriverForEditAction } from "@/app/actions/getDriverForEditAction";
-import { Driver } from "@/lib/types";
+import { ICompany } from "@/lib/types";
 import { useRoleStore } from "@/store/roleStore";
+import { deleteCompanyAction } from "@/app/actions/deleteCompanyAction";
+import { getCompanyForEditAction } from "@/app/actions/getCompanyForEditAction";
+import EditCompanyForm from "@/components/forms/edit-company-from";
 
-const DriverActions = ({ driverId }: { driverId: number }) => {
+const CompanyActions = ({ companyId }: { companyId: number }) => {
   const { roleValue } = useRoleStore();
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
   const actionSuccessful = useRef(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [driver, setDriver] = useState<Driver | null>(null);
+  const [company, setCompany] = useState<ICompany | null>(null);
 
   if (roleValue !== "Admin") {
     return (
@@ -47,18 +47,18 @@ const DriverActions = ({ driverId }: { driverId: number }) => {
 
   const handleAction = async () => {
     startTransition(async () => {
-      const data = await deleteDriverAction(driverId);
+      const data = await deleteCompanyAction(companyId);
 
       if (data.code === 200) {
         toast.success(data.message, {
-          description: data.message || "User deleted successfully",
+          description: data.message || "Company deleted successfully",
           duration: 2000,
         });
         actionSuccessful.current = true;
         setOpen(false);
       } else {
         toast.error(data.message, {
-          description: data.message || "User not deleted",
+          description: data.message || "Company not deleted",
           duration: 2000,
         });
         actionSuccessful.current = false;
@@ -82,9 +82,9 @@ const DriverActions = ({ driverId }: { driverId: number }) => {
   };
 
   const handleClick = async () => {
-    const res = await getDriverForEditAction({ driverId });
+    const res = await getCompanyForEditAction({ companyId });
     if (res.code === 200) {
-      setDriver(res.data);
+      setCompany(res.data);
     }
     setEditDialogOpen(true);
     setOpen(false);
@@ -105,7 +105,7 @@ const DriverActions = ({ driverId }: { driverId: number }) => {
             onClick={handleClick}
           >
             <Edit className="mr-2 h-4 w-4" />
-            Edit Driver
+            Edit Company
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={handleAction}
@@ -117,7 +117,7 @@ const DriverActions = ({ driverId }: { driverId: number }) => {
               </div>
             ) : (
               <>
-                <Trash2 className="mr-2 h-4 w-4 text-red-600" /> Delete Driver
+                <Trash2 className="mr-2 h-4 w-4 text-red-600" /> Delete Company
               </>
             )}
           </DropdownMenuItem>
@@ -128,11 +128,11 @@ const DriverActions = ({ driverId }: { driverId: number }) => {
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="text-center">
-              Edit Driver: #{driverId}
+              Edit Company: #{companyId}
             </DialogTitle>
           </DialogHeader>
-          {driver ? (
-            <EditDriverForm driver={driver as Driver} />
+          {company ? (
+            <EditCompanyForm company={company as ICompany} />
           ) : (
             "No driver data available!"
           )}
@@ -142,4 +142,4 @@ const DriverActions = ({ driverId }: { driverId: number }) => {
   );
 };
 
-export default DriverActions;
+export default CompanyActions;

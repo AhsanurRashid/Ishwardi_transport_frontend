@@ -1,6 +1,6 @@
 "use server";
 
-import { getToken, removeToken } from "@/lib/auth";
+import { getToken, removeRole, removeToken } from "@/lib/auth";
 import axios from "axios";
 
 export async function logoutAction() {
@@ -20,6 +20,7 @@ export async function logoutAction() {
     );
     if (response.data?.code === 200) {
       await removeToken();
+      await removeRole();
     }
     return response.data;
   } catch (error: any) {

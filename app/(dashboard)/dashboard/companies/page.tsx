@@ -1,8 +1,8 @@
-import DriverTableWrapper from "@/components/dashboard/drivers/driver-table-wrapper";
-import AddDriverForm from "@/components/forms/add-driver-form";
 import GenerateButton from "@/components/common/generate-button";
+import CompanyTableWrapper from "@/components/dashboard/company/company-table-wrapper";
+import AddCompanyForm from "@/components/forms/add-company-form";
 
-const Drivers = async ({
+const Companies = async ({
   searchParams,
 }: {
   searchParams?: Promise<{ query?: string; page?: string; limit?: string }>;
@@ -14,18 +14,14 @@ const Drivers = async ({
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold">Drivers List</h1>
-        <GenerateButton title="Create Driver">
-          <AddDriverForm />
+        <h1 className="text-2xl font-bold">Company List</h1>
+        <GenerateButton title="Create Company">
+          <AddCompanyForm />
         </GenerateButton>
       </div>
-      <DriverTableWrapper
-        query={query}
-        page={page}
-        limit={limit}
-      />
+      <CompanyTableWrapper query={query} page={page} limit={limit} />
     </div>
   );
 };
 
-export default Drivers;
+export default Companies;

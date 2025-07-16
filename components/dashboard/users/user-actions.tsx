@@ -14,19 +14,27 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Edit, Loader2, MoreHorizontal, Trash2 } from "lucide-react";
+import { Edit, Loader2, MoreHorizontal, Trash2, TriangleAlert } from "lucide-react";
 import { useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { getUserForEditAction } from "@/app/actions/getUserForEditAction";
 import { UserData } from "@/lib/types";
 import EditUserFrom from "@/components/forms/edit-user-form";
+import { useRoleStore } from "@/store/roleStore";
 
 const UserActions = ({ userId }: { userId: number }) => {
+  const { roleValue } = useRoleStore();
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
   const actionSuccessful = useRef(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [user, setUser] = useState<UserData | null>(null);
+
+  if (roleValue !== "Admin") {
+    return <div className="flex justify-center w-full">
+      <TriangleAlert className="h-4 w-4 text-red-500"/>
+      </div>
+  }
 
   const handleAction = async () => {
     startTransition(async () => {

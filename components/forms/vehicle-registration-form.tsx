@@ -183,13 +183,24 @@ export function VehicleRegistrationForm() {
 
     startTransition(async () => {
       const res = await createVehicleAction(formData);
+      
       if (res.errors) {
-        if (res.errors?.phone) {
-          toast.error(res.message, {
-            description: res.errors?.phone[0],
-            duration: 2000,
-          });
-        }
+        const errorList: string[] = [];
+
+        Object.entries(res.errors).forEach(([key, value]: any) => {
+          errorList.push(value[0]);
+        });
+
+        toast.error(res.message, {
+          description: (
+            <ul className="list-disc list-inside space-y-1">
+              {errorList.map((err, index) => (
+                <li key={index}>{err}</li>
+              ))}
+            </ul>
+          ),
+          duration: 2000,
+        });
       }
 
       if (res.code === 200) {

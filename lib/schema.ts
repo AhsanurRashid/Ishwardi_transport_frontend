@@ -181,3 +181,38 @@ export const VehicleCreationFromSchema = z.object({
     For example:  fontImage, sideImage, backImage, numberPlateImage
   */
 });
+
+export const CompanyCreationFromSchema = z.object({
+  company_name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
+  company_phone: z.string().regex(bdPhoneRegex, {
+    message:
+      "Please enter a valid Bangladesh phone number (e.g., 01712345678 or +8801712345678).",
+  }),
+  company_address: z.string().min(2, {
+    message: "Address must be at least 2 characters.",
+  }),
+  company_email: z.string().email().optional(),
+  company_invoice_number: z.string().min(2, {
+    message: "Invoice number must be at least 2 characters.",
+  }),
+  status: z.coerce.number().int().min(0).max(1),
+});
+
+export const RentCreationFromSchema = z.object({
+  vehicle: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
+  company: z.string().regex(bdPhoneRegex, {
+    message:
+      "Please enter a valid Bangladesh phone number (e.g., 01712345678 or +8801712345678).",
+  }),
+  destination: z.string().min(2, {
+    message: "Address must be at least 2 characters.",
+  }),
+  company_email: z.string().email().optional(),
+  company_invoice_number: z.string().min(2, {
+    message: "Invoice number must be at least 2 characters.",
+  }),
+});

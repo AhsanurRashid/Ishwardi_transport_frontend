@@ -121,3 +121,14 @@ export interface IVehicle {
   remarks: string;
   image: string | null;
 }
+
+
+ export interface ICompany {
+   id: number;
+   company_name: string;
+   company_address: string;
+   company_email: string;
+   company_phone: string;
+   company_invoice_number: string;
+   status: Status; // or use a union type if it's always "0" | "1"
+ }

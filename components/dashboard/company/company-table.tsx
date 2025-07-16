@@ -1,4 +1,3 @@
-import { getDriverListAction } from "@/app/actions/getDriverListAction";
 import GetStatusBadge from "@/components/common/get-status-badge";
 import {
   Table,
@@ -8,13 +7,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Driver } from "@/lib/types";
-import { IdCard, Phone } from "lucide-react";
-import Image from "next/image";
-import DriverActions from "./driver-action";
+import { ICompany } from "@/lib/types";
+import { IdCard, Mail, Phone } from "lucide-react";
+import { getCompanyListAction } from "@/app/actions/getCompanyListAction";
+import CompanyActions from "./company-action";
 import DataFetchingFailed from "@/components/common/date-fetching-failed";
 
-const DriverTable = async ({
+const CompanyTable = async ({
   query,
   page,
   limit,
@@ -23,42 +22,51 @@ const DriverTable = async ({
   page: number;
   limit: number;
 }) => {
-  const driverData = await getDriverListAction({
+  const companyData = await getCompanyListAction({
     query,
     page,
     limit,
   });
-  if (driverData?.error) return <DataFetchingFailed error={driverData?.error} />;
+    
+    if (companyData?.error) return <DataFetchingFailed error={companyData?.error} />
+    
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead>Name</TableHead>
-          <TableHead>Phone</TableHead>
-          <TableHead>National ID</TableHead>
+          <TableHead>Info</TableHead>
+          <TableHead>Invoice No</TableHead>
           <TableHead>Address</TableHead>
           <TableHead>Status</TableHead>
           <TableHead className="text-right">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {driverData?.list.map((driver: Driver) => (
+        {companyData?.list.map((company: ICompany) => (
           <TableRow
-            key={`driver_table_row_${driver.id}`}
+            key={`driver_table_row_${company.id}`}
             className="hover:bg-muted/50"
           >
             <TableCell className="font-medium">
               <div>
-                <div className="font-medium">{driver.name || "N/A"}</div>
-                <div className="text-xs text-muted-foreground">
-                  ID: {driver.id || "N/A"}
+                <div className="font-medium">
+                  {company.company_name || "N/A"}
                 </div>
               </div>
             </TableCell>
             <TableCell>
               <div className="flex items-center space-x-2">
+                <Mail className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm">
+                  {company.company_email || "N/A"}
+                </span>
+              </div>
+              <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">{driver.phone || "N/A"}</span>
+                <span className="text-sm">
+                  {company.company_phone || "N/A"}
+                </span>
               </div>
             </TableCell>
             <TableCell>
@@ -66,30 +74,23 @@ const DriverTable = async ({
                 <div className="flex items-center space-x-2">
                   <IdCard className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm font-mono">
-                    {driver.nid || "N/A"}
+                    {company.company_invoice_number || "N/A"}
                   </span>
                 </div>
-                {driver.nid_image ? (
-                  <Image
-                    src={driver.nid_image}
-                    alt="NID"
-                    width={100}
-                    height={50}
-                    className="object-contain"
-                  />
-                ) : null}
               </>
             </TableCell>
-            <TableCell>{driver.address || "N/A"}</TableCell>
+            <TableCell className="max-w-[200px] whitespace-normal break-words">
+              <p className="text-sm">{company.company_address || "N/A"}</p>
+            </TableCell>
             <TableCell>
-              {driver.status === null ? (
+              {company.status === null ? (
                 "N/A"
               ) : (
-                <GetStatusBadge status={driver.status} />
+                <GetStatusBadge status={company.status} />
               )}
             </TableCell>
             <TableCell className="text-right">
-              <DriverActions driverId={driver.id as number} />
+              <CompanyActions companyId={company.id as number} />
             </TableCell>
           </TableRow>
         ))}
@@ -98,4 +99,4 @@ const DriverTable = async ({
   );
 };
 
-export default DriverTable;
+export default CompanyTable;

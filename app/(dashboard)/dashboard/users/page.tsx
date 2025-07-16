@@ -1,15 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import AddUserForm from "@/components/forms/add-user-form";
 import UserTableWrapper from "@/components/dashboard/users/user-table-wrapper";
+import GenerateButton from "@/components/common/generate-button";
 
 const User = async ({
   searchParams,
@@ -24,20 +15,9 @@ const User = async ({
     <div className="w-full">
       <div className="flex items-center justify-between mb-4 border-b pb-4">
         <h1 className="text-2xl font-bold">User Management</h1>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="cursor-pointer">
-              <Plus />
-              Create User
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px] boxed">
-            <DialogHeader>
-              <DialogTitle className="text-center">Add User</DialogTitle>
-            </DialogHeader>
-            <AddUserForm />
-          </DialogContent>
-        </Dialog>
+        <GenerateButton title="Create User">
+          <AddUserForm />
+        </GenerateButton>
       </div>
       <UserTableWrapper query={query} page={page} limit={limit} />
     </div>

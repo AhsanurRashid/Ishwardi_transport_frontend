@@ -11,10 +11,14 @@ import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { DriverCreationFromSchema } from "@/lib/schema";
+import { CompanyCreationFromSchema } from "@/lib/schema";
 import type { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ImageUpload } from "../common/image-upload";
+import { useTransition } from "react";
+import { Loader2 } from "lucide-react";
+import { Textarea } from "../ui/textarea";
+import { toast } from "sonner";
+import { createCompanyAction } from "@/app/actions/createCompanyAction";
 import {
   Select,
   SelectContent,
@@ -22,81 +26,37 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useState, useTransition } from "react";
-import { Loader2 } from "lucide-react";
-import { Textarea } from "../ui/textarea";
-import { toast } from "sonner";
-import { Driver } from "@/lib/types";
-import { updateDriverAction } from "@/app/actions/editDriverAction";
 
-const EditDriverForm = ({ driver }: { driver: Driver }) => {
+const AddCompanyForm = () => {
   const [isPending, startTransition] = useTransition();
 
-  const [nidImageFile, setNidImageFile] = useState<File | null>(null);
-  const [fileError, setFileError] = useState<{
-    nidImage?: string;
-  }>({});
-
-  const [nidImagePreview, setNidImagePreview] = useState<string | null>(
-    driver.nid_image || null
-  );
-
-  const form = useForm<z.infer<typeof DriverCreationFromSchema>>({
-    resolver: zodResolver(DriverCreationFromSchema),
+  const form = useForm<z.infer<typeof CompanyCreationFromSchema>>({
+    resolver: zodResolver(CompanyCreationFromSchema),
     defaultValues: {
-      name: driver.name || "",
-      phone: driver.phone || "",
-      nid: driver.nid || "",
-      address: driver.address || "",
-      status: Number(driver.status),
+      company_name: "",
+      company_address: "",
+      company_email: "",
+      company_phone: "",
+      company_invoice_number: "",
+      status: 1,
     },
   });
 
-  const handleNidImageChange = (file: File) => {
-    if (file) {
-      if (!file.type.startsWith("image/")) {
-        setFileError((prev) => ({
-          ...prev,
-          nidImage: "File must be an image",
-        }));
-        return;
-      }
-      setNidImageFile(file);
-      setNidImagePreview(URL.createObjectURL(file));
-      setFileError((prev) => ({ ...prev, nidImage: undefined }));
-    }
-  };
-
-  const handleRemoveNid = () => {
-    setNidImageFile(null);
-    if (nidImagePreview) {
-      URL.revokeObjectURL(nidImagePreview);
-      setNidImagePreview(null);
-    }
-  };
-
-  const onSubmit = async (data: z.infer<typeof DriverCreationFromSchema>) => {
-    
+  const onSubmit = async (data: z.infer<typeof CompanyCreationFromSchema>) => {
     const formData = new FormData();
 
     Object.entries(data).forEach(([key, value]) => {
       formData.append(key, value.toString());
     });
-  
-    {
-      if (nidImageFile) {
-        formData.append("nidimage", nidImageFile);
-      }
-    }
 
     startTransition(async () => {
-      const res = await updateDriverAction(formData, driver.id);
-      
+      const res = await createCompanyAction(formData);
+
       if (res.errors) {
-        const errorList: string[] = [];
+        const errorList: string[] = []
 
         Object.entries(res.errors).forEach(([key, value]: any) => {
-          errorList.push(value[0]);
+          errorList.push(value[0])
         });
 
         toast.error(res.message, {
@@ -113,16 +73,8 @@ const EditDriverForm = ({ driver }: { driver: Driver }) => {
 
       if (res.code === 200) {
         form.reset();
-        form.reset({
-          name: "",
-          phone: "",
-          nid: "",
-          address: "",
-          status: 1,
-        });
-        handleRemoveNid();
         toast.success(res.message, {
-          description: res.message || "Driver updated successfully",
+          description: res.message || "Driver created successfully",
           duration: 2000,
         });
       }
@@ -138,10 +90,10 @@ const EditDriverForm = ({ driver }: { driver: Driver }) => {
         >
           <FormField
             control={form.control}
-            name="name"
+            name="company_name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name:</FormLabel>
+                <FormLabel>Company Name:</FormLabel>
                 <FormControl>
                   <Input type="text" {...field} />
                 </FormControl>
@@ -149,12 +101,13 @@ const EditDriverForm = ({ driver }: { driver: Driver }) => {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
-            name="phone"
+            name="company_email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Phone Number:</FormLabel>
+                <FormLabel>Company Email: (Optional)</FormLabel>
                 <FormControl>
                   <Input type="text" {...field} />
                 </FormControl>
@@ -162,12 +115,13 @@ const EditDriverForm = ({ driver }: { driver: Driver }) => {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
-            name="nid"
+            name="company_phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nid Number:</FormLabel>
+                <FormLabel>Company Phone Number:</FormLabel>
                 <FormControl>
                   <Input type="text" {...field} />
                 </FormControl>
@@ -175,15 +129,35 @@ const EditDriverForm = ({ driver }: { driver: Driver }) => {
               </FormItem>
             )}
           />
-          <div className="space-y-1">
-            <div className="text-sm font-medium">Nid Card:</div>
-            <ImageUpload
-              onChange={(file) => handleNidImageChange(file as File)}
-              onRemove={handleRemoveNid}
-              maxSize={1}
-              preview={nidImagePreview}
-            />
-          </div>
+
+          <FormField
+            control={form.control}
+            name="company_invoice_number"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Company Invoice Number:</FormLabel>
+                <FormControl>
+                  <Input type="text" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="company_address"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Company Address:</FormLabel>
+                <FormControl>
+                  <Textarea rows={3} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="status"
@@ -209,25 +183,11 @@ const EditDriverForm = ({ driver }: { driver: Driver }) => {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="address"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Address:</FormLabel>
-                <FormControl>
-                  <Textarea rows={3} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
           <Button disabled={isPending} className="w-full" type="submit">
             {isPending ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : (
-              "Update Driver"
+              "Create Company"
             )}
           </Button>
         </form>
@@ -236,4 +196,4 @@ const EditDriverForm = ({ driver }: { driver: Driver }) => {
   );
 };
 
-export default EditDriverForm;
+export default AddCompanyForm;
