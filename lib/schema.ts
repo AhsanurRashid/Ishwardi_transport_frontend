@@ -201,18 +201,33 @@ export const CompanyCreationFromSchema = z.object({
 });
 
 export const RentCreationFromSchema = z.object({
-  vehicle: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
+  company: z.string().min(1, {
+    message: "Company is required.",
   }),
-  company: z.string().regex(bdPhoneRegex, {
-    message:
-      "Please enter a valid Bangladesh phone number (e.g., 01712345678 or +8801712345678).",
+  vehicle: z.string().min(1, {
+    message: "Vehicle is required.",
   }),
-  destination: z.string().min(2, {
-    message: "Address must be at least 2 characters.",
+  driver: z.string().min(1, {
+    message: "Driver is required.",
   }),
-  company_email: z.string().email().optional(),
-  company_invoice_number: z.string().min(2, {
-    message: "Invoice number must be at least 2 characters.",
+  type: z.enum(["up", "down"], {
+    required_error: "Please select a type.",
+  }),
+  date: z.date({
+    required_error: "Date is required.",
+  }),
+  rentAmount: z
+    .string()
+    .min(1, {
+      message: "Rent amount is required.",
+    })
+    .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+      message: "Rent amount must be a positive number.",
+    }),
+  fromLocation: z.string().min(1, {
+    message: "From location is required.",
+  }),
+  toLocation: z.string().min(1, {
+    message: "To location is required.",
   }),
 });

@@ -1,8 +1,8 @@
-import GenerateButton from "@/components/common/generate-button";
-import AddRentForm from "@/components/forms/add-rent-form";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import Link from "next/link";
+import { getCompanyListForRentAction } from "@/app/actions/getCompanyListForRent";
+import { getDriverListForRentAction } from "@/app/actions/getDriverListForRent";
+import { getVehicleListForRentAction } from "@/app/actions/getVehcileListForRent";
+import DataFetchingFailed from "@/components/common/date-fetching-failed";
+import AddRentFormWrapper from "@/components/dashboard/rents/add-rent-form-wrapper";
 
 const RentPage = async ({
   searchParams,
@@ -14,20 +14,21 @@ const RentPage = async ({
   const page = parseInt(params?.page || "1", 10);
   const limit = parseInt(params?.limit || "5", 10);
 
+  const [companies, vehicles, drivers] = await Promise.all([
+    getCompanyListForRentAction(),
+    getVehicleListForRentAction(),
+    getDriverListForRentAction(),
+  ]);
+
+  if (!companies || !vehicles || !drivers) return <DataFetchingFailed error="Something went wrong!" />;
+
   return (
     <div className="w-full">
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold">Rent Management</h1>
-        {/* <Link href="/dashboard/rents/add-rent">
-          <Button className="cursor-pointer">
-            <Plus />
-            Create Rent
-          </Button>
-        </Link> */}
-        <GenerateButton title="Create Rent" size="md">
-          <AddRentForm />
-        </GenerateButton>
-      </div>
+      <AddRentFormWrapper
+        companies={companies?.list}
+        vehicles={vehicles?.list}
+        drivers={drivers?.list}
+      />
     </div>
   );
 };

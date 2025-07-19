@@ -131,4 +131,30 @@ export interface IVehicle {
    company_phone: string;
    company_invoice_number: string;
    status: Status; // or use a union type if it's always "0" | "1"
- }
+}
+ 
+export interface ICompanyForRent {
+  [x: string]: any;
+  id: number;
+  company_name: string;
+  company_phone: string;
+}
+
+export interface IVehicleForRent {
+  [x: string]: any;
+  id: number;
+  registration_number: string;
+  chassis_number: string;
+  vehicle_type: string;
+  brand: string;
+  model: string;
+  owner_name: string;
+  owner_phone: string; // or use a union type if it's always "0" | "1"
+}
+
+export interface IDriversForRent {
+  [x: string]: any;
+  id: number;
+  name: string;
+  phone: string;
+}

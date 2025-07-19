@@ -1,4 +1,3 @@
-
 import { Page } from "./types";
 import {
   Users,
@@ -48,7 +47,6 @@ export const pages: Page[] = [
   },
 ];
 
-
 // Mock user data
 const users = Array.from({ length: 100 }, (_, i) => ({
   id: i + 1,
@@ -57,7 +55,7 @@ const users = Array.from({ length: 100 }, (_, i) => ({
   phone: `123-456-789${i % 10}`,
   role: i % 5 === 0 ? "Admin" : i % 3 === 0 ? "Editor" : "User",
   status: i % 4 === 0 ? "inactive" : "active",
-}))
+}));
 
 /**
  * Fetch users with pagination
@@ -67,20 +65,18 @@ const users = Array.from({ length: 100 }, (_, i) => ({
  */
 export async function fetchUsers(page = 1, pageSize = 10) {
   // Simulate network delay
-  await new Promise((resolve) => setTimeout(resolve, 800))
+  await new Promise((resolve) => setTimeout(resolve, 800));
 
   // Calculate start and end indices
-  const start = (page - 1) * pageSize
-  const end = start + pageSize
+  const start = (page - 1) * pageSize;
+  const end = start + pageSize;
 
   // Return paginated data and total count
   return {
     data: users.slice(start, end),
     total: users.length,
-  }
+  };
 }
-
-
 
 /**
  * Returns an array of years from the given start year to the given end year (inclusive)
@@ -97,7 +93,6 @@ export function getYearsArray(start = 1952, end = 2025) {
   return years;
 }
 
-
 export function convertDate(dateStr: string | Date): string {
   const date = new Date(dateStr);
   const formatted = `${date.getFullYear()}-${
@@ -111,14 +106,41 @@ export function deconvertDate(formatted: string): Date {
   return new Date(year, month - 1, day); // month is 0-indexed in JS
 }
 
-export const places = [
-  "ঈশ্বরদী",
-  "ঢাকা",
-  "চট্টগ্রাম",
-  "রংপুর",
-  "রাজশাহী",
-  "খুলনা",
-  "বরিশাল",
-  "সিলেট",
-  "ময়মনসিংহ",
+export const placeOptions = [
+  {
+    value: "ঈশ্বরদী",
+    label: "ঈশ্বরদী",
+  },
+  {
+    value: "ঢাকা",
+    label: "ঢাকা",
+  },
+  {
+    value: "চট্টগ্রাম",
+    label: "চট্টগ্রাম",
+  },
+  {
+    value: "রংপুর",
+    label: "রংপুর",
+  },
+  {
+    value: "রাজশাহী",
+    label: "রাজশাহী",
+  },
+  {
+    value: "খুলনা",
+    label: "খুলনা",
+  },
+  {
+    value: "বরিশাল",
+    label: "বরিশাল",
+  },
+  {
+    value: "সিলেট",
+    label: "সিলেট",
+  },
+  {
+    value: "ময়মনসিংহ",
+    label: "ময়মনসিংহ",
+  },
 ];
