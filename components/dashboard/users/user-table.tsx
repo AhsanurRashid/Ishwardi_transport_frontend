@@ -1,4 +1,4 @@
-import { UserData } from "@/lib/types";
+import { IRole, UserData } from "@/lib/types";
 import {
   Table,
   TableBody,
@@ -15,25 +15,28 @@ import GetStatusBadge from "@/components/common/get-status-badge";
 import { Badge } from "@/components/ui/badge";
 import { getUserListAction } from "@/app/actions/getUserListAction";
 import DataFetchingFailed from "@/components/common/date-fetching-failed";
+import Pagination from "@/components/common/pagination";
+import { getTotalRolesAction } from "@/app/actions/getTotalTolesAction";
 
 const UserTable = async ({
+  query,
+  page,
+  limit,
+}: {
+  query: string;
+  page: number;
+  limit: number;
+}) => {
+  const userData = await getUserListAction({
     query,
     page,
     limit,
-  }: {
-    query: string;
-    page: number;
-    limit: number;
-  }) => {
-    const userData = await getUserListAction({
-      query,
-      page,
-      limit,
-    });
-  
-  if (userData?.error)
-    return <DataFetchingFailed error={userData?.error} />;
-  
+  });
+
+  const totalRoles = await getTotalRolesAction();
+
+  if (userData?.error) return <DataFetchingFailed error={userData?.error} />;
+
   const getInitials = (name: string) => {
     return name
       .split(" ")
@@ -64,99 +67,110 @@ const UserTable = async ({
   };
 
   return (
-    <Table className="border-y">
-      <TableHeader>
-        <TableRow>
-          <TableHead>Name</TableHead>
-          <TableHead>Phone</TableHead>
-          <TableHead>National ID</TableHead>
-          <TableHead>Address</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Role</TableHead>
-          <TableHead className="text-right">Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {userData?.list.map((user: UserData) => (
-          <TableRow
-            key={`user_table_row_${user.id}`}
-            className="hover:bg-muted/50"
-          >
-            <TableCell>
-              <div className="flex items-center space-x-3">
-                <Avatar className="h-10 w-10">
-                  <AvatarImage
-                    src={user.thumbnail || ""}
-                    alt={user.name || "User"}
-                  />
-                  <AvatarFallback className="text-sm font-medium">
-                    {getInitials(user.name || "User")}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <div className="font-medium">{user.name}</div>
-                  <div className="text-sm text-muted-foreground">
-                    {user.email || "No email"}
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    ID: {user.id}
+    <>
+      <Table className="border-y">
+        <TableHeader>
+          <TableRow>
+            <TableHead>Name</TableHead>
+            <TableHead>Phone</TableHead>
+            <TableHead>National ID</TableHead>
+            <TableHead>Address</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Role</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {userData?.list.map((user: UserData) => (
+            <TableRow
+              key={`user_table_row_${user.id}`}
+              className="hover:bg-muted/50"
+            >
+              <TableCell>
+                <div className="flex items-center space-x-3">
+                  <Avatar className="h-10 w-10">
+                    <AvatarImage
+                      src={user.thumbnail || ""}
+                      alt={user.name || "User"}
+                    />
+                    <AvatarFallback className="text-sm font-medium">
+                      {getInitials(user.name || "User")}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <div className="font-medium">{user.name}</div>
+                    <div className="text-sm text-muted-foreground">
+                      {user.email || "No email"}
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      ID: {user.id}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </TableCell>
-            <TableCell>
-              <div className="flex items-center space-x-2">
-                <Phone className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">{user.phone}</span>
-              </div>
-            </TableCell>
-            <TableCell>
-              <>
-                {user.nid ? (
-                  <div className="flex items-center space-x-2">
-                    <IdCard className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-mono">{user.nid}</span>
-                  </div>
+              </TableCell>
+              <TableCell>
+                <div className="flex items-center space-x-2">
+                  <Phone className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm">{user.phone}</span>
+                </div>
+              </TableCell>
+              <TableCell>
+                <>
+                  {user.nid ? (
+                    <div className="flex items-center space-x-2">
+                      <IdCard className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm font-mono">{user.nid}</span>
+                    </div>
+                  ) : (
+                    <span className="text-sm text-muted-foreground">
+                      Not provided
+                    </span>
+                  )}
+                  {user.nid_image ? (
+                    <Image
+                      src={user.nid_image || ""}
+                      alt="NID"
+                      width={100}
+                      height={50}
+                      className="object-contain"
+                    />
+                  ) : null}
+                </>
+              </TableCell>
+              <TableCell>
+                <span className="text-sm">
+                  {user.address || (
+                    <span className="text-muted-foreground">Not provided</span>
+                  )}
+                </span>
+              </TableCell>
+              <TableCell>
+                {user.status ? (
+                  <GetStatusBadge status={user.status} />
                 ) : (
-                  <span className="text-sm text-muted-foreground">
-                    Not provided
-                  </span>
+                  "No status"
                 )}
-                {user.nid_image ? (
-                  <Image
-                    src={user.nid_image || ""}
-                    alt="NID"
-                    width={100}
-                    height={50}
-                    className="object-contain"
-                  />
-                ) : null}
-              </>
-            </TableCell>
-            <TableCell>
-              <span className="text-sm">
-                {user.address || (
-                  <span className="text-muted-foreground">Not provided</span>
-                )}
-              </span>
-            </TableCell>
-            <TableCell>
-              {user.status ? (
-                <GetStatusBadge status={user.status} />
-              ) : (
-                "No status"
-              )}
-            </TableCell>
-            <TableCell>
-              {user.role ? getRoleBadge(user.role) : "No role"}
-            </TableCell>
-            <TableCell className="text-right">
-              <UserActions userId={user.id as number} />
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+              </TableCell>
+              <TableCell>
+                {user.role ? getRoleBadge(user.role) : "No role"}
+              </TableCell>
+              <TableCell className="text-right">
+                <UserActions
+                  userId={user.id as number}
+                  roles={totalRoles?.list as IRole[]}
+                />
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <Pagination
+        page={page}
+        limit={limit}
+        route="users"
+        total={userData?.total_record}
+      />
+    </>
   );
 };
 

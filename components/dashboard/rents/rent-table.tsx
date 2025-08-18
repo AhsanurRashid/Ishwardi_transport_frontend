@@ -21,6 +21,7 @@ const RentTable = () => {
           <TableHead>Location</TableHead>
           <TableHead>Type</TableHead>
           <TableHead>Amount</TableHead>
+          <TableHead>Demurrage Amount</TableHead>
           <TableHead className="text-right">Actions</TableHead>
         </TableRow>
       </TableHeader>
@@ -63,6 +64,13 @@ const RentTable = () => {
             <TableCell className="font-medium">
               <div>
                 <div className="font-medium">{rent?.rentAmount || "N/A"}</div>
+              </div>
+            </TableCell>
+            <TableCell className="font-medium">
+              <div>
+                <div className="font-medium">
+                  {rent?.demurrageAmount || "N/A"}
+                </div>
               </div>
             </TableCell>
             <TableCell className="font-medium text-right">

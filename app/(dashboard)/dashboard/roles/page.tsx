@@ -1,31 +1,43 @@
-import AddUserForm from '@/components/forms/add-user-form';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Plus } from 'lucide-react';
-import React from 'react'
+import { getPermissionsAction } from "@/app/actions/getPermissionsAction";
+import { getUserDataAction } from "@/app/actions/getUserdataAction";
+import GenerateButton from "@/components/common/generate-button";
+import NoPermission from "@/components/common/no-permission";
+import RoleTableWrapper from "@/components/dashboard/roles/role-table-wrapper";
+import AddRoleForm from "@/components/forms/add-role-form";
+import { IPermissionList } from "@/lib/types";
+import React from "react";
 
-const RolesPage = () => {
+const RolesPage = async ({
+  searchParams,
+}: {
+  searchParams?: Promise<{ query?: string; page?: string; limit?: string }>;
+}) => {
+  const params = await searchParams;
+  const query = params?.query || "";
+  const page = parseInt(params?.page || "1", 10);
+  const limit = parseInt(params?.limit || "5", 10);
+
+  const permissions = await getPermissionsAction();
+  const profile = await getUserDataAction();
+  if (
+    profile?.profile?.role !== "Admin" &&
+    !profile?.profile?.permissions?.includes("role_list")
+  ) {
+    return <NoPermission />;
+  }
   return (
     <div className="w-full">
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold">Roles</h1>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="cursor-pointer">
-              <Plus />
-              Create Role
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px] boxed">
-            <DialogHeader>
-              <DialogTitle className="text-center">Add User</DialogTitle>
-            </DialogHeader>
-            <AddUserForm />
-          </DialogContent>
-        </Dialog>
+      <div className="flex items-center justify-between mb-4 border-b pb-4">
+        <h1 className="text-2xl font-bold">Role Management</h1>
+        {profile?.profile?.permissions?.includes("role_create") && (
+          <GenerateButton title="Create Role">
+            <AddRoleForm permissions={permissions?.list as IPermissionList} />
+          </GenerateButton>
+        )}
       </div>
+      <RoleTableWrapper query={query} page={page} limit={limit} />
     </div>
   );
-}
+};
 
-export default RolesPage
+export default RolesPage;

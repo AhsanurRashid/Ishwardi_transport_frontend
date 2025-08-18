@@ -27,8 +27,9 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { createUserAction } from "@/app/actions/createUserAction";
 import { Textarea } from "../ui/textarea";
 import { toast } from "sonner";
+import { IRole } from "@/lib/types";
 
-const AddUserForm = () => {
+const AddUserForm = ({ roles }: { roles: IRole[] }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -124,7 +125,7 @@ const AddUserForm = () => {
 
     startTransition(async () => {
       const res = await createUserAction(formData);
-      
+
       if (res.errors) {
         const errorList: string[] = [];
 
@@ -264,8 +265,17 @@ const AddUserForm = () => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="1">Admin</SelectItem>
-                    <SelectItem value="2">User</SelectItem>
+                    {roles && roles.length > 0 ? (
+                      roles.map((role) => (
+                        <SelectItem key={role.id} value={String(role.id)}>
+                          {role.name}
+                        </SelectItem>
+                      ))
+                    ) : (
+                      <SelectItem value="" disabled>
+                        No roles available
+                      </SelectItem>
+                    )}
                   </SelectContent>
                 </Select>
                 <FormMessage />

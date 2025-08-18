@@ -26,10 +26,10 @@ import { useState, useTransition } from "react";
 import { Loader2 } from "lucide-react";
 import { Textarea } from "../ui/textarea";
 import { toast } from "sonner";
-import { UserData } from "@/lib/types";
+import { IRole, UserData } from "@/lib/types";
 import { updateUserAction } from "@/app/actions/editUserAction";
 
-const EditUserFrom = ({ user }: { user: UserData }) => {
+const EditUserFrom = ({ user, roles }: { user: UserData; roles: IRole[] }) => {
   const [isPending, startTransition] = useTransition();
 
   const [nidImageFile, setNidImageFile] = useState<File | null>(null);
@@ -120,7 +120,7 @@ const EditUserFrom = ({ user }: { user: UserData }) => {
 
     startTransition(async () => {
       const res = await updateUserAction(formData, user.id);
-      
+
       if (res.errors) {
         const errorList: string[] = [];
 
@@ -240,8 +240,17 @@ const EditUserFrom = ({ user }: { user: UserData }) => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="1">Admin</SelectItem>
-                    <SelectItem value="2">User</SelectItem>
+                    {roles && roles.length > 0 ? (
+                      roles.map((role) => (
+                        <SelectItem key={role.id} value={String(role.id)}>
+                          {role.name}
+                        </SelectItem>
+                      ))
+                    ) : (
+                      <SelectItem value="" disabled>
+                        No roles available
+                      </SelectItem>
+                    )}
                   </SelectContent>
                 </Select>
                 <FormMessage />

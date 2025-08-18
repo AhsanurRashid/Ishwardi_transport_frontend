@@ -8,15 +8,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useSearchStore } from "@/store/searchStore";
+import { Button } from "../ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface PaginationProps {
   page: number;
   limit: number;
   route: string;
+  total: number; // Optional, if you want to display total records
 }
 
-const Pagination = ({ page, limit, route }: PaginationProps) => {
-    const { searchValue } = useSearchStore();
+const Pagination = ({ page, limit, route, total }: PaginationProps) => {
+  const { searchValue } = useSearchStore();
   const router = useRouter();
 
   const goToPage = (p: number) => {
@@ -48,21 +51,44 @@ const Pagination = ({ page, limit, route }: PaginationProps) => {
           </SelectContent>
         </Select>
       </div>
-      <div className="mt-4 flex gap-2">
-        <button
-          disabled={page <= 1}
-          onClick={() => goToPage(page - 1)}
-          className="px-3 py-1 border rounded disabled:opacity-50"
-        >
-          Prev
-        </button>
-        <button
-          onClick={() => goToPage(page + 1)}
-          className="px-3 py-1 border rounded"
-        >
-          Next
-        </button>
-      </div>
+      {total && total <= limit ? (
+        <div className="text-sm text-muted-foreground">
+          Showing {total} result{total > 1 ? "s" : ""} in total
+        </div>
+      ) : (
+        <div className="mt-4 flex gap-2">
+          <Button
+            variant="outline"
+            size="icon"
+            disabled={page <= 1}
+            onClick={() => goToPage(page - 1)}
+            className="px-3 py-1 border rounded disabled:opacity-50"
+          >
+            <ChevronLeft />
+          </Button>
+          {Array.from({ length: Math.ceil((total || 0) / limit) }, (_, i) => (
+            <Button
+              variant="outline"
+              key={i}
+              onClick={() => goToPage(i + 1)}
+              className={`px-3 py-1 border rounded ${
+                i + 1 === page ? "bg-primary text-white" : ""
+              }`}
+            >
+              {i + 1}
+            </Button>
+          ))}
+          <Button
+            variant="outline"
+            size="icon"
+            disabled={total ? page * limit >= total : false}
+            onClick={() => goToPage(page + 1)}
+            className="px-3 py-1 border rounded disabled:opacity-50"
+          >
+            <ChevronRight />
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

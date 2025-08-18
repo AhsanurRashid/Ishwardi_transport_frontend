@@ -1,6 +1,5 @@
 "use client";
 
-import { deleteDriverAction } from "@/app/actions/deleteDriver";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -18,40 +17,40 @@ import { Edit, Loader2, MoreHorizontal, Trash2 } from "lucide-react";
 import { useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 import EditDriverForm from "@/components/forms/edit-driver-form";
-import { getDriverForEditAction } from "@/app/actions/getDriverForEditAction";
-import { Driver, UserProfile } from "@/lib/types";
+import { Driver, IPermissionList, IRole } from "@/lib/types";
+import { getRoleByIdAction } from "@/app/actions/getRoleByIdAction";
+import EditRoleForm from "@/components/forms/edit-role-form";
 
-const DriverActions = ({
-  driverId,
-  profile,
+const RoleActions = ({
+  roleId,
+  permissions,
 }: {
-  driverId: number;
-  profile: UserProfile;
+  roleId: number;
+  permissions: IPermissionList;
 }) => {
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
   const actionSuccessful = useRef(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [driver, setDriver] = useState<Driver | null>(null);
+  const [roleValue, setRoleValue] = useState<IRole | null>(null);
 
   const handleAction = async () => {
     startTransition(async () => {
-      const data = await deleteDriverAction(driverId);
-
-      if (data.code === 200) {
-        toast.success(data.message, {
-          description: data.message || "User deleted successfully",
-          duration: 2000,
-        });
-        actionSuccessful.current = true;
-        setOpen(false);
-      } else {
-        toast.error(data.message, {
-          description: data.message || "User not deleted",
-          duration: 2000,
-        });
-        actionSuccessful.current = false;
-      }
+      //   const data = await deleteRoleAction(roleId);
+      //   if (data.code === 200) {
+      //     toast.success(data.message, {
+      //       description: data.message || "Role deleted successfully",
+      //       duration: 2000,
+      //     });
+      //     actionSuccessful.current = true;
+      //     setOpen(false);
+      //   } else {
+      //     toast.error(data.message, {
+      //       description: data.message || "Role not deleted",
+      //       duration: 2000,
+      //     });
+      //     actionSuccessful.current = false;
+      //   }
     });
   };
 
@@ -71,9 +70,9 @@ const DriverActions = ({
   };
 
   const handleClick = async () => {
-    const res = await getDriverForEditAction({ driverId });
+    const res = await getRoleByIdAction(roleId);
     if (res.code === 200) {
-      setDriver(res.data);
+      setRoleValue(res.data);
     }
     setEditDialogOpen(true);
     setOpen(false);
@@ -89,31 +88,27 @@ const DriverActions = ({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          {profile?.permissions?.includes("driver_edit") && (
-            <DropdownMenuItem
-              className="cursor-pointer text-primary hover:text-primary-foreground"
-              onClick={handleClick}
-            >
-              <Edit className="mr-2 h-4 w-4" />
-              Edit Driver
-            </DropdownMenuItem>
-          )}
-          {profile?.permissions?.includes("driver_delete") && (
-            <DropdownMenuItem
-              onClick={handleAction}
-              className="text-red-600 focus:text-red-600"
-            >
-              {isPending ? (
-                <div className="flex justify-center w-full">
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                </div>
-              ) : (
-                <>
-                  <Trash2 className="mr-2 h-4 w-4 text-red-600" /> Delete Driver
-                </>
-              )}
-            </DropdownMenuItem>
-          )}
+          <DropdownMenuItem
+            className="cursor-pointer text-primary hover:text-primary-foreground"
+            onClick={handleClick}
+          >
+            <Edit className="mr-2 h-4 w-4" />
+            Edit Role
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={handleAction}
+            className="text-red-600 focus:text-red-600"
+          >
+            {isPending ? (
+              <div className="flex justify-center w-full">
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              </div>
+            ) : (
+              <>
+                <Trash2 className="mr-2 h-4 w-4 text-red-600" /> Delete Driver
+              </>
+            )}
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
@@ -121,13 +116,16 @@ const DriverActions = ({
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="text-center">
-              Edit Driver: #{driverId}
+              Edit Role: #{roleId}
             </DialogTitle>
           </DialogHeader>
-          {driver ? (
-            <EditDriverForm driver={driver as Driver} />
+          {roleValue ? (
+            <EditRoleForm
+              role={roleValue as IRole}
+              permissions={permissions as IPermissionList}
+            />
           ) : (
-            "No driver data available!"
+            "No role data available!"
           )}
         </DialogContent>
       </Dialog>
@@ -135,4 +133,4 @@ const DriverActions = ({
   );
 };
 
-export default DriverActions;
+export default RoleActions;

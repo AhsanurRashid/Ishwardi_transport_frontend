@@ -14,15 +14,21 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Edit, Loader2, MoreHorizontal, Trash2, TriangleAlert } from "lucide-react";
+import {
+  Edit,
+  Loader2,
+  MoreHorizontal,
+  Trash2,
+  TriangleAlert,
+} from "lucide-react";
 import { useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { getUserForEditAction } from "@/app/actions/getUserForEditAction";
-import { UserData } from "@/lib/types";
+import { IRole, UserData } from "@/lib/types";
 import EditUserFrom from "@/components/forms/edit-user-form";
 import { useRoleStore } from "@/store/roleStore";
 
-const UserActions = ({ userId }: { userId: number }) => {
+const UserActions = ({ userId, roles }: { userId: number; roles: IRole[] }) => {
   const { roleValue } = useRoleStore();
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
@@ -31,9 +37,11 @@ const UserActions = ({ userId }: { userId: number }) => {
   const [user, setUser] = useState<UserData | null>(null);
 
   if (roleValue !== "Admin") {
-    return <div className="flex justify-center w-full">
-      <TriangleAlert className="h-4 w-4 text-red-500"/>
+    return (
+      <div className="flex justify-center w-full">
+        <TriangleAlert className="h-4 w-4 text-red-500" />
       </div>
+    );
   }
 
   const handleAction = async () => {
@@ -123,7 +131,7 @@ const UserActions = ({ userId }: { userId: number }) => {
             </DialogTitle>
           </DialogHeader>
           {user ? (
-            <EditUserFrom user={user as UserData} />
+            <EditUserFrom user={user as UserData} roles={roles as IRole[]} />
           ) : (
             "No user data available!"
           )}

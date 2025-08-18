@@ -1,9 +1,9 @@
 import { LucideIcon } from "lucide-react";
 
 export interface Page {
-    name: string;
-    icon: LucideIcon;
-    href: string;
+  name: string;
+  icon: LucideIcon;
+  href: string;
 }
 
 export interface UserProfile {
@@ -23,7 +23,7 @@ export interface UserType {
   name: string | null;
   email: string | null;
   phone: string | null;
-  address: string  | null;
+  address: string | null;
   thumbnail: string | null;
   status: string | null;
   role: ["admin", "user", "moderator", "editor"] | null;
@@ -122,17 +122,16 @@ export interface IVehicle {
   image: string | null;
 }
 
-
- export interface ICompany {
-   id: number;
-   company_name: string;
-   company_address: string;
-   company_email: string;
-   company_phone: string;
-   company_invoice_number: string;
-   status: Status; // or use a union type if it's always "0" | "1"
+export interface ICompany {
+  id: number;
+  company_name: string;
+  company_address: string;
+  company_email: string;
+  company_phone: string;
+  company_invoice_number: string;
+  status: Status; // or use a union type if it's always "0" | "1"
 }
- 
+
 export interface ICompanyForRent {
   [x: string]: any;
   id: number;
@@ -157,4 +156,48 @@ export interface IDriversForRent {
   id: number;
   name: string;
   phone: string;
+}
+
+export interface IRole {
+  id: number;
+  name: string;
+  permissions: string[];
+}
+
+export interface IPermissionList {
+  user_list: string;
+  user_create: string;
+  user_edit: string;
+  user_delete: string;
+
+  permission_list: string;
+  permission_edit: string;
+  permission_create: string;
+  permission_delete: string;
+
+  role_list: string;
+  role_create: string;
+  role_edit: string;
+  role_delete: string;
+
+  user_profile: string;
+
+  driver_list: string;
+  driver_create: string;
+  driver_edit: string;
+  driver_delete: string;
+
+  company_list?: string;
+  company_create?: string;
+  company_edit?: string;
+  company_delete?: string;
+
+  rent_list?: string;
+  rent_create?: string;
+  rent_edit?: string;
+  rent_delete?: string;
+}
+
+export interface IPermissionResponse {
+  list: IPermissionList;
 }

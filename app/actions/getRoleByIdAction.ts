@@ -1,16 +1,7 @@
 "use server";
 import { getToken } from "@/lib/auth";
-import { error } from "console";
 
-export async function getUserListAction({
-  query = "",
-  page = 1,
-  limit = 10,
-}: {
-  query?: string;
-  page?: number;
-  limit?: number;
-}) {
+export async function getRoleByIdAction(id: number) {
   //token checking
   const token = await getToken();
   if (!token) {
@@ -21,26 +12,24 @@ export async function getUserListAction({
   try {
     ("use cache");
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/user/list?query=${encodeURIComponent(
-        query
-      )}&page=${page}&limit=${limit}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/role/edit/${id}`,
       {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        next: { tags: ["user-list"] },
+        next: { tags: ["role-list"] },
       }
     );
 
     if (!response.ok) {
-      return { error: "Failed to fetch user list", details: error };
+      return { error: "Failed to fetch role list" };
     }
     return response.json();
   } catch (error: any) {
     return (
       error.response?.data || {
-        error: "An error occurred while fetching user list",
+        error: "An error occurred while fetching role list",
       }
     );
   }

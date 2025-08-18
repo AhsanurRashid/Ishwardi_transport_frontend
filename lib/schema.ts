@@ -224,10 +224,31 @@ export const RentCreationFromSchema = z.object({
     .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
       message: "Rent amount must be a positive number.",
     }),
+  demurrageAmount: z
+    .string()
+    .min(1, {
+      message: "Demurrage amount is required.",
+    })
+    .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+      message: "Demurrage amount must be a positive number.",
+    }),
   fromLocation: z.string().min(1, {
     message: "From location is required.",
   }),
   toLocation: z.string().min(1, {
     message: "To location is required.",
   }),
+  dueAmount: z.string().optional(),
+  status: z.coerce.number().int().min(0).max(3),
+});
+
+export const RoleCreationFromSchema = z.object({
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
+  permission: z
+    .array(z.string())
+    .refine((value) => value.some((item) => item), {
+      message: "You have to select at least one item.",
+    }),
 });

@@ -1,6 +1,8 @@
 import DriverTableWrapper from "@/components/dashboard/drivers/driver-table-wrapper";
 import AddDriverForm from "@/components/forms/add-driver-form";
 import GenerateButton from "@/components/common/generate-button";
+import { getUserDataAction } from "@/app/actions/getUserdataAction";
+import NoPermission from "@/components/common/no-permission";
 
 const Drivers = async ({
   searchParams,
@@ -11,19 +13,22 @@ const Drivers = async ({
   const query = params?.query || "";
   const page = parseInt(params?.page || "1", 10);
   const limit = parseInt(params?.limit || "5", 10);
+
+  const profile = await getUserDataAction();
+  if (!profile?.profile?.permissions?.includes("driver_list")) {
+    return <NoPermission />;
+  }
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">Drivers List</h1>
-        <GenerateButton title="Create Driver">
-          <AddDriverForm />
-        </GenerateButton>
+        {profile?.profile?.permissions?.includes("driver_create") && (
+          <GenerateButton title="Create Driver">
+            <AddDriverForm />
+          </GenerateButton>
+        )}
       </div>
-      <DriverTableWrapper
-        query={query}
-        page={page}
-        limit={limit}
-      />
+      <DriverTableWrapper query={query} page={page} limit={limit} />
     </div>
   );
 };

@@ -63,6 +63,10 @@ export const createUserAction = async (formData: FormData) => {
       return { error: errorData?.message || "Failed to update user." };
     }
   } catch (error: any) {
-    return error.response?.data || { error: "An error occurred during login" };
+    return (
+      error.response?.data || {
+        error: "An error occurred during user creation",
+      }
+    );
   }
 };

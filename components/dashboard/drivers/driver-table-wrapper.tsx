@@ -18,8 +18,7 @@ const DriverTableWrapper = ({
       <SearchInput limit={limit} route="drivers" />
       <Suspense fallback={<TableSkeleton />}>
         <DriverTable query={query} page={page} limit={limit} />
-        </Suspense>
-      <Pagination page={page} limit={limit} route="drivers" />
+      </Suspense>
     </div>
   );
 };

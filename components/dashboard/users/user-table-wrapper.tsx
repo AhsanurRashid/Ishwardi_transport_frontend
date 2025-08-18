@@ -1,4 +1,3 @@
-import Pagination from "@/components/common/pagination";
 import SearchInput from "@/components/common/search-input";
 import UserTable from "./user-table";
 import { Suspense } from "react";
@@ -19,7 +18,6 @@ const NewUserTable = ({
       <Suspense fallback={<TableSkeleton />}>
         <UserTable query={query} page={page} limit={limit} />
       </Suspense>
-      <Pagination page={page} limit={limit} route="users" />
     </div>
   );
 };

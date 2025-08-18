@@ -56,6 +56,7 @@ const AddRentForm = ({
       vehicle: "",
       driver: "",
       rentAmount: "",
+      demurrageAmount: "",
       fromLocation: "",
       toLocation: "",
     },
@@ -223,23 +224,43 @@ const AddRentForm = ({
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="rentAmount"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Rent Amount</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="Enter rent amount"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="rentAmount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Rent Amount</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="Enter rent amount"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="demurrageAmount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Demurrage Amount</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="Enter demurrage amount"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <FormField
               control={form.control}
@@ -290,4 +311,3 @@ const AddRentForm = ({
 };
 
 export default AddRentForm;
-

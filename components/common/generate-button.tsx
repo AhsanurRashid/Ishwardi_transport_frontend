@@ -8,22 +8,17 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { useRoleStore } from "@/store/roleStore";
 import { cn } from "@/lib/utils";
 
 const GenerateButton = ({
   children,
   title,
-  size
+  size,
 }: {
   children: React.ReactNode;
-    title: string;
-    size?: "sm" | "md" | "lg";
-  }) => {
-  //check the role is admin or not
-  const { roleValue } = useRoleStore();
-  if (roleValue !== "Admin") return null;
-  
+  title: string;
+  size?: "sm" | "md" | "lg";
+}) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -32,7 +27,12 @@ const GenerateButton = ({
           {title}
         </Button>
       </DialogTrigger>
-      <DialogContent className={cn(size ? `sm:max-w-[${size}]` : "sm:max-w-[425px]", "boxed")}>
+      <DialogContent
+        className={cn(
+          size ? `sm:max-w-[${size}]` : "sm:max-w-[425px]",
+          "boxed"
+        )}
+      >
         <DialogHeader>
           <DialogTitle className="text-center">{title}</DialogTitle>
         </DialogHeader>

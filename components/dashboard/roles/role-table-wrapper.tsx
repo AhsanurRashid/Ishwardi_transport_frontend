@@ -1,9 +1,9 @@
 import SearchInput from "@/components/common/search-input";
-import CompanyTable from "./company-table";
 import { Suspense } from "react";
 import TableSkeleton from "@/components/skeletons/table-skeleton";
+import RoleTable from "./role-table";
 
-const DriverTableWrapper = ({
+const RoleTableWrapper = ({
   query,
   page,
   limit,
@@ -14,12 +14,12 @@ const DriverTableWrapper = ({
 }) => {
   return (
     <div className="space-y-4">
-      <SearchInput limit={limit} route="companies" />
+      <SearchInput limit={limit} route="roles" />
       <Suspense fallback={<TableSkeleton />}>
-        <CompanyTable query={query} page={page} limit={limit} />
+        <RoleTable query={query} page={page} limit={limit} />
       </Suspense>
     </div>
   );
 };
 
-export default DriverTableWrapper;
+export default RoleTableWrapper;
