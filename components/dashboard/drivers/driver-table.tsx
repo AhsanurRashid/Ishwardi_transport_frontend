@@ -25,14 +25,18 @@ const DriverTable = async ({
   page: number;
   limit: number;
 }) => {
-  const profile = await getUserDataAction();
-  const driverData = await getDriverListAction({
-    query,
-    page,
-    limit,
-  });
+  const [profile, driverData] = await Promise.all([
+    getUserDataAction(),
+    getDriverListAction({
+      query,
+      page,
+      limit,
+    }),
+  ]);
+
   if (driverData?.error)
     return <DataFetchingFailed error={driverData?.error} />;
+
   return (
     <>
       <Table>

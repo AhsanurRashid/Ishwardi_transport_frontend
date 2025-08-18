@@ -12,19 +12,22 @@ const RolesPage = async ({
 }: {
   searchParams?: Promise<{ query?: string; page?: string; limit?: string }>;
 }) => {
-  const params = await searchParams;
+  const [profile, params, permissions] = await Promise.all([
+    getUserDataAction(),
+    searchParams,
+    getPermissionsAction(),
+  ]);
   const query = params?.query || "";
   const page = parseInt(params?.page || "1", 10);
   const limit = parseInt(params?.limit || "5", 10);
 
-  const permissions = await getPermissionsAction();
-  const profile = await getUserDataAction();
   if (
     profile?.profile?.role !== "Admin" &&
     !profile?.profile?.permissions?.includes("role_list")
   ) {
     return <NoPermission />;
   }
+
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-4 border-b pb-4">

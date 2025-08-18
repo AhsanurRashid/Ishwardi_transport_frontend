@@ -24,12 +24,14 @@ const CompanyTable = async ({
   page: number;
   limit: number;
 }) => {
-  const profile = await getUserDataAction();
-  const companyData = await getCompanyListAction({
-    query,
-    page,
-    limit,
-  });
+  const [profile, companyData] = await Promise.all([
+    getUserDataAction(),
+    getCompanyListAction({
+      query,
+      page,
+      limit,
+    }),
+  ]);
 
   if (companyData?.error)
     return <DataFetchingFailed error={companyData?.error} />;

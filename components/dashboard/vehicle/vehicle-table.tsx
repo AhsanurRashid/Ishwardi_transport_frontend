@@ -1,9 +1,8 @@
-import GetStatusBadge from "@/components/common/get-status-badge";
 import { Card } from "@/components/ui/card";
 import { IVehicle, UserProfile } from "@/lib/types";
 import Image from "next/image";
 import PlaceHolderImage from "@/assets/images/placeholder-image.svg";
-import { getVehicleListAction } from "@/app/actions/getVehcileListAction";
+import { getVehicleListAction } from "@/app/actions/getVehicleListAction";
 import VehicleAction from "./vehicle-action";
 import DataFetchingFailed from "@/components/common/date-fetching-failed";
 import Pagination from "@/components/common/pagination";
@@ -18,12 +17,15 @@ const VehicleTable = async ({
   page: number;
   limit: number;
 }) => {
-  const profile = await getUserDataAction();
-  const vehicleData = await getVehicleListAction({
-    query,
-    page,
-    limit,
-  });
+  const [profile, vehicleData] = await Promise.all([
+    getUserDataAction(),
+    getVehicleListAction({
+      query,
+      page,
+      limit,
+    }),
+  ]);
+
   if (vehicleData?.error)
     return <DataFetchingFailed error={vehicleData?.error} />;
   return (

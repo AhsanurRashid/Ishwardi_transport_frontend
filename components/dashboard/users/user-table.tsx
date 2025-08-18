@@ -16,7 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { getUserListAction } from "@/app/actions/getUserListAction";
 import DataFetchingFailed from "@/components/common/date-fetching-failed";
 import Pagination from "@/components/common/pagination";
-import { getTotalRolesAction } from "@/app/actions/getTotalTolesAction";
+import { getTotalRolesAction } from "@/app/actions/getTotalRolesAction";
 
 const UserTable = async ({
   query,

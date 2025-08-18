@@ -1,32 +1,91 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { CalendarIcon, Truck, MapPin, User, CreditCard, Shield, Clock } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
-import { Checkbox } from "@/components/ui/checkbox"
+import { useState } from "react";
+import {
+  CalendarIcon,
+  Truck,
+  MapPin,
+  User,
+  CreditCard,
+  Shield,
+  Clock,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 // import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Separator } from "@/components/ui/separator"
-import { Badge } from "@/components/ui/badge"
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Separator } from "@/components/ui/separator";
 
 export default function Component() {
-  const [pickupDate, setPickupDate] = useState<Date>()
-  const [returnDate, setReturnDate] = useState<Date>()
+  const [pickupDate, setPickupDate] = useState<Date>();
+  const [returnDate, setReturnDate] = useState<Date>();
 
   const truckTypes = [
-    { id: "pickup", name: "Pickup Truck", capacity: "1,500 lbs", price: "$29.95/day", image: "🚚" },
-    { id: "cargo-van", name: "Cargo Van", capacity: "3,500 lbs", price: "$39.95/day", image: "🚐" },
-    { id: "box-truck", name: "Box Truck (10ft)", capacity: "3,000 lbs", price: "$49.95/day", image: "📦" },
-    { id: "box-truck-15", name: "Box Truck (15ft)", capacity: "4,000 lbs", price: "$59.95/day", image: "🚛" },
-    { id: "box-truck-20", name: "Box Truck (20ft)", capacity: "5,000 lbs", price: "$69.95/day", image: "🚚" },
-    { id: "box-truck-26", name: "Box Truck (26ft)", capacity: "10,000 lbs", price: "$89.95/day", image: "🚛" },
-  ]
+    {
+      id: "pickup",
+      name: "Pickup Truck",
+      capacity: "1,500 lbs",
+      price: "$29.95/day",
+      image: "🚚",
+    },
+    {
+      id: "cargo-van",
+      name: "Cargo Van",
+      capacity: "3,500 lbs",
+      price: "$39.95/day",
+      image: "🚐",
+    },
+    {
+      id: "box-truck",
+      name: "Box Truck (10ft)",
+      capacity: "3,000 lbs",
+      price: "$49.95/day",
+      image: "📦",
+    },
+    {
+      id: "box-truck-15",
+      name: "Box Truck (15ft)",
+      capacity: "4,000 lbs",
+      price: "$59.95/day",
+      image: "🚛",
+    },
+    {
+      id: "box-truck-20",
+      name: "Box Truck (20ft)",
+      capacity: "5,000 lbs",
+      price: "$69.95/day",
+      image: "🚚",
+    },
+    {
+      id: "box-truck-26",
+      name: "Box Truck (26ft)",
+      capacity: "10,000 lbs",
+      price: "$89.95/day",
+      image: "🚛",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -34,9 +93,13 @@ export default function Component() {
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-4">
             <Truck className="h-8 w-8 text-orange-600" />
-            <h1 className="text-3xl font-bold text-gray-900">TruckRental Pro</h1>
+            <h1 className="text-3xl font-bold text-gray-900">
+              TruckRental Pro
+            </h1>
           </div>
-          <p className="text-gray-600">Reserve your truck rental in just a few easy steps</p>
+          <p className="text-gray-600">
+            Reserve your truck rental in just a few easy steps
+          </p>
         </div>
 
         <form className="space-y-6">
@@ -47,7 +110,9 @@ export default function Component() {
                 <User className="h-5 w-5" />
                 Personal Information
               </CardTitle>
-              <CardDescription>Please provide your contact details</CardDescription>
+              <CardDescription>
+                Please provide your contact details
+              </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
@@ -60,11 +125,21 @@ export default function Component() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email Address *</Label>
-                <Input id="email" type="email" placeholder="john.doe@example.com" required />
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="john.doe@example.com"
+                  required
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone Number *</Label>
-                <Input id="phone" type="tel" placeholder="(555) 123-4567" required />
+                <Input
+                  id="phone"
+                  type="tel"
+                  placeholder="(555) 123-4567"
+                  required
+                />
               </div>
               <div className="space-y-2 md:col-span-2">
                 <Label htmlFor="address">Address *</Label>
@@ -98,7 +173,9 @@ export default function Component() {
                 <MapPin className="h-5 w-5" />
                 Rental Details
               </CardTitle>
-              <CardDescription>When and where do you need the truck?</CardDescription>
+              <CardDescription>
+                When and where do you need the truck?
+              </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
@@ -108,10 +185,18 @@ export default function Component() {
                     <SelectValue placeholder="Select pickup location" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="downtown">Downtown Location - 123 Main St</SelectItem>
-                    <SelectItem value="airport">Airport Location - 456 Airport Rd</SelectItem>
-                    <SelectItem value="north">North Branch - 789 North Ave</SelectItem>
-                    <SelectItem value="south">South Branch - 321 South St</SelectItem>
+                    <SelectItem value="downtown">
+                      Downtown Location - 123 Main St
+                    </SelectItem>
+                    <SelectItem value="airport">
+                      Airport Location - 456 Airport Rd
+                    </SelectItem>
+                    <SelectItem value="north">
+                      North Branch - 789 North Ave
+                    </SelectItem>
+                    <SelectItem value="south">
+                      South Branch - 321 South St
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -122,11 +207,21 @@ export default function Component() {
                     <SelectValue placeholder="Select return location" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="same">Same as pickup location</SelectItem>
-                    <SelectItem value="downtown">Downtown Location - 123 Main St</SelectItem>
-                    <SelectItem value="airport">Airport Location - 456 Airport Rd</SelectItem>
-                    <SelectItem value="north">North Branch - 789 North Ave</SelectItem>
-                    <SelectItem value="south">South Branch - 321 South St</SelectItem>
+                    <SelectItem value="same">
+                      Same as pickup location
+                    </SelectItem>
+                    <SelectItem value="downtown">
+                      Downtown Location - 123 Main St
+                    </SelectItem>
+                    <SelectItem value="airport">
+                      Airport Location - 456 Airport Rd
+                    </SelectItem>
+                    <SelectItem value="north">
+                      North Branch - 789 North Ave
+                    </SelectItem>
+                    <SelectItem value="south">
+                      South Branch - 321 South St
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -134,13 +229,23 @@ export default function Component() {
                 <Label>Pickup Date *</Label>
                 <Popover>
                   <PopoverTrigger asChild>
-                    <Button variant="outline" className="w-full justify-start text-left font-normal bg-transparent">
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start text-left font-normal bg-transparent"
+                    >
                       <CalendarIcon className="mr-2 h-4 w-4" />
-                      {pickupDate ? pickupDate.toLocaleDateString() : "Select pickup date"}
+                      {pickupDate
+                        ? pickupDate.toLocaleDateString()
+                        : "Select pickup date"}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0">
-                    <Calendar mode="single" selected={pickupDate} onSelect={setPickupDate} initialFocus />
+                    <Calendar
+                      mode="single"
+                      selected={pickupDate}
+                      onSelect={setPickupDate}
+                      initialFocus
+                    />
                   </PopoverContent>
                 </Popover>
               </div>
@@ -148,13 +253,23 @@ export default function Component() {
                 <Label>Return Date *</Label>
                 <Popover>
                   <PopoverTrigger asChild>
-                    <Button variant="outline" className="w-full justify-start text-left font-normal bg-transparent">
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start text-left font-normal bg-transparent"
+                    >
                       <CalendarIcon className="mr-2 h-4 w-4" />
-                      {returnDate ? returnDate.toLocaleDateString() : "Select return date"}
+                      {returnDate
+                        ? returnDate.toLocaleDateString()
+                        : "Select return date"}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0">
-                    <Calendar mode="single" selected={returnDate} onSelect={setReturnDate} initialFocus />
+                    <Calendar
+                      mode="single"
+                      selected={returnDate}
+                      onSelect={setReturnDate}
+                      initialFocus
+                    />
                   </PopoverContent>
                 </Popover>
               </div>
@@ -208,7 +323,9 @@ export default function Component() {
                 <Truck className="h-5 w-5" />
                 Vehicle Selection
               </CardTitle>
-              <CardDescription>Choose the truck that best fits your needs</CardDescription>
+              <CardDescription>
+                Choose the truck that best fits your needs
+              </CardDescription>
             </CardHeader>
             {/* <CardContent>
               <RadioGroup defaultValue="pickup" className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -238,7 +355,9 @@ export default function Component() {
           <Card>
             <CardHeader>
               <CardTitle>Driver Information</CardTitle>
-              <CardDescription>Primary driver details and license information</CardDescription>
+              <CardDescription>
+                Primary driver details and license information
+              </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
@@ -288,13 +407,17 @@ export default function Component() {
                 <Shield className="h-5 w-5" />
                 Additional Services & Insurance
               </CardTitle>
-              <CardDescription>Protect your rental and add convenience services</CardDescription>
+              <CardDescription>
+                Protect your rental and add convenience services
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center space-x-2">
                 <Checkbox id="insurance" />
                 <Label htmlFor="insurance" className="flex-1">
-                  <div className="font-medium">Damage Protection (+$19.95/day)</div>
+                  <div className="font-medium">
+                    Damage Protection (+$19.95/day)
+                  </div>
                   <div className="text-sm text-muted-foreground">
                     Covers damage to the vehicle during your rental period
                   </div>
@@ -303,24 +426,35 @@ export default function Component() {
               <div className="flex items-center space-x-2">
                 <Checkbox id="roadside" />
                 <Label htmlFor="roadside" className="flex-1">
-                  <div className="font-medium">24/7 Roadside Assistance (+$9.95/day)</div>
+                  <div className="font-medium">
+                    24/7 Roadside Assistance (+$9.95/day)
+                  </div>
                   <div className="text-sm text-muted-foreground">
-                    Emergency roadside assistance including towing and jump starts
+                    Emergency roadside assistance including towing and jump
+                    starts
                   </div>
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
                 <Checkbox id="equipment" />
                 <Label htmlFor="equipment" className="flex-1">
-                  <div className="font-medium">Moving Equipment Rental (+$29.95)</div>
-                  <div className="text-sm text-muted-foreground">Dolly, furniture pads, and tie-down straps</div>
+                  <div className="font-medium">
+                    Moving Equipment Rental (+$29.95)
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Dolly, furniture pads, and tie-down straps
+                  </div>
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
                 <Checkbox id="additional-driver" />
                 <Label htmlFor="additional-driver" className="flex-1">
-                  <div className="font-medium">Additional Driver (+$15.95/day)</div>
-                  <div className="text-sm text-muted-foreground">Add another authorized driver to the rental</div>
+                  <div className="font-medium">
+                    Additional Driver (+$15.95/day)
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Add another authorized driver to the rental
+                  </div>
                 </Label>
               </div>
             </CardContent>
@@ -330,7 +464,9 @@ export default function Component() {
           <Card>
             <CardHeader>
               <CardTitle>Special Requirements</CardTitle>
-              <CardDescription>Any additional information or special requests</CardDescription>
+              <CardDescription>
+                Any additional information or special requests
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
@@ -360,7 +496,11 @@ export default function Component() {
               </div>
               <div className="space-y-2 md:col-span-2">
                 <Label htmlFor="cardNumber">Card Number *</Label>
-                <Input id="cardNumber" placeholder="1234 5678 9012 3456" required />
+                <Input
+                  id="cardNumber"
+                  placeholder="1234 5678 9012 3456"
+                  required
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="expiry">Expiry Date *</Label>
@@ -430,7 +570,8 @@ export default function Component() {
                 <div className="flex items-center space-x-2">
                   <Checkbox id="age-confirm" required />
                   <Label htmlFor="age-confirm" className="text-sm">
-                    I confirm that I am at least 21 years old and have a valid driver's license
+                    I confirm that I am at least 21 years old and have a valid
+                    driver's license
                   </Label>
                 </div>
                 <Button type="submit" className="w-full h-12 text-lg">
@@ -438,8 +579,8 @@ export default function Component() {
                   Reserve Now - $164.65
                 </Button>
                 <p className="text-xs text-center text-muted-foreground">
-                  Your reservation will be confirmed immediately. You can cancel free of charge up to 24 hours before
-                  pickup.
+                  Your reservation will be confirmed immediately. You can cancel
+                  free of charge up to 24 hours before pickup.
                 </p>
               </div>
             </CardContent>
@@ -447,5 +588,5 @@ export default function Component() {
         </form>
       </div>
     </div>
-  )
+  );
 }
