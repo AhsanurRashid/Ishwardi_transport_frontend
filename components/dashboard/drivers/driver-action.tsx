@@ -14,7 +14,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Edit, Loader2, MoreHorizontal, Trash2 } from "lucide-react";
+import {
+  Edit,
+  Loader2,
+  MoreHorizontal,
+  Trash2,
+  TriangleAlert,
+} from "lucide-react";
 import { useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 import EditDriverForm from "@/components/forms/edit-driver-form";
@@ -78,6 +84,17 @@ const DriverActions = ({
     setEditDialogOpen(true);
     setOpen(false);
   };
+
+  if (
+    !profile?.permissions?.includes("driver_edit") &&
+    !profile?.permissions?.includes("driver_delete")
+  ) {
+    return (
+      <div className="flex justify-end w-full text-red-500">
+        <TriangleAlert />
+      </div>
+    );
+  }
 
   return (
     <>

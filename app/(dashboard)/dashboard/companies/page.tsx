@@ -15,9 +15,10 @@ const Companies = async ({
   const limit = parseInt(params?.limit || "5", 10);
 
   const profile = await getUserDataAction();
-  // if (!profile?.profile?.permissions?.includes("company_list")) {
-  //   return <NoPermission />;
-  // }
+  if (!profile?.profile?.permissions?.includes("company_list")) {
+    return <NoPermission />;
+  }
+
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-4">

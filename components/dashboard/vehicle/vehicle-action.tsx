@@ -8,21 +8,29 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Edit, Loader2, MoreHorizontal, Trash2, TriangleAlert } from "lucide-react";
+import {
+  Edit,
+  Loader2,
+  MoreHorizontal,
+  Trash2,
+  TriangleAlert,
+} from "lucide-react";
 import { useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 import Link from "next/link";
 import { useRoleStore } from "@/store/roleStore";
+import { UserProfile } from "@/lib/types";
 
-const VehicleAction = ({ vehicleId }: { vehicleId: number }) => {
-  const {roleValue} = useRoleStore()
+const VehicleAction = ({
+  vehicleId,
+  profile,
+}: {
+  vehicleId: number;
+  profile: UserProfile;
+}) => {
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
   const actionSuccessful = useRef(false);
-
-  if (roleValue !== "Admin") {
-    return null
-  }
 
   const handleAction = async () => {
     startTransition(async () => {
@@ -60,6 +68,17 @@ const VehicleAction = ({ vehicleId }: { vehicleId: number }) => {
     }
   };
 
+  if (
+    !profile?.permissions?.includes("vehicle_edit") &&
+    !profile?.permissions?.includes("vehicle_delete")
+  ) {
+    return (
+      <div className="flex justify-end w-full text-red-500">
+        <TriangleAlert />
+      </div>
+    );
+  }
+
   return (
     <>
       <DropdownMenu open={open} onOpenChange={handleOpenChange}>
@@ -70,26 +89,31 @@ const VehicleAction = ({ vehicleId }: { vehicleId: number }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <Link href={`/dashboard/vehicles/${vehicleId}`}>
-            <DropdownMenuItem className="cursor-pointer text-primary hover:text-primary-foreground">
-              <Edit className="mr-2 h-4 w-4" />
-              Edit Vehicle
+          {profile?.permissions?.includes("vehicle_edit") && (
+            <Link href={`/dashboard/vehicles/${vehicleId}`}>
+              <DropdownMenuItem className="cursor-pointer text-primary hover:text-primary-foreground">
+                <Edit className="mr-2 h-4 w-4" />
+                Edit Vehicle
+              </DropdownMenuItem>
+            </Link>
+          )}
+          {profile?.permissions?.includes("vehicle_delete") && (
+            <DropdownMenuItem
+              onClick={handleAction}
+              className="text-red-600 focus:text-red-600"
+            >
+              {isPending ? (
+                <div className="flex justify-center w-full">
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                </div>
+              ) : (
+                <>
+                  <Trash2 className="mr-2 h-4 w-4 text-red-600" /> Delete
+                  Vehicle
+                </>
+              )}
             </DropdownMenuItem>
-          </Link>
-          <DropdownMenuItem
-            onClick={handleAction}
-            className="text-red-600 focus:text-red-600"
-          >
-            {isPending ? (
-              <div className="flex justify-center w-full">
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              </div>
-            ) : (
-              <>
-                <Trash2 className="mr-2 h-4 w-4 text-red-600" /> Delete Vehicle
-              </>
-            )}
-          </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </>

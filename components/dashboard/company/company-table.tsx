@@ -7,12 +7,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ICompany } from "@/lib/types";
+import { ICompany, UserProfile } from "@/lib/types";
 import { IdCard, Mail, Phone } from "lucide-react";
 import { getCompanyListAction } from "@/app/actions/getCompanyListAction";
 import CompanyActions from "./company-action";
 import DataFetchingFailed from "@/components/common/date-fetching-failed";
 import Pagination from "@/components/common/pagination";
+import { getUserDataAction } from "@/app/actions/getUserdataAction";
 
 const CompanyTable = async ({
   query,
@@ -23,6 +24,7 @@ const CompanyTable = async ({
   page: number;
   limit: number;
 }) => {
+  const profile = await getUserDataAction();
   const companyData = await getCompanyListAction({
     query,
     page,
@@ -93,7 +95,10 @@ const CompanyTable = async ({
                 )}
               </TableCell>
               <TableCell className="text-right">
-                <CompanyActions companyId={company.id as number} />
+                <CompanyActions
+                  companyId={company.id as number}
+                  profile={profile?.profile as UserProfile}
+                />
               </TableCell>
             </TableRow>
           ))}

@@ -1,12 +1,13 @@
 import GetStatusBadge from "@/components/common/get-status-badge";
 import { Card } from "@/components/ui/card";
-import { IVehicle } from "@/lib/types";
+import { IVehicle, UserProfile } from "@/lib/types";
 import Image from "next/image";
 import PlaceHolderImage from "@/assets/images/placeholder-image.svg";
 import { getVehicleListAction } from "@/app/actions/getVehcileListAction";
 import VehicleAction from "./vehicle-action";
 import DataFetchingFailed from "@/components/common/date-fetching-failed";
 import Pagination from "@/components/common/pagination";
+import { getUserDataAction } from "@/app/actions/getUserdataAction";
 
 const VehicleTable = async ({
   query,
@@ -17,6 +18,7 @@ const VehicleTable = async ({
   page: number;
   limit: number;
 }) => {
+  const profile = await getUserDataAction();
   const vehicleData = await getVehicleListAction({
     query,
     page,
@@ -43,7 +45,10 @@ const VehicleTable = async ({
                 src={vehicle.image ? vehicle.image : PlaceHolderImage}
                 alt={vehicle.chassis_number}
               />
-              <VehicleAction vehicleId={vehicle.id as number} />
+              <VehicleAction
+                vehicleId={vehicle.id as number}
+                profile={profile as UserProfile}
+              />
             </div>
             <div className="flex items-center gap-2 w-full">
               <div className="tracking-wide w-1/2">

@@ -22,28 +22,23 @@ import {
 } from "lucide-react";
 import { useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
-import EditDriverForm from "@/components/forms/edit-driver-form";
-import { ICompany } from "@/lib/types";
-import { useRoleStore } from "@/store/roleStore";
+import { ICompany, UserProfile } from "@/lib/types";
 import { deleteCompanyAction } from "@/app/actions/deleteCompanyAction";
 import { getCompanyForEditAction } from "@/app/actions/getCompanyForEditAction";
 import EditCompanyForm from "@/components/forms/edit-company-from";
 
-const CompanyActions = ({ companyId }: { companyId: number }) => {
-  const { roleValue } = useRoleStore();
+const CompanyActions = ({
+  companyId,
+  profile,
+}: {
+  companyId: number;
+  profile: UserProfile;
+}) => {
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
   const actionSuccessful = useRef(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [company, setCompany] = useState<ICompany | null>(null);
-
-  if (roleValue !== "Admin") {
-    return (
-      <div className="flex justify-center w-full">
-        <TriangleAlert className="h-4 w-4 text-red-500" />
-      </div>
-    );
-  }
 
   const handleAction = async () => {
     startTransition(async () => {
@@ -90,6 +85,17 @@ const CompanyActions = ({ companyId }: { companyId: number }) => {
     setOpen(false);
   };
 
+  if (
+    !profile?.permissions?.includes("company_edit") &&
+    !profile?.permissions?.includes("company_delete")
+  ) {
+    return (
+      <div className="flex justify-end w-full text-red-500">
+        <TriangleAlert />
+      </div>
+    );
+  }
+
   return (
     <>
       <DropdownMenu open={open} onOpenChange={handleOpenChange}>
@@ -100,27 +106,32 @@ const CompanyActions = ({ companyId }: { companyId: number }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem
-            className="cursor-pointer text-primary hover:text-primary-foreground"
-            onClick={handleClick}
-          >
-            <Edit className="mr-2 h-4 w-4" />
-            Edit Company
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={handleAction}
-            className="text-red-600 focus:text-red-600"
-          >
-            {isPending ? (
-              <div className="flex justify-center w-full">
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              </div>
-            ) : (
-              <>
-                <Trash2 className="mr-2 h-4 w-4 text-red-600" /> Delete Company
-              </>
-            )}
-          </DropdownMenuItem>
+          {profile?.permissions?.includes("company_edit") && (
+            <DropdownMenuItem
+              className="cursor-pointer text-primary hover:text-primary-foreground"
+              onClick={handleClick}
+            >
+              <Edit className="mr-2 h-4 w-4" />
+              Edit Company
+            </DropdownMenuItem>
+          )}
+          {profile?.permissions?.includes("company_delete") && (
+            <DropdownMenuItem
+              onClick={handleAction}
+              className="text-red-600 focus:text-red-600"
+            >
+              {isPending ? (
+                <div className="flex justify-center w-full">
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                </div>
+              ) : (
+                <>
+                  <Trash2 className="mr-2 h-4 w-4 text-red-600" /> Delete
+                  Company
+                </>
+              )}
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
 
