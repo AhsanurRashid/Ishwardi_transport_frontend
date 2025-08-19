@@ -49,7 +49,7 @@ const VehicleTable = async ({
               />
               <VehicleAction
                 vehicleId={vehicle.id as number}
-                profile={profile as UserProfile}
+                profile={profile?.profile as UserProfile}
               />
             </div>
             <div className="flex items-center gap-2 w-full">

@@ -3,8 +3,9 @@
 import { getToken } from "@/lib/auth";
 import { DriverCreationFromSchema } from "@/lib/schema";
 import { revalidateTag } from "next/cache";
+import { date } from "zod";
 
-export const createDriverAction = async (formData: FormData) => {
+export const createRentAction = async (formData: FormData) => {
   // Check token
   const token = await getToken();
   if (!token) {
@@ -13,10 +14,15 @@ export const createDriverAction = async (formData: FormData) => {
 
   // Data validation
   const driverData = {
-    name: formData.get("name") as string,
-    phone: formData.get("phone") as string,
-    nid: formData.get("nid") as string,
-    address: formData.get("address") as string,
+    company: formData.get("company") as string,
+    vehicle: formData.get("vehicle") as string,
+    driver: formData.get("driver") as string,
+    type: formData.get("type") as "up" | "down",
+    date: formData.get("date") as string,
+    rentAmount: formData.get("rentAmount") as string,
+    demurrageAmount: formData.get("demurrageAmount") as string,
+    fromLocation: formData.get("fromLocation") as string,
+    toLocation: formData.get("toLocation") as string,
     status: Number(formData.get("status")),
   };
 

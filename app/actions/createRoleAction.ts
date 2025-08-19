@@ -26,6 +26,7 @@ export const createRoleAction = async (formData: FormData) => {
 
     if (response.ok) {
       revalidateTag("role-list");
+      revalidateTag("user-data");
       const data = await response.json();
       return data;
     } else {

@@ -55,10 +55,14 @@ const AddRentForm = ({
       company: "",
       vehicle: "",
       driver: "",
+      type: undefined,
+      date: new Date(),
       rentAmount: "",
       demurrageAmount: "",
       fromLocation: "",
       toLocation: "",
+      dueAmount: "",
+      status: 0,
     },
   });
 
@@ -84,6 +88,8 @@ const AddRentForm = ({
   });
 
   function onSubmit(data: z.infer<typeof RentCreationFromSchema>) {
+    console.log("Form submitted:", data);
+
     setRentValue(data);
 
     toast("Form submitted successfully!", {
@@ -224,13 +230,31 @@ const AddRentForm = ({
               )}
             />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <FormField
                 control={form.control}
                 name="rentAmount"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Rent Amount</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="Enter rent amount"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="dueAmount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Due Amount</FormLabel>
                     <FormControl>
                       <Input
                         type="number"

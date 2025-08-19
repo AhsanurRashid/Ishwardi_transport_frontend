@@ -1,4 +1,5 @@
 "use client";
+import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -8,6 +9,24 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useRentStore } from "@/store/rentStore";
+
+const Paid = () => {
+  return <Badge className="bg-purple-500 text-white">Paid</Badge>;
+};
+const NoDemurrage = () => {
+  return <Badge className="bg-yellow-500 text-white">No Demurrage</Badge>;
+};
+const Type = ({ type }: { type: "up" | "down" }) => {
+  return (
+    <Badge
+      className={
+        type === "up" ? "bg-green-500 text-white" : "bg-red-500 text-white"
+      }
+    >
+      {type === "up" ? "Up" : "Down"}
+    </Badge>
+  );
+};
 
 const RentTable = () => {
   const { rentValue } = useRentStore();
@@ -21,7 +40,8 @@ const RentTable = () => {
           <TableHead>Location</TableHead>
           <TableHead>Type</TableHead>
           <TableHead>Amount</TableHead>
-          <TableHead>Demurrage Amount</TableHead>
+          <TableHead>Due</TableHead>
+          <TableHead>Demurrage</TableHead>
           <TableHead className="text-right">Actions</TableHead>
         </TableRow>
       </TableHeader>
@@ -58,18 +78,27 @@ const RentTable = () => {
             </TableCell>
             <TableCell className="font-medium">
               <div>
-                <div className="font-medium">{rent?.type || "N/A"}</div>
+                <div className="font-medium">{<Type type={rent?.type} />}</div>
               </div>
             </TableCell>
             <TableCell className="font-medium">
               <div>
-                <div className="font-medium">{rent?.rentAmount || "N/A"}</div>
+                <div className="font-medium text-end">
+                  {rent?.rentAmount || "N/A"}
+                </div>
               </div>
             </TableCell>
             <TableCell className="font-medium">
               <div>
-                <div className="font-medium">
-                  {rent?.demurrageAmount || "N/A"}
+                <div className="font-medium text-end">
+                  {rent?.dueAmount || <Paid />}
+                </div>
+              </div>
+            </TableCell>
+            <TableCell className="font-medium">
+              <div>
+                <div className="font-medium text-end">
+                  {rent?.demurrageAmount || <NoDemurrage />}
                 </div>
               </div>
             </TableCell>
