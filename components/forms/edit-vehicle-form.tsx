@@ -48,6 +48,7 @@ import { toast } from "sonner";
 import { createVehicleAction } from "@/app/actions/createVehicleAction";
 import { IVehicle } from "@/lib/types";
 import { EditVehicleAction } from "@/app/actions/editVehicleAction";
+import Link from "next/link";
 
 const vehicle_types = [
   "Truck",
@@ -222,10 +223,13 @@ export function EditVehicleForm({ vehicle }: { vehicle: IVehicle }) {
 
   return (
     <div className="container mx-auto py-8 px-4 max-w-4xl">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">
+      <div className="mb-8 flex items-center justify-between">
+        <h1 className="md:text-3xl text-lg font-bold tracking-tight">
           Edit Vehicle #{vehicle.id}
         </h1>
+        <Link className="text-xs underline" href="/dashboard/vehicles">
+          View all vehicles
+        </Link>
       </div>
 
       <Form {...form}>
