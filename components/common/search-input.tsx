@@ -35,12 +35,8 @@ const SearchInput = ({ limit, route }: { limit: number; route: string }) => {
       <div className="relative group">
         <div
           className={`
-          relative flex items-center bg-white border rounded transition-all duration-300 ease-in-out
-          ${
-            isFocused
-              ? "border-primary shadow-blue-100 shadow-xl"
-              : "border-gray-200 hover:border-gray-300 hover:shadow-xl"
-          }
+          relative flex items-center bg-card border rounded transition-all duration-300 ease-in-out
+          ${isFocused && "border-primary shadow-primary shadow-xl"}
         `}
         >
           <div className="flex items-center pl-4 pr-3 py-3">

@@ -56,7 +56,7 @@ const AddRentForm = ({
       vehicle: "",
       driver: "",
       type: undefined,
-      date: new Date(),
+      date: "" as unknown as Date,
       rentAmount: "",
       demurrageAmount: "",
       fromLocation: "",
@@ -218,9 +218,9 @@ const AddRentForm = ({
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                        disabled={(date) =>
-                          date < new Date(new Date().setHours(0, 0, 0, 0))
-                        }
+                        // disabled={(date) =>
+                        //   date < new Date(new Date().setHours(0, 0, 0, 0))
+                        // }
                         initialFocus
                       />
                     </PopoverContent>
@@ -230,7 +230,7 @@ const AddRentForm = ({
               )}
             />
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
                 name="rentAmount"
@@ -267,7 +267,7 @@ const AddRentForm = ({
                 )}
               />
 
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="demurrageAmount"
                 render={({ field }) => (
@@ -283,7 +283,7 @@ const AddRentForm = ({
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
             </div>
 
             <FormField

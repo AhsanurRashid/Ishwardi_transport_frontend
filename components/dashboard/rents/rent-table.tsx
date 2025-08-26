@@ -34,14 +34,14 @@ const RentTable = () => {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Date</TableHead>
-          <TableHead>Company</TableHead>
-          <TableHead>Driver</TableHead>
-          <TableHead>Location</TableHead>
-          <TableHead>Type</TableHead>
-          <TableHead>Amount</TableHead>
-          <TableHead>Due</TableHead>
-          <TableHead>Demurrage</TableHead>
+          <TableHead className="text-center">Date</TableHead>
+          <TableHead className="text-center">Company</TableHead>
+          <TableHead className="text-center">Driver</TableHead>
+          <TableHead className="text-center">Location</TableHead>
+          <TableHead className="text-center">Type</TableHead>
+          <TableHead className="text-center">Amount</TableHead>
+          <TableHead className="text-center">Due</TableHead>
+          <TableHead className="text-center">Demurrage</TableHead>
           <TableHead className="text-right">Actions</TableHead>
         </TableRow>
       </TableHeader>

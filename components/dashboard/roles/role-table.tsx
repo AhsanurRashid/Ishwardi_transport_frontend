@@ -42,7 +42,7 @@ const RoleTable = async ({
         total={roleData?.total_record}
       />
       <Separator />
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {roleData?.list?.map((role: IRole) => (
           <Card key={`role-${role.id}`} className="p-3">
             <CardHeader className="px-0 text-xl font-extrabold capitalize relative">

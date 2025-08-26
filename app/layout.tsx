@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/theme-provider";
 
 import "./globals.css";
 
@@ -33,12 +34,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${poppins.variable} antialiased`}>
-        <main>
-          {children}
-          <Toaster richColors closeButton />
-        </main>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <main>
+            {children}
+            <Toaster richColors closeButton />
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   );

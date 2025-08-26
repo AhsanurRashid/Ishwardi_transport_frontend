@@ -35,11 +35,11 @@ const Pagination = ({ page, limit, route, total }: PaginationProps) => {
     );
   };
   return (
-    <div className="flex justify-between">
+    <div className="flex items-center justify-between">
       <div className="flex items-center gap-2">
-        <span className="text-sm">Per page:</span>
+        <span className="text-sm md:block hidden">Per page:</span>
         <Select value={limit.toString()} onValueChange={handleLimitChange}>
-          <SelectTrigger className="w-[100px]">
+          <SelectTrigger className="w-[70px]">
             <SelectValue placeholder="Limit" />
           </SelectTrigger>
           <SelectContent>
@@ -56,7 +56,7 @@ const Pagination = ({ page, limit, route, total }: PaginationProps) => {
           Showing {total} result{total > 1 ? "s" : ""} in total
         </div>
       ) : (
-        <div className="mt-4 flex gap-2">
+        <div className="flex gap-2">
           <Button
             variant="outline"
             size="icon"

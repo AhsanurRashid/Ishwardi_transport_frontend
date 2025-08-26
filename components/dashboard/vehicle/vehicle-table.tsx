@@ -52,134 +52,114 @@ const VehicleTable = async ({
                 profile={profile?.profile as UserProfile}
               />
             </div>
-            <div className="flex items-center gap-2 w-full">
-              <div className="tracking-wide w-1/2">
-                <div className="flex items-center gap-2">
-                  <h1 className="text-sm min-w-[120px]">Registration No</h1>
-                  <span>:</span>
-                  <p className="text-sm font-semibold">
-                    {vehicle.registration_number}
-                  </p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-6 gap-2 w-full text-xs">
+              <div className="tracking-wide space-y-2">
+                <div className="grid grid-cols-[minmax(120px,150px)_auto] items-center gap-2">
+                  <h1>Registration No:</h1>
+                  <p className="font-semibold">{vehicle.registration_number}</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-sm min-w-[120px]">Chassis No</h1>
-                  <span>:</span>
-                  <p className="text-sm font-semibold">
-                    {vehicle.chassis_number}
-                  </p>
+
+                <div className="grid grid-cols-[minmax(120px,150px)_auto] items-center gap-2">
+                  <h1>Chassis No:</h1>
+                  <p className="font-semibold">{vehicle.chassis_number}</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-sm min-w-[120px]">Engine No</h1>
-                  <span>:</span>
-                  <p className="text-sm font-semibold">
-                    {vehicle.engine_number}
-                  </p>
+
+                <div className="grid grid-cols-[minmax(120px,150px)_auto] items-center gap-2">
+                  <h1>Engine No:</h1>
+                  <p className="font-semibold">{vehicle.engine_number}</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-sm min-w-[120px]">Type</h1>
-                  <span>:</span>
-                  <p className="text-sm font-semibold">
-                    {vehicle.vehicle_type}
-                  </p>
+
+                <div className="grid grid-cols-[minmax(120px,150px)_auto] items-center gap-2">
+                  <h1>Type</h1>
+                  <p className="font-semibold">{vehicle.vehicle_type}</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-sm min-w-[120px]">Brand</h1>
-                  <span>:</span>
-                  <p className="text-sm font-semibold">{vehicle.brand}</p>
+
+                <div className="grid grid-cols-[minmax(120px,150px)_auto] items-center gap-2">
+                  <h1>Brand:</h1>
+                  <p className="font-semibold">{vehicle.brand}</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-sm min-w-[120px]">Model</h1>
-                  <span>:</span>
-                  <p className="text-sm font-semibold">{vehicle.model}</p>
+
+                <div className="grid grid-cols-[minmax(120px,150px)_auto] items-center gap-2">
+                  <h1>Model:</h1>
+                  <p className="font-semibold">{vehicle.model}</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-sm min-w-[120px]">Color</h1>
-                  <span>:</span>
-                  <p className="text-sm font-semibold">{vehicle.color}</p>
+
+                <div className="grid grid-cols-[minmax(120px,150px)_auto] items-center gap-2">
+                  <h1>Color:</h1>
+                  <p className="font-semibold">{vehicle.color}</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-sm min-w-[120px]">Owner Name</h1>
-                  <span>:</span>
-                  <p className="text-sm font-semibold">{vehicle.owner_name}</p>
+
+                <div className="grid grid-cols-[minmax(120px,150px)_auto] items-center gap-2">
+                  <h1>Owner Name:</h1>
+                  <p className="font-semibold">{vehicle.owner_name}</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-sm min-w-[120px]">Owner Phone</h1>
-                  <span>:</span>
-                  <p className="text-sm font-semibold">{vehicle.owner_phone}</p>
+
+                <div className="grid grid-cols-[minmax(120px,150px)_auto] items-center gap-2">
+                  <h1>Owner Phone:</h1>
+                  <p className="font-semibold">{vehicle.owner_phone}</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-sm min-w-[120px]">Owner Address</h1>
-                  <span>:</span>
-                  <p className="text-sm font-semibold">{vehicle.owner_nid}</p>
+
+                <div className="grid grid-cols-[minmax(120px,150px)_auto] items-center gap-2">
+                  <h1>Owner Address:</h1>
+                  <p className="font-semibold">{vehicle.owner_address}</p>
                 </div>
               </div>
-              <div className="tracking-wide w-1/2">
-                <div className="flex items-center gap-2">
-                  <h1 className="text-sm min-w-[250px]">Owner Nid No</h1>
-                  <span>:</span>
-                  <p className="text-sm font-semibold">{vehicle.owner_nid}</p>
+
+              {/* Right Side */}
+              <div className="tracking-wide space-y-2">
+                <div className="grid lg:grid-cols-[minmax(150px,200px)_auto] grid-cols-[minmax(120px,150px)_auto] items-center gap-2">
+                  <h1>Owner Nid No:</h1>
+                  <p className="font-semibold">{vehicle.owner_nid}</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-sm min-w-[250px]">Manufacture Year</h1>
-                  <span>:</span>
-                  <p className="text-sm font-semibold">
-                    {vehicle.manufacture_year}
-                  </p>
+
+                <div className="grid lg:grid-cols-[minmax(150px,200px)_auto] grid-cols-[minmax(120px,150px)_auto] items-center gap-2">
+                  <h1>Manufacture Year:</h1>
+                  <p className="font-semibold">{vehicle.manufacture_year}</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-sm min-w-[250px]">
-                    Fitness Certificate No
-                  </h1>
-                  <span>:</span>
-                  <p className="text-sm font-semibold">
+
+                <div className="grid lg:grid-cols-[minmax(150px,200px)_auto] grid-cols-[minmax(120px,150px)_auto] items-center gap-2">
+                  <h1>Fitness Certificate No:</h1>
+                  <p className="font-semibold">
                     {vehicle.fitness_certificate_number}
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-sm min-w-[250px]">
-                    Fitness Certificate Expiry Date
-                  </h1>
-                  <span>:</span>
-                  <p className="text-sm font-semibold">
+
+                <div className="grid lg:grid-cols-[minmax(150px,200px)_auto] grid-cols-[minmax(120px,150px)_auto] items-center gap-2">
+                  <h1>Fitness Expiry Date:</h1>
+                  <p className="font-semibold">
                     {vehicle.fitness_certificate_expiry_date}
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-sm min-w-[250px]">Tax Token No</h1>
-                  <span>:</span>
-                  <p className="text-sm font-semibold">
-                    {vehicle.tax_token_number}
-                  </p>
+
+                <div className="grid lg:grid-cols-[minmax(150px,200px)_auto] grid-cols-[minmax(120px,150px)_auto] items-center gap-2">
+                  <h1>Tax Token No:</h1>
+                  <p className="font-semibold">{vehicle.tax_token_number}</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-sm min-w-[250px]">
-                    Tax Token Expiry Date
-                  </h1>
-                  <span>:</span>
-                  <p className="text-sm font-semibold">
+
+                <div className="grid lg:grid-cols-[minmax(150px,200px)_auto] grid-cols-[minmax(120px,150px)_auto] items-center gap-2">
+                  <h1>Tax Token Expiry:</h1>
+                  <p className="font-semibold">
                     {vehicle.tax_token_expiry_date}
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-sm min-w-[250px]">Insurance Policy No</h1>
-                  <span>:</span>
-                  <p className="text-sm font-semibold">
+
+                <div className="grid lg:grid-cols-[minmax(150px,200px)_auto] grid-cols-[minmax(120px,150px)_auto] items-center gap-2">
+                  <h1>Insurance No:</h1>
+                  <p className="font-semibold">
                     {vehicle?.insurance_policy_number || "N/A"}
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-sm min-w-[250px]">
-                    Insurance Policy Expiry Date
-                  </h1>
-                  <span>:</span>
-                  <p className="text-sm font-semibold">
+
+                <div className="grid lg:grid-cols-[minmax(150px,200px)_auto] grid-cols-[minmax(120px,150px)_auto] items-center gap-2">
+                  <h1>Insurance Expiry:</h1>
+                  <p className="font-semibold">
                     {vehicle?.insurance_policy_expiry_date || "N/A"}
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-sm min-w-[250px]">Status</h1>
-                  <span>:</span>
-                  <div>
+
+                <div className="grid lg:grid-cols-[minmax(150px,200px)_auto] grid-cols-[minmax(120px,150px)_auto] items-center gap-2">
+                  <h1 className="text-sm">Status:</h1>
+                  <div className="flex items-center gap-2">
                     {vehicle.status === "0" && (
                       <p className="text-xs font-semibold bg-red-500 text-white px-2 py-1">
                         Inactive
@@ -202,12 +182,10 @@ const VehicleTable = async ({
                     )}
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-sm min-w-[250px]">Remarks</h1>
-                  <span>:</span>
-                  <p className="text-sm font-semibold">
-                    {vehicle?.remarks || "N/A"}
-                  </p>
+
+                <div className="grid lg:grid-cols-[minmax(150px,200px)_auto] grid-cols-[minmax(120px,150px)_auto] items-center gap-2">
+                  <h1>Remarks:</h1>
+                  <p className="font-semibold">{vehicle?.remarks || "N/A"}</p>
                 </div>
               </div>
             </div>

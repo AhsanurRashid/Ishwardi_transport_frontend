@@ -1,20 +1,18 @@
-import Navbar from "@/components/dashboard/navbar/navbar"
-import Sidebar from "@/components/dashboard/sidebar/side-bar"
+import Navbar from "@/components/dashboard/navbar/navbar";
+import Sidebar from "@/components/dashboard/sidebar/side-bar";
 
 export default function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <section className="flex">
-      <div className="2xl:min-w-[320px] min-w-[250px] min-h-screen bg-white shadow-md p-4 overflow-y-auto">
-        <Sidebar />
-      </div>
+      <Sidebar />
       <div className="p-4 w-full">
         <Navbar />
         {children}
       </div>
     </section>
-  )
+  );
 }

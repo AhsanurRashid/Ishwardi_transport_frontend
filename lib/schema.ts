@@ -224,14 +224,7 @@ export const RentCreationFromSchema = z.object({
     .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
       message: "Rent amount must be a positive number.",
     }),
-  demurrageAmount: z
-    .string()
-    .min(1, {
-      message: "Demurrage amount is required.",
-    })
-    .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
-      message: "Demurrage amount must be a positive number.",
-    }),
+  demurrageAmount: z.string().optional(),
   fromLocation: z.string().min(1, {
     message: "From location is required.",
   }),

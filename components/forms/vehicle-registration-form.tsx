@@ -46,6 +46,7 @@ import { convertDate, deconvertDate } from "@/lib/data";
 import { ImageUpload } from "../common/image-upload";
 import { toast } from "sonner";
 import { createVehicleAction } from "@/app/actions/createVehicleAction";
+import Link from "next/link";
 
 const vehicle_types = [
   "Truck",
@@ -90,15 +91,15 @@ const vehicleStatuses = [
 ];
 
 const colors = [
-  "White",
-  "Black",
-  "Red",
   "Blue",
-  "Green",
   "Yellow",
-  "Silver",
-  "Gray",
-  "Others",
+  // "White",
+  // "Black",
+  // "Red",
+  // "Green",
+  // "Silver",
+  // "Gray",
+  // "Others",
 ];
 
 export function VehicleRegistrationForm() {
@@ -183,7 +184,7 @@ export function VehicleRegistrationForm() {
 
     startTransition(async () => {
       const res = await createVehicleAction(formData);
-      
+
       if (res.errors) {
         const errorList: string[] = [];
 
@@ -217,10 +218,16 @@ export function VehicleRegistrationForm() {
   return (
     <div className="container mx-auto py-8 px-4 max-w-4xl">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">
-          Vehicle Registration
-        </h1>
-        <p className="text-muted-foreground mt-2">
+        <div className="flex items-center justify-between">
+          <h1 className="md:text-3xl text-lg font-bold tracking-tight">
+            Vehicle Registration
+          </h1>
+          <Link className="text-xs underline" href="/dashboard/vehicles">
+            View all vehicles
+          </Link>
+        </div>
+
+        <p className="md:text-md text-sm text-muted-foreground mt-2">
           Register a new vehicle in the system with all required documentation
           and details.
         </p>
