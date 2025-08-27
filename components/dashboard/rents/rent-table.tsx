@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useRentStore } from "@/store/rentStore";
+import AddDemurrage from "./add-demurrage";
 
 const Paid = () => {
   return <Badge className="bg-purple-500 text-white">Paid</Badge>;
@@ -96,9 +97,12 @@ const RentTable = () => {
               </div>
             </TableCell>
             <TableCell className="font-medium">
-              <div>
+              <div className="flex items-center justify-end">
                 <div className="font-medium text-end">
-                  {rent?.demurrageAmount || <NoDemurrage />}
+                  <AddDemurrage
+                    demurrageAmount={rent?.demurrageAmount}
+                    index={index}
+                  />
                 </div>
               </div>
             </TableCell>

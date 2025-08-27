@@ -88,8 +88,6 @@ const AddRentForm = ({
   });
 
   function onSubmit(data: z.infer<typeof RentCreationFromSchema>) {
-    console.log("Form submitted:", data);
-
     setRentValue(data);
 
     toast("Form submitted successfully!", {
@@ -102,7 +100,7 @@ const AddRentForm = ({
   }
 
   return (
-    <ScrollArea className="w-full max-h-[calc(100vh-100px)] pr-2 z-50">
+    <ScrollArea className="w-full pr-2 z-50">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

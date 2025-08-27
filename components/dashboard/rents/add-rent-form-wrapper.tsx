@@ -18,7 +18,7 @@ const AddRentFormWrapper = ({
 }) => {
   const [showForm, setShowForm] = useState(false);
   return (
-    <div>
+    <div className="space-y-4">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">Rent Management</h1>
         {!showForm ? (
