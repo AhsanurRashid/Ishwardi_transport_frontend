@@ -87,7 +87,7 @@ export function AdvancedRevenueChart({
           <div>
             <CardTitle className="flex items-center gap-2">
               <TrendingUp className="h-5 w-5" />
-              Revenue Analytics
+              Revenue Analytics for test
             </CardTitle>
             <p className="text-sm text-muted-foreground mt-1">
               Track your revenue performance over time
