@@ -198,6 +198,23 @@ export interface IPermissionList {
   rent_delete?: string;
 }
 
+export interface IRent {
+  id: number;
+  company: string;
+  vehicle: string;
+  driver: string;
+  type: "up" | "down";
+  date: string;
+  rentAmount: string;
+  demurrageAmount?: string;
+  fromLocation: string;
+  toLocation: string;
+  dueAmount?: string;
+  status: number; // 0: pending, 1: active, 2: completed, 3: cancelled
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export interface IPermissionResponse {
   list: IPermissionList;
 }

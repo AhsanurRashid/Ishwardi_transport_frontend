@@ -2,22 +2,24 @@ import { getCompanyListForRentAction } from "@/app/actions/getCompanyListForRent
 import { getDriverListForRentAction } from "@/app/actions/getDriverListForRent";
 import { getUserDataAction } from "@/app/actions/getUserdataAction";
 import { getVehicleListForRentAction } from "@/app/actions/getVehicleListForRent";
-import DataFetchingFailed from "@/components/common/date-fetching-failed";
+import GenerateButton from "@/components/common/generate-button";
 import NoPermission from "@/components/common/no-permission";
-import AddRentFormWrapper from "@/components/dashboard/rents/add-rent-form-wrapper";
+import RentTableWrapper from "@/components/dashboard/rents/rent-table-wrapper";
+import AddRentForm from "@/components/forms/add-rent-form";
 
-const RentPage = async ({
+const RentsPage = async ({
   searchParams,
 }: {
   searchParams?: Promise<{ query?: string; page?: string; limit?: string }>;
 }) => {
-  const [params, companies, vehicles, drivers, profile] = await Promise.all([
-    searchParams,
-    getCompanyListForRentAction(),
-    getVehicleListForRentAction(),
-    getDriverListForRentAction(),
-    getUserDataAction(),
-  ]);
+  const [profile, params, companiesForRent, driversForRent, vehiclesForRent] =
+    await Promise.all([
+      getUserDataAction(),
+      searchParams,
+      getCompanyListForRentAction(),
+      getDriverListForRentAction(),
+      getVehicleListForRentAction(),
+    ]);
 
   const query = params?.query || "";
   const page = parseInt(params?.page || "1", 10);
@@ -27,18 +29,23 @@ const RentPage = async ({
     return <NoPermission />;
   }
 
-  if (!companies || !vehicles || !drivers)
-    return <DataFetchingFailed error="Something went wrong!" />;
-
   return (
     <div className="w-full">
-      <AddRentFormWrapper
-        companies={companies?.list}
-        vehicles={vehicles?.list}
-        drivers={drivers?.list}
-      />
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-bold">Rent Management</h1>
+        {profile?.profile?.permissions?.includes("rent_create") && (
+          <GenerateButton title="Create Rent">
+            <AddRentForm
+              companies={companiesForRent}
+              vehicles={vehiclesForRent}
+              drivers={driversForRent}
+            />
+          </GenerateButton>
+        )}
+      </div>
+      <RentTableWrapper query={query} page={page} limit={limit} />
     </div>
   );
 };
 
-export default RentPage;
+export default RentsPage;

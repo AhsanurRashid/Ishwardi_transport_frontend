@@ -12,9 +12,9 @@ const AddRentFormWrapper = ({
   vehicles,
   drivers,
 }: {
-  companies: ICompanyForRent;
-  vehicles: IVehicleForRent;
-  drivers: IDriversForRent;
+  companies: ICompanyForRent[];
+  vehicles: IVehicleForRent[];
+  drivers: IDriversForRent[];
 }) => {
   const [showForm, setShowForm] = useState(false);
   return (
@@ -39,7 +39,7 @@ const AddRentFormWrapper = ({
           drivers={drivers}
         />
       )}
-      <RentTableWrapper />
+      <RentTableWrapper query="" page={1} limit={10} />
     </div>
   );
 };
