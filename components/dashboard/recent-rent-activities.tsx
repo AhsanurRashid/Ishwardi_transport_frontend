@@ -55,7 +55,7 @@ export function RecentRentActivities({ rents }: RecentRentActivitiesProps) {
             {rents.map((rent) => (
               <div
                 key={rent.id}
-                className="flex items-start gap-4 p-3 hover:bg-accent rounded-lg transition-colors"
+                className="flex items-start gap-4 p-3 hover:bg-muted rounded-lg transition-colors"
               >
                 <div className="flex-1 space-y-1">
                   <div className="flex items-center justify-between">

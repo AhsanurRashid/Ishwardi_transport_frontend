@@ -42,9 +42,9 @@ export function ManagementOverview({
             {usersByRole.map((role, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between p-2 bg-accent rounded-md"
+                className="flex items-center justify-between p-2 bg-accent rounded-md text-white"
               >
-                <span className="text-xs text-muted-foreground capitalize">
+                <span className="text-xs capitalize">
                   {role.role}
                 </span>
                 <span className="text-sm font-semibold">{role.count}</span>
@@ -88,9 +88,9 @@ export function ManagementOverview({
             {totalVehicles.byType.map((vehicle, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between p-2 bg-accent rounded-md"
+                className="flex items-center justify-between p-2 bg-accent rounded-md text-white"
               >
-                <span className="text-xs text-muted-foreground">
+                <span className="text-xs capitalize">
                   {vehicle.type}
                 </span>
                 <span className="text-sm font-semibold">{vehicle.count}</span>
