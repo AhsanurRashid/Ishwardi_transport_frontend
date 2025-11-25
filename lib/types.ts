@@ -149,6 +149,7 @@ export interface IVehicleForRent {
   model: string;
   owner_name: string;
   owner_phone: string; // or use a union type if it's always "0" | "1"
+  list: any[];
 }
 
 export interface IDriversForRent {
@@ -156,6 +157,7 @@ export interface IDriversForRent {
   id: number;
   name: string;
   phone: string;
+  list: any[];
 }
 
 export interface IRole {

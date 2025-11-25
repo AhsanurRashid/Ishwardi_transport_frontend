@@ -39,24 +39,19 @@ const AddRentForm = ({
   drivers: IDriversForRent[];
 }) => {
   const [isPending, startTransition] = useTransition();
-  console.log("Companies:", companies);
-  console.log("Vehicles:", vehicles);
-  console.log("Drivers:", drivers);
-
-
 
   // Prepare options for combobox fields
-  const companyOptions = companies.list.map((company) => ({
+  const companyOptions = companies.map((company) => ({
     value: company.id.toString(),
     label: company.company_name,
   }));
 
-  const vehicleOptions = vehicles.list.map((vehicle) => ({
+  const vehicleOptions = vehicles.map((vehicle) => ({
     value: vehicle.id.toString(),
     label: `${vehicle.registration_number} - ${vehicle.vehicle_type}`,
   }));
 
-  const driverOptions = drivers.list.map((driver) => ({
+  const driverOptions = drivers.map((driver) => ({
     value: driver.id.toString(),
     label: `${driver.name} - ${driver.phone}`,
   }));

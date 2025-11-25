@@ -9,10 +9,19 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 import { CalendarIcon, TrendingUp, Download } from "lucide-react";
 import { format } from "date-fns";
 import { useState } from "react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 interface RevenueDataPoint {
   label: string;
@@ -31,6 +40,24 @@ interface AdvancedRevenueChartProps {
   }) => void;
 }
 
+// Custom Tooltip Component for Recharts
+const CustomTooltip = ({ active, payload }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-popover border rounded-lg shadow-lg p-3">
+        <p className="font-semibold">{payload[0].payload.label}</p>
+        <p className="text-sm text-muted-foreground">
+          {format(new Date(payload[0].payload.date), "MMM dd, yyyy")}
+        </p>
+        <p className="text-lg font-bold text-primary mt-1">
+          ৳{payload[0].value.toLocaleString()}
+        </p>
+      </div>
+    );
+  }
+  return null;
+};
+
 export function AdvancedRevenueChart({
   data,
   totalRevenue,
@@ -42,9 +69,6 @@ export function AdvancedRevenueChart({
   >("monthly");
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-  const maxRevenue = Math.max(...data.map((d) => d.value), 1);
 
   const handlePeriodChange = (
     period: "monthly" | "yearly" | "lifetime" | "custom"
@@ -87,7 +111,7 @@ export function AdvancedRevenueChart({
           <div>
             <CardTitle className="flex items-center gap-2">
               <TrendingUp className="h-5 w-5" />
-              Revenue Analytics for test
+              Revenue Analytics
             </CardTitle>
             <p className="text-sm text-muted-foreground mt-1">
               Track your revenue performance over time
@@ -197,87 +221,66 @@ export function AdvancedRevenueChart({
         {/* Summary Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 bg-accent rounded-lg">
           <div className="space-y-1">
-            <p className="text-xs text-muted-foreground">Total Revenue</p>
-            <p className="text-2xl font-bold text-primary">
+            <p className="text-xs text-white">Total Revenue</p>
+            <p className="text-2xl font-bold text-white">
               ৳{totalRevenue.toLocaleString()}
             </p>
           </div>
           <div className="space-y-1">
-            <p className="text-xs text-muted-foreground">Average Revenue</p>
-            <p className="text-2xl font-bold">
+            <p className="text-xs text-white">Average Revenue</p>
+            <p className="text-2xl font-bold text-white">
               ৳{averageRevenue.toLocaleString()}
             </p>
           </div>
           <div className="space-y-1">
-            <p className="text-xs text-muted-foreground">Data Points</p>
-            <p className="text-2xl font-bold">{data.length}</p>
+            <p className="text-xs text-white">Data Points</p>
+            <p className="text-2xl font-bold text-white">{data.length}</p>
           </div>
         </div>
 
-        {/* Graph */}
+        {/* Recharts Graph */}
         {data.length === 0 ? (
           <div className="text-center py-12 text-muted-foreground">
             No revenue data available for the selected period
           </div>
         ) : (
-          <div className="space-y-4">
-            <div className="relative h-[300px] flex items-end gap-2">
-              {data.map((item, index) => {
-                const percentage = (item.value / maxRevenue) * 100;
-                const isHovered = hoveredIndex === index;
-                return (
-                  <div
-                    key={index}
-                    className="flex-1 flex flex-col items-center gap-2 group"
-                    onMouseEnter={() => setHoveredIndex(index)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                  >
-                    {/* Tooltip */}
-                    {isHovered && (
-                      <div className="absolute bottom-full mb-2 z-10 bg-popover border rounded-lg shadow-lg p-3 min-w-[200px]">
-                        <p className="font-semibold">{item.label}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {format(new Date(item.date), "MMM dd, yyyy")}
-                        </p>
-                        <p className="text-lg font-bold text-primary mt-1">
-                          ৳{item.value.toLocaleString()}
-                        </p>
-                      </div>
-                    )}
-
-                    {/* Bar */}
-                    <div
-                      className={cn(
-                        "w-full rounded-t-md transition-all duration-300 cursor-pointer",
-                        isHovered
-                          ? "bg-primary shadow-lg scale-105"
-                          : "bg-primary/70 hover:bg-primary/90"
-                      )}
-                      style={{ height: `${percentage}%` }}
-                    />
-
-                    {/* Label */}
-                    <p
-                      className={cn(
-                        "text-xs text-center transition-colors",
-                        isHovered
-                          ? "font-semibold text-foreground"
-                          : "text-muted-foreground"
-                      )}
-                    >
-                      {item.label}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Legend/Scale */}
-            <div className="flex justify-between items-center text-xs text-muted-foreground pt-4 border-t">
-              <span>৳0</span>
-              <span>৳{(maxRevenue / 2).toLocaleString()}</span>
-              <span>৳{maxRevenue.toLocaleString()}</span>
-            </div>
+          <div className="w-full h-[400px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={data}
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                <XAxis
+                  dataKey="label"
+                  className="text-xs"
+                  tick={{ fill: "hsl(var(--muted-foreground))" }}
+                />
+                <YAxis
+                  className="text-xs"
+                  tick={{ fill: "hsl(var(--muted-foreground))" }}
+                  tickFormatter={(value) => `৳${(value / 1000000).toFixed(1)}M`}
+                />
+                <Tooltip
+                  content={<CustomTooltip />}
+                  cursor={{ fill: "hsl(var(--muted))", opacity: 0.3 }}
+                />
+                <Legend
+                  wrapperStyle={{
+                    paddingTop: "20px",
+                  }}
+                  iconType="square"
+                />
+                <Bar
+                  dataKey="value"
+                  name="Revenue"
+                  fill="hsl(var(--primary))"
+                  radius={[8, 8, 0, 0]}
+                  animationDuration={800}
+                  className="fill-primary"
+                />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         )}
 

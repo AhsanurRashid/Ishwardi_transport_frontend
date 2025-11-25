@@ -6,6 +6,7 @@ import GenerateButton from "@/components/common/generate-button";
 import NoPermission from "@/components/common/no-permission";
 import RentTableWrapper from "@/components/dashboard/rents/rent-table-wrapper";
 import AddRentForm from "@/components/forms/add-rent-form";
+import { ICompanyForRent, IDriversForRent, IVehicleForRent } from "@/lib/types";
 
 const RentsPage = async ({
   searchParams,
@@ -36,9 +37,9 @@ const RentsPage = async ({
         {profile?.profile?.permissions?.includes("rent_create") && (
           <GenerateButton title="Create Rent">
             <AddRentForm
-              companies={companiesForRent}
-              vehicles={vehiclesForRent}
-              drivers={driversForRent}
+              companies={companiesForRent?.list as ICompanyForRent[]}
+              vehicles={vehiclesForRent?.list as IVehicleForRent[]}
+              drivers={driversForRent?.list as IDriversForRent[]}
             />
           </GenerateButton>
         )}
