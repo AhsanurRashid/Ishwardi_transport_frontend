@@ -75,7 +75,8 @@ const RentTable = async ({
                 <div className="flex items-center space-x-2">
                   <CalendarDays className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm">
-                    {new Date(rent.date).toLocaleDateString() || "N/A"}
+                    {new Date(rent.from_date).toLocaleDateString() || "N/A"} →{" "}
+                    {new Date(rent.to_date).toLocaleDateString() || "N/A"}
                   </span>
                 </div>
               </TableCell>
@@ -116,25 +117,25 @@ const RentTable = async ({
                   <div className="text-sm font-medium">
                     ৳{rent.rentAmount || "0"}
                   </div>
+                  <div className="text-xs text-red-600">
+                    Due: ৳{rent.payments_due}
+                  </div>
                   {rent.demurrageAmount && (
                     <div className="text-xs text-muted-foreground">
                       Demurrage: ৳{rent.demurrageAmount}
                     </div>
                   )}
-                  {rent.dueAmount && (
-                    <div className="text-xs text-red-600">
-                      Due: ৳{rent.dueAmount}
-                    </div>
-                  )}
                 </div>
               </TableCell>
               <TableCell>
-                {rent.status === null || rent.status === undefined ? (
-                  "N/A"
+                {rent.payments_due === 0 ? (
+                  <div className="text-green-600 bg-green-100 text-center py-1 font-semibold">
+                    Paid
+                  </div>
                 ) : (
-                  <GetStatusBadge
-                    status={rent.status.toString() as "0" | "1"}
-                  />
+                  <div className="text-red-600 bg-red-100 text-center py-1 font-semibold">
+                    Due
+                  </div>
                 )}
               </TableCell>
               <TableCell className="text-right">

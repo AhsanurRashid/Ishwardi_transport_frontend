@@ -38,7 +38,7 @@ const Pagination = ({ page, limit, route, total }: PaginationProps) => {
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-2">
         <span className="text-sm md:block hidden">Per page:</span>
-        <Select value={limit.toString()} onValueChange={handleLimitChange}>
+        <Select value={limit?.toString()} onValueChange={handleLimitChange}>
           <SelectTrigger className="w-[70px]">
             <SelectValue placeholder="Limit" />
           </SelectTrigger>

@@ -29,18 +29,26 @@ const ComboboxField = ({
   placeholder: string;
 }) => {
   const [open, setOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+
+  const displayValue =
+    (value && options.find((option) => option.value === value)?.label) || "";
+
+  const filteredOptions = options.filter((option) =>
+    option.label.toLowerCase().includes(searchValue.toLowerCase())
+  );
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <div className="relative">
           <Input
-            value={
-              value
-                ? options.find((option) => option.value === value)?.label ||
-                  value
-                : ""
-            }
-            onChange={(e) => onChange(e.target.value)}
+            value={open ? searchValue : displayValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onFocus={() => {
+              setOpen(true);
+              setSearchValue("");
+            }}
             placeholder={placeholder}
             className="pr-10"
           />
@@ -59,24 +67,31 @@ const ComboboxField = ({
         <Command>
           <CommandList>
             <CommandGroup>
-              {options.map((option) => (
-                <CommandItem
-                  key={option.value}
-                  value={option.value}
-                  onSelect={(currentValue) => {
-                    onChange(currentValue);
-                    setOpen(false);
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      value === option.value ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                  {option.label}
-                </CommandItem>
-              ))}
+              {filteredOptions.length === 0 ? (
+                <div className="py-6 text-center text-sm text-muted-foreground">
+                  No results found.
+                </div>
+              ) : (
+                filteredOptions.map((option) => (
+                  <CommandItem
+                    key={option.value}
+                    value={option.label}
+                    onSelect={() => {
+                      onChange(option.value);
+                      setSearchValue("");
+                      setOpen(false);
+                    }}
+                  >
+                    <Check
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        value === option.value ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                    {option.label}
+                  </CommandItem>
+                ))
+              )}
             </CommandGroup>
           </CommandList>
         </Command>

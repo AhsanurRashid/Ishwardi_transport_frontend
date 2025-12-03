@@ -17,9 +17,12 @@ export const createRentAction = async (formData: FormData) => {
     vehicle: formData.get("vehicle") as string,
     driver: formData.get("driver") as string,
     type: formData.get("type") as "up" | "down",
-    date: new Date(formData.get("date") as string),
-    rentAmount: formData.get("rentAmount") as string,
-    demurrageAmount: formData.get("demurrageAmount") as string,
+    from_date: formData.get("from_date") as string,
+    to_date: formData.get("to_date") as string,
+    rentAmount: Number(formData.get("rentAmount")),
+    demurrageAmount: formData.get("demurrageAmount")
+      ? Number(formData.get("demurrageAmount"))
+      : undefined,
     fromLocation: formData.get("fromLocation") as string,
     toLocation: formData.get("toLocation") as string,
     dueAmount: formData.get("dueAmount") as string,
@@ -32,10 +35,7 @@ export const createRentAction = async (formData: FormData) => {
   }
 
   // Prepare API data (no file uploads for rent)
-  const apiData = {
-    ...validatedData.data,
-    date: validatedData.data.date.toISOString(),
-  };
+  const apiData = validatedData.data;
 
   // API call execution
   try {

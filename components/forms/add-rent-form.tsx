@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTransition } from "react";
+import * as React from "react";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { RentCreationFromSchema } from "@/lib/schema";
@@ -39,6 +40,9 @@ const AddRentForm = ({
   drivers: IDriversForRent[];
 }) => {
   const [isPending, startTransition] = useTransition();
+  const [isOtherCompany, setIsOtherCompany] = React.useState(false);
+  const [isOtherVehicle, setIsOtherVehicle] = React.useState(false);
+  const [isOtherDriver, setIsOtherDriver] = React.useState(false);
 
   // Prepare options for combobox fields
   const companyOptions = companies.map((company) => ({
@@ -63,12 +67,14 @@ const AddRentForm = ({
       vehicle: "",
       driver: "",
       type: "up",
-      rentAmount: "",
-      demurrageAmount: "",
+      rentAmount: 0,
+      demurrageAmount: 0,
       fromLocation: "",
       toLocation: "",
       dueAmount: "",
       status: 1,
+      from_date: new Date().toISOString().split("T")[0],
+      to_date: "",
     },
   });
 
@@ -77,16 +83,20 @@ const AddRentForm = ({
       const formData = new FormData();
 
       Object.entries(data).forEach(([key, value]) => {
-        if (value instanceof Date) {
-          formData.append(key, value.toISOString());
-        } else {
-          formData.append(key, value.toString());
-        }
+        formData.append(key, value.toString());
       });
 
       const response = await createRentAction(formData);
 
       if (response?.error) {
+        //check for error in response is a object or not
+        if (typeof response.error === "object") {
+          // if so then show the properties of the object in toast
+          Object.values(response.error).forEach((errMsg) => {
+            toast.error(errMsg as string);
+          });
+          return;
+        }
         toast.error(response.error);
       } else {
         toast.success("Rent created successfully!");
@@ -99,21 +109,57 @@ const AddRentForm = ({
     <ScrollArea className="h-[80vh] w-full rounded-md border p-4">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             <FormField
               control={form.control}
               name="company"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Company</FormLabel>
-                  <FormControl>
-                    <ComboboxField
+                  {!isOtherCompany ? (
+                    <Select
+                      onValueChange={(value) => {
+                        if (value === "other") {
+                          setIsOtherCompany(true);
+                          field.onChange("");
+                        } else {
+                          field.onChange(value);
+                        }
+                      }}
                       value={field.value}
-                      onChange={field.onChange}
-                      options={companyOptions}
-                      placeholder="Select or type company name"
-                    />
-                  </FormControl>
+                    >
+                      <FormControl className="w-full">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select company" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent className="w-full">
+                        {companyOptions.map((company) => (
+                          <SelectItem key={company.value} value={company.value}>
+                            {company.label}
+                          </SelectItem>
+                        ))}
+                        <SelectItem value="other">
+                          Other (Manual Entry)
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  ) : (
+                    <div className="space-y-2">
+                      <Input placeholder="Enter company name" {...field} />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setIsOtherCompany(false);
+                          field.onChange("");
+                        }}
+                      >
+                        Back to Select
+                      </Button>
+                    </div>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}
@@ -125,14 +171,50 @@ const AddRentForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Driver</FormLabel>
-                  <FormControl>
-                    <ComboboxField
+                  {!isOtherDriver ? (
+                    <Select
+                      onValueChange={(value) => {
+                        if (value === "other") {
+                          setIsOtherDriver(true);
+                          field.onChange("");
+                        } else {
+                          field.onChange(value);
+                        }
+                      }}
                       value={field.value}
-                      onChange={field.onChange}
-                      options={driverOptions}
-                      placeholder="Select or type driver name"
-                    />
-                  </FormControl>
+                    >
+                      <FormControl className="w-full">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select driver" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent className="max-h-[300px]">
+                        {driverOptions.map((driver) => (
+                          <SelectItem key={driver.value} value={driver.value}>
+                            {driver.label}
+                          </SelectItem>
+                        ))}
+                        <SelectItem value="other">
+                          Other (Manual Entry)
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  ) : (
+                    <div className="space-y-2">
+                      <Input placeholder="Enter driver name" {...field} />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setIsOtherDriver(false);
+                          field.onChange("");
+                        }}
+                      >
+                        Back to Select
+                      </Button>
+                    </div>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}
@@ -144,14 +226,53 @@ const AddRentForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Vehicle</FormLabel>
-                  <FormControl>
-                    <ComboboxField
+                  {!isOtherVehicle ? (
+                    <Select
+                      onValueChange={(value) => {
+                        if (value === "other") {
+                          setIsOtherVehicle(true);
+                          field.onChange("");
+                        } else {
+                          field.onChange(value);
+                        }
+                      }}
                       value={field.value}
-                      onChange={field.onChange}
-                      options={vehicleOptions}
-                      placeholder="Select or type vehicle"
-                    />
-                  </FormControl>
+                    >
+                      <FormControl className="w-full">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select vehicle" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent className="max-h-[300px]">
+                        {vehicleOptions.map((vehicle) => (
+                          <SelectItem key={vehicle.value} value={vehicle.value}>
+                            {vehicle.label}
+                          </SelectItem>
+                        ))}
+                        <SelectItem value="other">
+                          Other (Manual Entry)
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  ) : (
+                    <div className="space-y-2">
+                      <Input
+                        placeholder="Enter vehicle registration"
+                        {...field}
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setIsOtherVehicle(false);
+                          field.onChange("");
+                        }}
+                      >
+                        Back to Select
+                      </Button>
+                    </div>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}
@@ -164,7 +285,7 @@ const AddRentForm = ({
                 <FormItem>
                   <FormLabel>Type</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
+                    <FormControl className="w-full">
                       <SelectTrigger>
                         <SelectValue placeholder="Select type" />
                       </SelectTrigger>
@@ -209,6 +330,34 @@ const AddRentForm = ({
 
             <FormField
               control={form.control}
+              name="from_date"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>From Date</FormLabel>
+                  <FormControl className="w-full">
+                    <Input className="w-full" type="date" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="to_date"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>To Date</FormLabel>
+                  <FormControl>
+                    <Input type="date" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
               name="rentAmount"
               render={({ field }) => (
                 <FormItem>
@@ -217,7 +366,39 @@ const AddRentForm = ({
                     <Input
                       type="number"
                       placeholder="Enter rent amount"
-                      {...field}
+                      value={field.value || ""}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        field.onChange(value === "" ? "" : Number(value));
+                      }}
+                      onBlur={field.onBlur}
+                      name={field.name}
+                      ref={field.ref}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="demurrageAmount"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Demurrage Amount (Optional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="Enter demurrage amount"
+                      value={field.value || ""}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        field.onChange(value === "" ? "" : Number(value));
+                      }}
+                      onBlur={field.onBlur}
+                      name={field.name}
+                      ref={field.ref}
                     />
                   </FormControl>
                   <FormMessage />
@@ -235,7 +416,7 @@ const AddRentForm = ({
                     onValueChange={(value) => field.onChange(Number(value))}
                     value={field.value?.toString()}
                   >
-                    <FormControl>
+                    <FormControl className="w-full">
                       <SelectTrigger>
                         <SelectValue placeholder="Select status" />
                       </SelectTrigger>
@@ -255,7 +436,7 @@ const AddRentForm = ({
 
           <Button type="submit" disabled={isPending} className="w-full">
             {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Create Rent
+            Create Rent Rent
           </Button>
         </form>
       </Form>

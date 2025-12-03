@@ -202,11 +202,16 @@ export interface IPermissionList {
 
 export interface IRent {
   id: number;
+  company_id?: string;
   company: string;
+  vehicle_id?: string;
   vehicle: string;
+  driver_id?: string;
   driver: string;
   type: "up" | "down";
-  date: string;
+  payments_due?: number;
+  from_date: string;
+  to_date: string;
   rentAmount: string;
   demurrageAmount?: string;
   fromLocation: string;

@@ -213,18 +213,16 @@ export const RentCreationFromSchema = z.object({
   type: z.enum(["up", "down"], {
     required_error: "Please select a type.",
   }),
-  date: z.date({
-    required_error: "Date is required.",
+  from_date: z.string().min(1, {
+    message: "From date is required.",
   }),
-  rentAmount: z
-    .string()
-    .min(1, {
-      message: "Rent amount is required.",
-    })
-    .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
-      message: "Rent amount must be a positive number.",
-    }),
-  demurrageAmount: z.string().optional(),
+  to_date: z.string().min(1, {
+    message: "To date is required.",
+  }),
+  rentAmount: z.coerce.number().positive({
+    message: "Rent amount must be a positive number.",
+  }),
+  demurrageAmount: z.coerce.number().optional(),
   fromLocation: z.string().min(1, {
     message: "From location is required.",
   }),

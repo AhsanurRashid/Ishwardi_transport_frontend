@@ -19,6 +19,7 @@ import {
   MoreHorizontal,
   Trash2,
   TriangleAlert,
+  Banknote,
 } from "lucide-react";
 import { useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
@@ -28,6 +29,7 @@ import {
 } from "@/app/actions/rent-action";
 import { IRent, UserProfile } from "@/lib/types";
 import EditRentForm from "@/components/forms/edit-rent-form";
+import PaymentForm from "@/components/forms/payment-form";
 
 const RentActions = ({
   rentId,
@@ -40,6 +42,7 @@ const RentActions = ({
   const [open, setOpen] = useState(false);
   const actionSuccessful = useRef(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
   const [rent, setRent] = useState<IRent | null>(null);
 
   const handleDelete = async () => {
@@ -74,8 +77,26 @@ const RentActions = ({
           duration: 2000,
         });
       } else {
-        setRent(data);
+        setRent(data?.data);
         setEditDialogOpen(true);
+      }
+    } catch (error) {
+      toast.error("Failed to fetch rent data", {
+        duration: 2000,
+      });
+    }
+  };
+
+  const handlePayment = async () => {
+    try {
+      const data = await getRentForEditAction(rentId);
+      if (data.error) {
+        toast.error(data.error, {
+          duration: 2000,
+        });
+      } else {
+        setRent(data?.data);
+        setPaymentDialogOpen(true);
       }
     } catch (error) {
       toast.error("Failed to fetch rent data", {
@@ -94,15 +115,23 @@ const RentActions = ({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          {profile?.permissions?.includes("rent_edit") && (
-            <DropdownMenuItem onClick={handleEdit}>
-              <Edit className="mr-2 h-4 w-4" />
-              Edit
-            </DropdownMenuItem>
-          )}
+          <>
+            {profile?.permissions?.includes("rent_edit") && (
+              <DropdownMenuItem onClick={handlePayment}>
+                <Banknote className="mr-2 h-4 w-4 text-green-500" />
+                Payment
+              </DropdownMenuItem>
+            )}
+            {/* {profile?.permissions?.includes("rent_edit") && (
+              <DropdownMenuItem onClick={handleEdit}>
+                <Edit className="mr-2 h-4 w-4 text-blue-500" />
+                Edit
+              </DropdownMenuItem>
+            )} */}
+          </>
           {profile?.permissions?.includes("rent_delete") && (
             <DropdownMenuItem onClick={() => setOpen(true)}>
-              <Trash2 className="mr-2 h-4 w-4" />
+              <Trash2 className="mr-2 h-4 w-4 text-red-500" />
               Delete
             </DropdownMenuItem>
           )}
@@ -146,7 +175,7 @@ const RentActions = ({
 
       {/* Edit Dialog */}
       <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
-        <DialogContent className="sm:max-w-[800px]">
+        <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Edit Rent</DialogTitle>
           </DialogHeader>
@@ -156,6 +185,31 @@ const RentActions = ({
                 rent={rent}
                 onSuccess={() => {
                   setEditDialogOpen(false);
+                  setRent(null);
+                }}
+              />
+            ) : (
+              <div className="flex items-center justify-center p-8">
+                <Loader2 className="h-8 w-8 animate-spin" />
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Payment Dialog */}
+      <Dialog open={paymentDialogOpen} onOpenChange={setPaymentDialogOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Payment for Rent #{rentId}</DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            {rent ? (
+              <PaymentForm
+                rentId={rentId}
+                dueAmount={rent.payments_due as number}
+                onSuccess={() => {
+                  setPaymentDialogOpen(false);
                   setRent(null);
                 }}
               />

@@ -46,6 +46,50 @@ export async function getRentListAction({
   }
 }
 
+//company wise rent 
+export async function getRentCompanyWise({
+  companyId,
+  page = 1,
+  limit = 10,
+}: {
+  companyId: number;
+  page?: number;
+  limit?: number;
+}) {
+  // Token checking
+  const token = await getToken();
+  if (!token) {
+    return { error: "Unauthorized access, please log in." };
+  }
+
+  // API call
+  try {
+    ("use cache");
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/company-wise/rent-list?company=${companyId}&page=${page}&limit=${limit}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        next: { tags: ["rent-list"] },
+      }
+    );
+
+    if (!response.ok) {
+      return { error: "Failed to fetch company wise rent list" };
+    }
+    return response.json();
+  } catch (error: any) {
+    return (
+      error.response?.data || {
+        error: "An error occurred while fetching company wise rent list",
+      }
+    );
+  }
+}
+
+
 export async function getRentForEditAction(rentId: number) {
   // Token checking
   const token = await getToken();
@@ -56,7 +100,7 @@ export async function getRentForEditAction(rentId: number) {
   // API call
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/rent/${rentId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/rent/edit/${rentId}`,
       {
         method: "GET",
         headers: {
@@ -88,7 +132,7 @@ export async function deleteRentAction(rentId: number) {
   // API call
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/rent/${rentId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/rent/delete/${rentId}`,
       {
         method: "DELETE",
         headers: {
@@ -149,7 +193,6 @@ export async function editRentAction(rentId: number, formData: FormData) {
   // Prepare API data
   const apiData = {
     ...validatedData.data,
-    date: validatedData.data.date.toISOString(),
   };
 
   // API call
@@ -182,6 +225,47 @@ export async function editRentAction(rentId: number, formData: FormData) {
     return (
       error.response?.data || {
         error: "An error occurred while updating rent",
+      }
+    );
+  }
+}
+
+export async function makePaymentRentAction(rentId: number, amount: number) {
+  // Token checking
+  const token = await getToken();
+  if (!token) {
+    return { error: "Unauthorized access, please log in." };
+  }
+  // API call
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/rent/payment/${rentId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ amount }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      try {
+        const { revalidateTag } = await import("next/cache");
+        revalidateTag("rent-list");
+      } catch (err) {
+        console.error("Revalidation failed:", err);
+      }
+    }
+
+    return data;
+  } catch (error: any) {
+    return (
+      error.response?.data || {
+        error: "An error occurred while making payment",
       }
     );
   }

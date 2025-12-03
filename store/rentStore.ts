@@ -21,7 +21,9 @@ export const useRentStore = create<RentState>()(
           rentValue,
         }: { rentValue: z.infer<typeof RentCreationFromSchema>[] } = get();
         const updatedRentValue = rentValue.map((item, i) =>
-          i === index ? { ...item, demurrageAmount: value } : item
+          i === index
+            ? { ...item, demurrageAmount: parseFloat(value) || 0 }
+            : item
         );
         set({ rentValue: updatedRentValue });
       },

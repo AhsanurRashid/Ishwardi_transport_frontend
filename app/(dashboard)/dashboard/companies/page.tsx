@@ -3,11 +3,17 @@ import GenerateButton from "@/components/common/generate-button";
 import NoPermission from "@/components/common/no-permission";
 import CompanyTableWrapper from "@/components/dashboard/company/company-table-wrapper";
 import AddCompanyForm from "@/components/forms/add-company-form";
+import CompanyDetails from "@/components/dashboard/company/company-details";
 
 const Companies = async ({
   searchParams,
 }: {
-  searchParams?: Promise<{ query?: string; page?: string; limit?: string }>;
+  searchParams?: Promise<{
+    query?: string;
+    page?: string;
+    limit?: string;
+    company?: string;
+  }>;
 }) => {
   const [profile, params] = await Promise.all([
     getUserDataAction(),
@@ -17,11 +23,25 @@ const Companies = async ({
   const query = params?.query || "";
   const page = parseInt(params?.page || "1", 10);
   const limit = parseInt(params?.limit || "5", 10);
+  const companyId = params?.company ? parseInt(params.company, 10) : null;
 
   if (!profile?.profile?.permissions?.includes("company_list")) {
     return <NoPermission />;
   }
 
+  // If a specific company is selected, show company details
+  if (companyId) {
+    return (
+      <CompanyDetails
+        companyId={companyId}
+        query={query}
+        page={page}
+        limit={limit}
+      />
+    );
+  }
+
+  // Otherwise show the company list
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-4">
