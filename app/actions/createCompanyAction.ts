@@ -48,6 +48,7 @@ export const createCompanyAction = async (formData: FormData) => {
     if (response.ok) {
       try {
         revalidateTag("company-list");
+        revalidateTag("activity-logs");
       } catch (err) {
         console.error("Revalidation failed:", err);
       }
@@ -55,6 +56,10 @@ export const createCompanyAction = async (formData: FormData) => {
     const data = await response.json();
     return data;
   } catch (error: any) {
-    return error.response?.data || { error: "An error occurred during company creation" };
+    return (
+      error.response?.data || {
+        error: "An error occurred during company creation",
+      }
+    );
   }
 };

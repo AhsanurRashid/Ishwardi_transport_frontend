@@ -46,14 +46,19 @@ export const updateCompanyAction = async (formData: FormData, id: number) => {
     );
 
     if (response.ok) {
-        revalidateTag("company-list");
-        const data = await response.json();
-        return data;
-      } else {
-        const errorData = await response.json();
-        return { error: errorData?.message || "Failed to Update company." };
-      }
+      revalidateTag("company-list");
+      revalidateTag("activity-logs");
+      const data = await response.json();
+      return data;
+    } else {
+      const errorData = await response.json();
+      return { error: errorData?.message || "Failed to Update company." };
+    }
   } catch (error: any) {
-    return error.response?.data || { error: "An error occurred during company update." };
+    return (
+      error.response?.data || {
+        error: "An error occurred during company update.",
+      }
+    );
   }
 };

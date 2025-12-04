@@ -11,7 +11,13 @@ import { ICompanyForRent, IDriversForRent, IVehicleForRent } from "@/lib/types";
 const RentsPage = async ({
   searchParams,
 }: {
-  searchParams?: Promise<{ query?: string; page?: string; limit?: string }>;
+  searchParams?: Promise<{
+    query?: string;
+    page?: string;
+    limit?: string;
+    from?: string;
+    to?: string;
+  }>;
 }) => {
   const [profile, params, companiesForRent, driversForRent, vehiclesForRent] =
     await Promise.all([
@@ -25,6 +31,8 @@ const RentsPage = async ({
   const query = params?.query || "";
   const page = parseInt(params?.page || "1", 10);
   const limit = parseInt(params?.limit || "5", 10);
+  const from = params?.from || "";
+  const to = params?.to || "";
 
   if (!profile?.profile?.permissions?.includes("rent_list")) {
     return <NoPermission />;
@@ -44,7 +52,13 @@ const RentsPage = async ({
           </GenerateButton>
         )}
       </div>
-      <RentTableWrapper query={query} page={page} limit={limit} />
+      <RentTableWrapper
+        query={query}
+        page={page}
+        limit={limit}
+        from={from}
+        to={to}
+      />
     </div>
   );
 };

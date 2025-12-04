@@ -6,10 +6,14 @@ export async function getRentListAction({
   query = "",
   page = 1,
   limit = 10,
+  from = "",
+  to = "",
 }: {
   query?: string;
   page?: number;
   limit?: number;
+  from?: string;
+  to?: string;
 }) {
   // Token checking
   const token = await getToken();
@@ -17,13 +21,21 @@ export async function getRentListAction({
     return { error: "Unauthorized access, please log in." };
   }
 
+  // Build query parameters
+  const params = new URLSearchParams({
+    query: query,
+    page: page.toString(),
+    limit: limit.toString(),
+  });
+
+  if (from) params.append("form", from);
+  if (to) params.append("to", to);
+
   // API call
   try {
     ("use cache");
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/rent/list?query=${encodeURIComponent(
-        query
-      )}&page=${page}&limit=${limit}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/rent/list?${params.toString()}`,
       {
         method: "GET",
         headers: {
@@ -34,7 +46,7 @@ export async function getRentListAction({
     );
 
     if (!response.ok) {
-      return { error: "Failed to fetch driver list" };
+      return { error: "Failed to fetch rent list" };
     }
     return response.json();
   } catch (error: any) {
@@ -46,15 +58,19 @@ export async function getRentListAction({
   }
 }
 
-//company wise rent 
+//company wise rent
 export async function getRentCompanyWise({
   companyId,
   page = 1,
   limit = 10,
+  from = "",
+  to = "",
 }: {
   companyId: number;
   page?: number;
   limit?: number;
+  from?: string;
+  to?: string;
 }) {
   // Token checking
   const token = await getToken();
@@ -62,11 +78,23 @@ export async function getRentCompanyWise({
     return { error: "Unauthorized access, please log in." };
   }
 
+  // Build query parameters
+  const params = new URLSearchParams({
+    company: companyId.toString(),
+    page: page.toString(),
+    limit: limit.toString(),
+  });
+
+  if (from) params.append("form", from);
+  if (to) params.append("to", to);
+
   // API call
   try {
     ("use cache");
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/company-wise/rent-list?company=${companyId}&page=${page}&limit=${limit}`,
+      `${
+        process.env.NEXT_PUBLIC_API_URL
+      }/company-wise/rent-list?${params.toString()}`,
       {
         method: "GET",
         headers: {
@@ -88,7 +116,6 @@ export async function getRentCompanyWise({
     );
   }
 }
-
 
 export async function getRentForEditAction(rentId: number) {
   // Token checking
@@ -147,6 +174,7 @@ export async function deleteRentAction(rentId: number) {
       try {
         const { revalidateTag } = await import("next/cache");
         revalidateTag("rent-list");
+        revalidateTag("dashboard-data");
       } catch (err) {
         console.error("Revalidation failed:", err);
       }
@@ -215,6 +243,7 @@ export async function editRentAction(rentId: number, formData: FormData) {
       try {
         const { revalidateTag } = await import("next/cache");
         revalidateTag("rent-list");
+        revalidateTag("dashboard-data");
       } catch (err) {
         console.error("Revalidation failed:", err);
       }
@@ -256,6 +285,7 @@ export async function makePaymentRentAction(rentId: number, amount: number) {
       try {
         const { revalidateTag } = await import("next/cache");
         revalidateTag("rent-list");
+        revalidateTag("dashboard-data");
       } catch (err) {
         console.error("Revalidation failed:", err);
       }

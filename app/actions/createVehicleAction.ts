@@ -88,6 +88,8 @@ export const createVehicleAction = async (data: FormData) => {
     if (response.ok) {
       try {
         revalidateTag("vehicle-list");
+        revalidateTag("dashboard-data");
+        revalidateTag("activity-logs");
       } catch (err) {
         console.error("Revalidation failed:", err);
       }

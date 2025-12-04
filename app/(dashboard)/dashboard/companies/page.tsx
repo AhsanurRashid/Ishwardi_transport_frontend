@@ -13,6 +13,8 @@ const Companies = async ({
     page?: string;
     limit?: string;
     company?: string;
+    from?: string;
+    to?: string;
   }>;
 }) => {
   const [profile, params] = await Promise.all([
@@ -24,6 +26,8 @@ const Companies = async ({
   const page = parseInt(params?.page || "1", 10);
   const limit = parseInt(params?.limit || "5", 10);
   const companyId = params?.company ? parseInt(params.company, 10) : null;
+  const from = params?.from || "";
+  const to = params?.to || "";
 
   if (!profile?.profile?.permissions?.includes("company_list")) {
     return <NoPermission />;
@@ -37,6 +41,8 @@ const Companies = async ({
         query={query}
         page={page}
         limit={limit}
+        from={from}
+        to={to}
       />
     );
   }

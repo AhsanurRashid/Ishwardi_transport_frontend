@@ -26,11 +26,15 @@ const CompanyDetails = async ({
   query,
   page,
   limit,
+  from,
+  to,
 }: {
   companyId: number;
   query: string;
   page: number;
   limit: number;
+  from?: string;
+  to?: string;
 }) => {
   const company = await getCompanyForEditAction({ companyId });
 
@@ -180,6 +184,8 @@ const CompanyDetails = async ({
           query={query}
           page={page}
           limit={limit}
+          from={from}
+          to={to}
         />
       </div>
     </div>

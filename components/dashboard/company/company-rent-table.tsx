@@ -35,11 +35,15 @@ const CompanyRentTable = async ({
   query,
   page,
   limit,
+  from,
+  to,
 }: {
   companyId: number;
   query: string;
   page: number;
   limit: number;
+  from?: string;
+  to?: string;
 }) => {
   const [profile, rentData] = await Promise.all([
     getUserDataAction(),
@@ -47,6 +51,8 @@ const CompanyRentTable = async ({
       companyId,
       page,
       limit,
+      from,
+      to,
     }),
   ]);
 

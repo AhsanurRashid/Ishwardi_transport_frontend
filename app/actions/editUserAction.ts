@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import { getToken } from "@/lib/auth";
 import { EditUserProfileFormSchema } from "@/lib/schema";
@@ -28,7 +28,7 @@ export const updateUserAction = async (formData: FormData, id: number) => {
 
   // Get file data
   const nidImage = formData.get("nidimage") as File;
-    const thumbnail = formData.get("thumbnail") as File;
+  const thumbnail = formData.get("thumbnail") as File;
 
   // Add validated data
   const apiFormData = new FormData();
@@ -55,6 +55,7 @@ export const updateUserAction = async (formData: FormData, id: number) => {
 
     if (response.ok) {
       revalidateTag("user-list");
+      revalidateTag("activity-logs");
       const data = await response.json();
       return data;
     } else {
@@ -64,4 +65,4 @@ export const updateUserAction = async (formData: FormData, id: number) => {
   } catch (error: any) {
     return error.response?.data || { error: "An unexpected error occurred." };
   }
-}
+};

@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import { getToken } from "@/lib/auth";
 import { revalidateTag } from "next/cache";
@@ -15,7 +15,7 @@ export const deleteVehicleAction = async (id: number) => {
     return { error: "Invalid id" };
   }
 
-    // API call to delete driver
+  // API call to delete driver
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/vehicle/delete/${id}`,
@@ -29,6 +29,8 @@ export const deleteVehicleAction = async (id: number) => {
 
     if (res.ok) {
       revalidateTag("vehicle-list");
+      revalidateTag("dashboard-data");
+      revalidateTag("activity-logs");
       const data = await res.json();
       return data;
     } else {
@@ -38,4 +40,4 @@ export const deleteVehicleAction = async (id: number) => {
   } catch (error: any) {
     return { error: error?.message || "An unexpected error occurred." };
   }
-}
+};

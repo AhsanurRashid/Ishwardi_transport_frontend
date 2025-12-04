@@ -1,5 +1,7 @@
-import { QuickStats } from "@/components/dashboard/quick-stats";
+import { QuickStatsWrapper } from "@/components/dashboard/quick-stats-wrapper";
 import { RevenueChartWrapper } from "@/components/dashboard/revenue-chart-wrapper";
+import { Suspense } from "react";
+import { StatsSkeleton } from "@/components/skeletons/stats-skeleton";
 import { TopCompanies } from "@/components/dashboard/top-companies";
 import { DueAmountSummary } from "@/components/dashboard/due-amount-summary";
 import { RentBreakdown } from "@/components/dashboard/rent-breakdown";
@@ -13,7 +15,8 @@ import { PopularRoutes } from "@/components/dashboard/popular-routes";
 import { ManagementOverview } from "@/components/dashboard/management-overview";
 import { AlertsNotifications } from "@/components/dashboard/alerts-notifications";
 import { QuickActionsPanel } from "@/components/dashboard/quick-actions-panel";
-import { RecentActivityFeed } from "@/components/dashboard/recent-activity-feed";
+import { RecentActivityFeedWrapper } from "@/components/dashboard/recent-activity-feed-wrapper";
+import { getDashboardDataAction } from "@/app/actions/dashboard-action";
 
 // TODO: Replace with actual data from API
 const mockData = {
@@ -215,11 +218,6 @@ const mockData = {
 };
 
 const Dashboard = async () => {
-  // TODO: Fetch real data from API
-  // const statsData = await getDashboardStats();
-  // const revenueData = await getMonthlyRevenue();
-  // etc...
-
   return (
     <div className="space-y-6 pb-8">
       <div>
@@ -230,7 +228,9 @@ const Dashboard = async () => {
       </div>
 
       {/* Quick Stats - Top Priority */}
-      <QuickStats {...mockData.quickStats} />
+      <Suspense fallback={<StatsSkeleton />}>
+        <QuickStatsWrapper />
+      </Suspense>
 
       {/* Critical Alerts */}
       <div className="grid gap-6 md:grid-cols-2">
@@ -270,7 +270,13 @@ const Dashboard = async () => {
       {/* Management Overview and Activity Feed */}
       <div className="grid gap-6 md:grid-cols-2">
         <ManagementOverview {...mockData.managementOverview} />
-        <RecentActivityFeed activities={mockData.recentActivities} />
+        <Suspense
+          fallback={
+            <div className="h-[400px] bg-muted animate-pulse rounded-lg" />
+          }
+        >
+          <RecentActivityFeedWrapper />
+        </Suspense>
       </div>
     </div>
   );
