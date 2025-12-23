@@ -1,5 +1,6 @@
 import { StatsCard } from "./stats-card";
 import { TrendingUp, DollarSign, AlertCircle, Truck } from "lucide-react";
+import { formatNumber } from "@/lib/utils";
 
 interface QuickStatsProps {
   totalActiveRents: number;
@@ -27,13 +28,13 @@ export function QuickStats({
       />
       <StatsCard
         title="Monthly Revenue"
-        value={`৳${monthlyRevenue.toLocaleString()}`}
+        value={`৳${formatNumber(monthlyRevenue)}`}
         icon={DollarSign}
         description="Revenue this month"
       />
       <StatsCard
         title="Pending Dues"
-        value={`৳${pendingDues.toLocaleString()}`}
+        value={`৳${formatNumber(pendingDues)}`}
         icon={AlertCircle}
         description="Outstanding payments"
         className="border-orange-200"

@@ -45,7 +45,7 @@ const VehicleTable = async ({
                 width={100}
                 height={100}
                 src={vehicle.image ? vehicle.image : PlaceHolderImage}
-                alt={vehicle.chassis_number}
+                alt={vehicle?.chassis_number || "n/a"}
               />
               <VehicleAction
                 vehicleId={vehicle.id as number}

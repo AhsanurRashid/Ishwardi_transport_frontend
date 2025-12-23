@@ -15,35 +15,37 @@ export const EditVehicleAction = async (data: FormData, id: number) => {
   // Data validation
   const vehicleData = {
     registration_number: data.get("registration_number") as string,
-    chassis_number: data.get("chassis_number") as string,
-    engine_number: data.get("engine_number") as string,
-    vehicle_type: data.get("vehicle_type") as string,
-    brand: data.get("brand") as string,
-    model: data.get("model") as string,
-    manufacture_year: data.get("manufacture_year") as string,
-    color: data.get("color") as string,
+    chassis_number: data.get("chassis_number")?.toString() || undefined,
+    engine_number: data.get("engine_number")?.toString() || undefined,
+    vehicle_type: data.get("vehicle_type")?.toString() || undefined,
+    brand: data.get("brand")?.toString() || undefined,
+    model: data.get("model")?.toString() || undefined,
+    manufacture_year: data.get("manufacture_year")?.toString() || undefined,
+    color: data.get("color")?.toString() || undefined,
 
-    fitness_certificate_number: data.get(
-      "fitness_certificate_number"
-    ) as string,
-    fitness_certificate_expiry_date: data.get(
-      "fitness_certificate_expiry_date"
-    ) as unknown as Date,
-    tax_token_number: data.get("tax_token_number") as string,
-    tax_token_expiry_date: data.get("tax_token_expiry_date") as unknown as Date,
+    fitness_certificate_number:
+      data.get("fitness_certificate_number")?.toString() || undefined,
+    fitness_certificate_expiry_date: data.get("fitness_certificate_expiry_date")
+      ? (data.get("fitness_certificate_expiry_date") as unknown as Date)
+      : undefined,
+    tax_token_number: data.get("tax_token_number")?.toString() || undefined,
+    tax_token_expiry_date: data.get("tax_token_expiry_date")
+      ? (data.get("tax_token_expiry_date") as unknown as Date)
+      : undefined,
 
     insurance_policy_number:
-      data.get("insurance_policy_number")?.toString() ?? null,
-    insurance_policy_expiry_date:
-      data.get("insurance_policy_expiry_date")?.toString() ?? null,
+      data.get("insurance_policy_number")?.toString() || undefined,
+    insurance_policy_expiry_date: data.get("insurance_policy_expiry_date")
+      ? data.get("insurance_policy_expiry_date")?.toString()
+      : null,
 
-    owner_name: data.get("owner_name") as string,
-    owner_phone: data.get("owner_phone") as string,
-    owner_address: data.get("owner_address") as string,
-    owner_nid: data.get("owner_nid") as string,
+    owner_name: data.get("owner_name")?.toString() || undefined,
+    owner_phone: data.get("owner_phone")?.toString() || undefined,
+    owner_address: data.get("owner_address")?.toString() || undefined,
+    owner_nid: data.get("owner_nid")?.toString() || undefined,
 
     status: data.get("status") as string,
-    remarks: data.get("remarks")?.toString() ?? "",
+    remarks: data.get("remarks")?.toString() || undefined,
   };
 
   const validateData = VehicleCreationFromSchema.safeParse(vehicleData);

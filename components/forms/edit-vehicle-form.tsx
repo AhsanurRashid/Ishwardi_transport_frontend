@@ -117,28 +117,30 @@ export function EditVehicleForm({ vehicle }: { vehicle: IVehicle }) {
   const form = useForm<z.infer<typeof VehicleCreationFromSchema>>({
     resolver: zodResolver(VehicleCreationFromSchema),
     defaultValues: {
-      registration_number: vehicle.registration_number,
-      chassis_number: vehicle.chassis_number,
-      engine_number: vehicle.engine_number,
-      vehicle_type: vehicle.vehicle_type,
-      brand: vehicle.brand,
-      model: vehicle.model,
-      manufacture_year: vehicle.manufacture_year,
-      color: vehicle.color,
-      fitness_certificate_number: vehicle.fitness_certificate_number,
-      fitness_certificate_expiry_date: deconvertDate(
-        vehicle.fitness_certificate_expiry_date
-      ),
-      tax_token_number: vehicle.tax_token_number,
-      tax_token_expiry_date: deconvertDate(vehicle?.tax_token_expiry_date),
+      registration_number: vehicle.registration_number || "",
+      chassis_number: vehicle.chassis_number || "",
+      engine_number: vehicle.engine_number || "",
+      vehicle_type: vehicle.vehicle_type || "",
+      brand: vehicle.brand || "",
+      model: vehicle.model || "",
+      manufacture_year: vehicle.manufacture_year || "",
+      color: vehicle.color || "",
+      fitness_certificate_number: vehicle.fitness_certificate_number || "",
+      fitness_certificate_expiry_date: vehicle.fitness_certificate_expiry_date
+        ? deconvertDate(vehicle.fitness_certificate_expiry_date)
+        : undefined,
+      tax_token_number: vehicle.tax_token_number || "",
+      tax_token_expiry_date: vehicle.tax_token_expiry_date
+        ? deconvertDate(vehicle.tax_token_expiry_date)
+        : undefined,
       insurance_policy_number: vehicle?.insurance_policy_number || "",
       insurance_policy_expiry_date: vehicle?.insurance_policy_expiry_date
         ? deconvertDate(vehicle?.insurance_policy_expiry_date)
-        : null,
-      owner_name: vehicle.owner_name,
-      owner_phone: vehicle.owner_phone,
-      owner_nid: vehicle.owner_nid,
-      owner_address: vehicle.owner_address,
+        : undefined,
+      owner_name: vehicle.owner_name || "",
+      owner_phone: vehicle.owner_phone || "",
+      owner_nid: vehicle.owner_nid || "",
+      owner_address: vehicle.owner_address || "",
       status: Number(vehicle.status),
       remarks: vehicle?.remarks || "",
     },

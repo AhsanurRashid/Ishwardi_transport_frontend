@@ -11,3 +11,8 @@ export function formatPermissionKey(key: string): string {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // capitalize each word
     .join(" "); // join with spaces
 }
+
+// Format number consistently to avoid hydration mismatch
+export function formatNumber(num: number): string {
+  return new Intl.NumberFormat("en-IN").format(num);
+}

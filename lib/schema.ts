@@ -82,21 +82,21 @@ export const DriverCreationFromSchema = z.object({
   name: z.string().min(2, {
     message: "Name must be at least 2 characters.",
   }),
-  phone: z.string().regex(bdPhoneRegex, {
-    message:
-      "Please enter a valid Bangladesh phone number (e.g., 01712345678 or +8801712345678).",
-  }),
-  nid: z
-    .string()
-    .min(5, {
-      message: "NID must be at least 5 characters.",
-    })
-    .max(20, {
-      message: "NID must not exceed 20 characters.",
-    }),
-  address: z.string().min(2, {
-    message: "Address must be at least 2 characters.",
-  }),
+  // phone: z.string().regex(bdPhoneRegex, {
+  //   message:
+  //     "Please enter a valid Bangladesh phone number (e.g., 01712345678 or +8801712345678).",
+  // }),
+  phone: z.string().optional(),
+  // nid: z
+  //   .string()
+  //   .min(5, {
+  //     message: "NID must be at least 5 characters.",
+  //   })
+  //   .max(20, {
+  //     message: "NID must not exceed 20 characters.",
+  //   }),
+  nid: z.string().optional(),
+  address: z.string().optional(),
   status: z.coerce.number().int().min(0).max(1),
 });
 
@@ -106,43 +106,29 @@ export const VehicleCreationFromSchema = z.object({
   registration_number: z.string().min(2, {
     message: "Registration number must be at least 2 characters.",
   }),
-  chassis_number: z.string().min(2, {
-    message: "Chassis number must be at least 2 characters.",
-  }),
-  engine_number: z.string().min(2, {
-    message: "Engine number must be at least 2 characters.",
-  }),
-  vehicle_type: z.string().min(2, {
-    message: "Vehicle type must be at least 2 characters.",
-  }),
-  brand: z.string().min(2, {
-    message: "Brand must be at least 2 characters.",
-  }),
-  model: z.string().min(2, {
-    message: "Model must be at least 2 characters.",
-  }),
-  manufacture_year: z.string().min(4, {
-    message: "Manufacture year must be at least 4 characters.",
-  }),
-  color: z.string().min(2, {
-    message: "Color must be at least 2 characters.",
-  }),
+  chassis_number: z.string().optional(),
+  engine_number: z.string().optional(),
+  vehicle_type: z.string().optional(),
+  brand: z.string().optional(),
+  model: z.string().optional(),
+  manufacture_year: z.string().optional(),
+  color: z.string().optional(),
 
   //Legal Documents
-  fitness_certificate_number: z.string().min(1, {
-    message: "Fitness certificate number must be a positive number.",
-  }),
+  fitness_certificate_number: z.string().optional(),
   fitness_certificate_expiry_date: z.coerce
     .date()
     .refine((date) => date > new Date(), {
       message: "Fitness certificate expiry must be a future date.",
-    }),
-  tax_token_number: z.string().min(1, {
-    message: "Tax token number must be a positive number.",
-  }),
-  tax_token_expiry_date: z.coerce.date().refine((date) => date > new Date(), {
-    message: "Tax token expiry must be a future date.",
-  }),
+    })
+    .optional(),
+  tax_token_number: z.string().optional(),
+  tax_token_expiry_date: z.coerce
+    .date()
+    .refine((date) => date > new Date(), {
+      message: "Tax token expiry must be a future date.",
+    })
+    .optional(),
   insurance_policy_number: z.string().optional(),
   insurance_policy_expiry_date: z.coerce
     .date()
@@ -153,24 +139,10 @@ export const VehicleCreationFromSchema = z.object({
     .nullable(),
 
   //Ownership & Contact
-  owner_name: z.string().min(2, {
-    message: "Owner name must be at least 2 characters.",
-  }),
-  owner_phone: z.string().regex(bdPhoneRegex, {
-    message:
-      "Please enter a valid Bangladesh phone number (e.g., 01712345678 or +8801712345678).",
-  }),
-  owner_nid: z
-    .string()
-    .min(5, {
-      message: "NID must be at least 5 characters.",
-    })
-    .max(20, {
-      message: "NID must not exceed 20 characters.",
-    }),
-  owner_address: z.string().min(2, {
-    message: "Owner address must be at least 2 characters.",
-  }),
+  owner_name: z.string().optional(),
+  owner_phone: z.string().optional(),
+  owner_nid: z.string().optional(),
+  owner_address: z.string().optional(),
 
   //Operational Info
   status: z.coerce.number().int().min(0).max(3),

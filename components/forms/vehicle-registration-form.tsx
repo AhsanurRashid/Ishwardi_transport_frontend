@@ -49,6 +49,7 @@ import { createVehicleAction } from "@/app/actions/createVehicleAction";
 import Link from "next/link";
 
 const vehicle_types = [
+  "cover van",
   "Truck",
   "Bus",
   "Pickup",

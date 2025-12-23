@@ -73,10 +73,10 @@ const AddDriverForm = () => {
   };
 
   const onSubmit = async (data: z.infer<typeof DriverCreationFromSchema>) => {
-    if (!nidImageFile) {
-      setFileError((prev) => ({ ...prev, nidImage: "NID image is required" }));
-      return;
-    }
+    // if (!nidImageFile) {
+    //   setFileError((prev) => ({ ...prev, nidImage: "NID image is required" }));
+    //   return;
+    // }
 
     const formData = new FormData();
 

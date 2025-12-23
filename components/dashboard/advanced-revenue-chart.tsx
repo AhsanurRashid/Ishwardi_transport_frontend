@@ -22,6 +22,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { formatNumber } from "@/lib/utils";
 
 interface RevenueDataPoint {
   label: string;
@@ -50,7 +51,7 @@ const CustomTooltip = ({ active, payload }: any) => {
           {format(new Date(payload[0].payload.date), "MMM dd, yyyy")}
         </p>
         <p className="text-lg font-bold text-primary mt-1">
-          ৳{payload[0].value.toLocaleString()}
+          ৳{formatNumber(payload[0].value)}
         </p>
       </div>
     );
@@ -223,13 +224,13 @@ export function AdvancedRevenueChart({
           <div className="space-y-1">
             <p className="text-xs text-white">Total Revenue</p>
             <p className="text-2xl font-bold text-white">
-              ৳{totalRevenue.toLocaleString()}
+              ৳{formatNumber(totalRevenue)}
             </p>
           </div>
           <div className="space-y-1">
             <p className="text-xs text-white">Average Revenue</p>
             <p className="text-2xl font-bold text-white">
-              ৳{averageRevenue.toLocaleString()}
+              ৳{formatNumber(averageRevenue)}
             </p>
           </div>
           <div className="space-y-1">

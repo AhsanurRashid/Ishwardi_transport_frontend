@@ -102,7 +102,7 @@ export function convertDate(dateStr: string | Date): string {
 }
 
 export function deconvertDate(formatted: string): Date {
-  const [year, month, day] = formatted.split("-").map(Number);
+  const [year, month, day] = formatted?.split("-").map(Number);
   return new Date(year, month - 1, day); // month is 0-indexed in JS
 }
 

@@ -1,5 +1,6 @@
 import { getRecentActivityLogsAction } from "@/app/actions/activity-log-action";
 import { RecentActivityFeed } from "./recent-activity-feed";
+import { formatNumber } from "@/lib/utils";
 
 export async function RecentActivityFeedWrapper() {
   const activityData = await getRecentActivityLogsAction(10);
@@ -19,10 +20,27 @@ export async function RecentActivityFeedWrapper() {
     action: log.description, // "created", "updated", "deleted"
     description: getActivityDescription(log),
     user: log.create_user?.name || "Unknown User",
-    timestamp: log.created_at,
+    timestamp: parseActivityDate(log.created_at),
   }));
 
   return <RecentActivityFeed activities={activities} />;
+}
+
+// Helper function to parse date from "DD-MM-YYYY HH:mm:ss" format to ISO string
+function parseActivityDate(dateStr: string): string {
+  if (!dateStr) return new Date().toISOString();
+
+  // Format: "04-12-2025 15:12:06" -> "2025-12-04T15:12:06"
+  const parts = dateStr.match(
+    /(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}):(\d{2})/
+  );
+  if (parts) {
+    const [, day, month, year, hour, minute, second] = parts;
+    return `${year}-${month}-${day}T${hour}:${minute}:${second}`;
+  }
+
+  // Fallback: try parsing directly
+  return dateStr;
 }
 
 // Helper function to generate readable description
@@ -34,7 +52,7 @@ function getActivityDescription(log: any): string {
     const subject = log.subject;
     const amount = Math.abs(parseFloat(subject?.amount || "0"));
     const paymentType = subject?.payment_type || "payment";
-    return `a ${paymentType} of ৳${amount.toLocaleString()}`;
+    return `a ${paymentType} of ৳${formatNumber(amount)}`;
   }
 
   if (logName === "rent") {
