@@ -51,13 +51,13 @@ export const updateDriverAction = async (formData: FormData, id: number) => {
     );
 
     if (response.ok) {
-        revalidateTag("driver-list");
-        const data = await response.json();
-        return data;
-      } else {
-        const errorData = await response.json();
-        return { error: errorData?.message || "Failed to Update driver." };
-      }
+      revalidateTag("driver-list", "default");
+      const data = await response.json();
+      return data;
+    } else {
+      const errorData = await response.json();
+      return { error: errorData?.message || "Failed to Update driver." };
+    }
   } catch (error: any) {
     return error.response?.data || { error: "An error occurred during login" };
   }

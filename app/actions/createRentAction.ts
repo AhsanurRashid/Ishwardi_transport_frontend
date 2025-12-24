@@ -53,7 +53,7 @@ export const createRentAction = async (formData: FormData) => {
 
     if (response.ok) {
       try {
-        revalidateTag("rent-list");
+        revalidateTag("rent-list", "default");
       } catch (err) {
         console.error("Revalidation failed:", err);
       }

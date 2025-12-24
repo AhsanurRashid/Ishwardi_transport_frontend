@@ -84,7 +84,9 @@ const AddDriverForm = () => {
       formData.append(key, value.toString());
     });
 
-    formData.append("nidimage", nidImageFile);
+    if (nidImageFile) {
+      formData.append("nidimage", nidImageFile);
+    }
 
     startTransition(async () => {
       const res = await createDriverAction(formData);

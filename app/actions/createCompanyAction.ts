@@ -47,8 +47,8 @@ export const createCompanyAction = async (formData: FormData) => {
 
     if (response.ok) {
       try {
-        revalidateTag("company-list");
-        revalidateTag("activity-logs");
+        revalidateTag("company-list", "default");
+        revalidateTag("activity-logs", "default");
       } catch (err) {
         console.error("Revalidation failed:", err);
       }

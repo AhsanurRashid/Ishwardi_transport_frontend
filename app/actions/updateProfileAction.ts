@@ -42,7 +42,7 @@ export async function updateProfileAction(formData: FormData) {
     //   return { error: "Failed to update user profile" };
     // }
 
-    revalidateTag("user-data");
+    revalidateTag("user-data", "default");
     return response.json();
   } catch (error: any) {
     return (

@@ -55,8 +55,8 @@ export const createUserAction = async (formData: FormData) => {
     );
 
     if (response.ok) {
-      revalidateTag("user-list");
-      revalidateTag("activity-logs");
+      revalidateTag("user-list", "default");
+      revalidateTag("activity-logs", "default");
       const data = await response.json();
       return data;
     } else {

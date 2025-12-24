@@ -28,9 +28,9 @@ export const deleteVehicleAction = async (id: number) => {
     );
 
     if (res.ok) {
-      revalidateTag("vehicle-list");
-      revalidateTag("dashboard-data");
-      revalidateTag("activity-logs");
+      revalidateTag("vehicle-list", "default");
+      revalidateTag("dashboard-data", "default");
+      revalidateTag("activity-logs", "default");
       const data = await res.json();
       return data;
     } else {

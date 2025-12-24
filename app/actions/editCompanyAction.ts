@@ -46,8 +46,8 @@ export const updateCompanyAction = async (formData: FormData, id: number) => {
     );
 
     if (response.ok) {
-      revalidateTag("company-list");
-      revalidateTag("activity-logs");
+      revalidateTag("company-list", "default");
+      revalidateTag("activity-logs", "default");
       const data = await response.json();
       return data;
     } else {

@@ -52,7 +52,7 @@ export const createDriverAction = async (formData: FormData) => {
 
     if (response.ok) {
       try {
-        revalidateTag("driver-list");
+        revalidateTag("driver-list", "default");
       } catch (err) {
         console.error("Revalidation failed:", err);
       }

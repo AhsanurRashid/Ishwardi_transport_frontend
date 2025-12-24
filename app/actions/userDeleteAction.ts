@@ -26,7 +26,7 @@ export const userDeleteAction = async (id: number) => {
       }
     );
     if (res.ok) {
-      revalidateTag("user-list");
+      revalidateTag("user-list", "default");
       const data = await res.json();
       return data;
     } else {

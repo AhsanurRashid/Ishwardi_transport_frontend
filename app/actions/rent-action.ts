@@ -173,8 +173,8 @@ export async function deleteRentAction(rentId: number) {
     if (response.ok) {
       try {
         const { revalidateTag } = await import("next/cache");
-        revalidateTag("rent-list");
-        revalidateTag("dashboard-data");
+        revalidateTag("rent-list", "default");
+        revalidateTag("dashboard-data", "default");
       } catch (err) {
         console.error("Revalidation failed:", err);
       }
@@ -242,8 +242,8 @@ export async function editRentAction(rentId: number, formData: FormData) {
     if (response.ok) {
       try {
         const { revalidateTag } = await import("next/cache");
-        revalidateTag("rent-list");
-        revalidateTag("dashboard-data");
+        revalidateTag("rent-list", "default");
+        revalidateTag("dashboard-data", "default");
       } catch (err) {
         console.error("Revalidation failed:", err);
       }
@@ -284,13 +284,12 @@ export async function makePaymentRentAction(rentId: number, amount: number) {
     if (response.ok) {
       try {
         const { revalidateTag } = await import("next/cache");
-        revalidateTag("rent-list");
-        revalidateTag("dashboard-data");
+        revalidateTag("rent-list", "default");
+        revalidateTag("dashboard-data", "default");
       } catch (err) {
         console.error("Revalidation failed:", err);
       }
     }
-
     return data;
   } catch (error: any) {
     return (
