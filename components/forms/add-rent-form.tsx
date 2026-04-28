@@ -117,7 +117,7 @@ const AddRentForm = ({
               name="from_date"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>From Date</FormLabel>
+                  <FormLabel>শুরুর তারিখ</FormLabel>
                   <FormControl className="w-full">
                     <Input className="w-full" type="date" {...field} />
                   </FormControl>
@@ -131,7 +131,7 @@ const AddRentForm = ({
               name="to_date"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>To Date</FormLabel>
+                  <FormLabel>শেষের তারিখ</FormLabel>
                   <FormControl>
                     <Input type="date" {...field} />
                   </FormControl>
@@ -139,14 +139,14 @@ const AddRentForm = ({
                 </FormItem>
               )}
             />
-            
+
             {!company && (
               <FormField
                 control={form.control}
                 name="company"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Company</FormLabel>
+                    <FormLabel>কোম্পানি</FormLabel>
                     {!isOtherCompany ? (
                       <Select
                         onValueChange={(value) => {
@@ -205,7 +205,7 @@ const AddRentForm = ({
               name="type"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Type</FormLabel>
+                  <FormLabel>ধরন</FormLabel>
                   <Select
                     onValueChange={(value) => {
                       field.onChange(value);
@@ -237,7 +237,7 @@ const AddRentForm = ({
               name="fromLocation"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>From Location</FormLabel>
+                  <FormLabel>যাত্রার স্থান</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter pickup location" {...field} />
                   </FormControl>
@@ -251,7 +251,7 @@ const AddRentForm = ({
               name="toLocation"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>To Location</FormLabel>
+                  <FormLabel>গন্তব্য</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter destination" {...field} />
                   </FormControl>
@@ -265,7 +265,7 @@ const AddRentForm = ({
               name="rentAmount"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Rent Amount</FormLabel>
+                  <FormLabel>ভাড়ার পরিমাণ</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
@@ -290,7 +290,7 @@ const AddRentForm = ({
               name="demurrageAmount"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Demurrage Amount (Optional)</FormLabel>
+                  <FormLabel>ডেমারেজ পরিমাণ (ঐচ্ছিক)</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
@@ -315,7 +315,7 @@ const AddRentForm = ({
               name="driver"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Driver</FormLabel>
+                  <FormLabel>চালক</FormLabel>
                   {!isOtherDriver ? (
                     <Select
                       onValueChange={(value) => {
@@ -370,7 +370,7 @@ const AddRentForm = ({
               name="vehicle"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Vehicle</FormLabel>
+                  <FormLabel>যানবাহন</FormLabel>
                   {!isOtherVehicle ? (
                     <Select
                       onValueChange={(value) => {
@@ -428,7 +428,7 @@ const AddRentForm = ({
               name="status"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Status</FormLabel>
+                  <FormLabel>অবস্থা</FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(Number(value))}
                     value={field.value?.toString()}

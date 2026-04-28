@@ -45,13 +45,13 @@ const CompanyDetails = async ({
           <Link href="/dashboard/companies">
             <Button variant="outline" size="sm">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Companies
+              কোম্পানিতে ফিরুন
             </Button>
           </Link>
         </div>
         <Card>
           <CardContent className="p-6">
-            <p className="text-muted-foreground">Company not found</p>
+            <p className="text-muted-foreground">কোম্পানি পাওয়া যায়নি</p>
           </CardContent>
         </Card>
       </div>
@@ -74,11 +74,11 @@ const CompanyDetails = async ({
     <div className="w-full space-y-6">
       {/* Header with Back Button */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Company Details</h1>
+        <h1 className="text-2xl font-bold">কোম্পানির বিবরণ</h1>
         <Link href="/dashboard/companies">
           <Button variant="outline" size="sm">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Companies
+            কোম্পানিতে ফিরুন
           </Button>
         </Link>
       </div>
@@ -97,7 +97,7 @@ const CompanyDetails = async ({
             <div className="flex items-center gap-2">
               <User className="h-4 w-4 text-muted-foreground" />
               <span className="font-medium text-muted-foreground">
-                Invoice Number:
+                চালান নম্বর:
               </span>
               <span>{company.data.company_invoice_number}</span>
             </div>
@@ -107,7 +107,7 @@ const CompanyDetails = async ({
           {company.data.company_email && (
             <div className="flex items-center gap-2">
               <Mail className="h-4 w-4 text-muted-foreground" />
-              <span className="font-medium text-muted-foreground">Email:</span>
+              <span className="font-medium text-muted-foreground">ইমেইল:</span>
               <span>{company.data.company_email}</span>
             </div>
           )}
@@ -116,7 +116,7 @@ const CompanyDetails = async ({
           {company.data.company_phone && (
             <div className="flex items-center gap-2">
               <Phone className="h-4 w-4 text-muted-foreground" />
-              <span className="font-medium text-muted-foreground">Phone:</span>
+              <span className="font-medium text-muted-foreground">ফোন:</span>
               <span>{company.data.company_phone}</span>
             </div>
           )}
@@ -126,7 +126,7 @@ const CompanyDetails = async ({
             <div className="flex items-center gap-2">
               <MapPin className="h-4 w-4 text-muted-foreground" />
               <span className="font-medium text-muted-foreground">
-                Address:
+                ঠিকানা:
               </span>
               <span>{company.data.company_address}</span>
             </div>
@@ -134,7 +134,7 @@ const CompanyDetails = async ({
 
           {/* Status */}
           <div className="flex items-center gap-2">
-            <span className="font-medium text-muted-foreground">Status:</span>
+            <span className="font-medium text-muted-foreground">অবস্থা:</span>
             <span
               className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                 company.data.status === "1"
@@ -142,7 +142,7 @@ const CompanyDetails = async ({
                   : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
               }`}
             >
-              {company.data.status === "1" ? "Active" : "Inactive"}
+              {company.data.status === "1" ? "সক্রিয়" : "নিষ্ক্রিয়"}
             </span>
           </div>
 
@@ -151,7 +151,7 @@ const CompanyDetails = async ({
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4 text-muted-foreground" />
               <span className="font-medium text-muted-foreground">
-                Created At:
+                তৈরির তারিখ:
               </span>
               <span>
                 {new Date(company.createdAt).toLocaleDateString("en-US", {
@@ -168,9 +168,11 @@ const CompanyDetails = async ({
       {/*company wise rent*/}
       <div className="w-full">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold">Rent Management {company.data.company_name}</h1>
+          <h1 className="text-2xl font-bold">
+            ভাড়া ব্যবস্থাপনা
+          </h1>
           {profile?.profile?.permissions?.includes("rent_create") && (
-            <GenerateButton title="Create Rent">
+            <GenerateButton title="ভাড়া তৈরি করুন">
               <AddRentForm
                 company={company.data.company_name}
                 companies={companiesForRent?.list}

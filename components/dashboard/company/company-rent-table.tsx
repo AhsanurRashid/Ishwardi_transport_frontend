@@ -23,7 +23,7 @@ const RentTypeBadge = ({ type }: { type: "up" | "down" }) => {
         type === "up" ? "bg-green-500 text-white" : "bg-red-500 text-white"
       }
     >
-      {type === "up" ? "Up" : "Down"}
+      {type === "up" ? "আপ" : "ডাউন"}
     </Badge>
   );
 };
@@ -63,10 +63,10 @@ const CompanyRentTable = async ({
       <div className="flex flex-col items-center justify-center py-12 border rounded-lg bg-muted/20">
         <Truck className="h-12 w-12 text-muted-foreground mb-4" />
         <h3 className="text-lg font-semibold text-muted-foreground mb-2">
-          No Rent Records Found
+          কোনো ভাড়ার রেকর্ড পাওয়া যায়নি
         </h3>
         <p className="text-sm text-muted-foreground">
-          This company has no rent records yet.
+          এই কোম্পানির এখনো কোনো ভাড়ার রেকর্ড নেই।
         </p>
       </div>
     );
@@ -77,14 +77,14 @@ const CompanyRentTable = async ({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Date</TableHead>
-            <TableHead>Company & Driver</TableHead>
-            <TableHead>Vehicle</TableHead>
-            <TableHead>Location</TableHead>
-            <TableHead>Type</TableHead>
-            <TableHead>Amount</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+            <TableHead>তারিখ</TableHead>
+            <TableHead>কোম্পানি ও চালক</TableHead>
+            <TableHead>যানবাহন</TableHead>
+            <TableHead>স্থান</TableHead>
+            <TableHead>ধরন</TableHead>
+            <TableHead>পরিমাণ</TableHead>
+            <TableHead>অবস্থা</TableHead>
+            <TableHead className="text-right">কার্যক্রম</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -140,11 +140,11 @@ const CompanyRentTable = async ({
                     ৳{rent.rentAmount || "0"}
                   </div>
                   <div className="text-xs text-red-600">
-                    Due: ৳{rent.payments_due}
+                    বকেয়া: ৳{rent.payments_due}
                   </div>
                   {Number(rent.demurrageAmount) > 0 && (
                     <div className="text-xs text-muted-foreground">
-                      Demurrage: ৳{rent.demurrageAmount}
+                      ডেমারেজ: ৳{rent.demurrageAmount}
                     </div>
                   )}
                 </div>
@@ -152,11 +152,11 @@ const CompanyRentTable = async ({
               <TableCell>
                 {rent.payments_due === 0 ? (
                   <div className="text-green-600 bg-green-100 text-center py-1 font-semibold">
-                    Paid
+                    পরিশোধিত
                   </div>
                 ) : (
                   <div className="text-red-600 bg-red-100 text-center py-1 font-semibold">
-                    Due
+                    বকেয়া
                   </div>
                 )}
               </TableCell>

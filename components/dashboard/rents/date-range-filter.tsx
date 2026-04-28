@@ -51,7 +51,7 @@ const DateRangeFilter = ({ route }: { route: string }) => {
   return (
     <div className="flex flex-wrap items-end gap-3">
       <div className="flex-1 min-w-[150px]">
-        <label className="text-sm font-medium mb-1.5 block">From Date</label>
+        <label className="text-sm font-medium mb-1.5 block">শুরুর তারিখ</label>
         <Input
           type="date"
           value={fromDate}
@@ -61,7 +61,7 @@ const DateRangeFilter = ({ route }: { route: string }) => {
       </div>
 
       <div className="flex-1 min-w-[150px]">
-        <label className="text-sm font-medium mb-1.5 block">To Date</label>
+        <label className="text-sm font-medium mb-1.5 block">শেষের তারিখ</label>
         <Input
           type="date"
           value={toDate}
@@ -73,13 +73,13 @@ const DateRangeFilter = ({ route }: { route: string }) => {
       <div className="flex gap-2">
         <Button onClick={handleFilter} size="default">
           <Calendar className="h-4 w-4 mr-2" />
-          Filter
+          ফিল্টার
         </Button>
 
         {(fromDate || toDate) && (
           <Button onClick={handleClear} variant="outline" size="default">
             <X className="h-4 w-4 mr-2" />
-            Clear
+            মুছুন
           </Button>
         )}
       </div>

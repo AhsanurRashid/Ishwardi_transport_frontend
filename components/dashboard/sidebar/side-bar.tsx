@@ -1,6 +1,5 @@
 import Logo from "@/components/common/logo";
 import { Card } from "@/components/ui/card";
-import React from "react";
 import PageList from "./page-list";
 import Link from "next/link";
 

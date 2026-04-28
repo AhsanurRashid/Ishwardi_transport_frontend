@@ -36,7 +36,7 @@ const PageList = () => {
   }, [pathname]);
 
   const handleCompaniesToggle = async () => {
-    if (!companiesOpen && companies.length === 0) {
+    if (!companiesOpen) {
       setLoadingCompanies(true);
       try {
         const result = await getCompanyListAction({
