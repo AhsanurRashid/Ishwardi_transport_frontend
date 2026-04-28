@@ -1,5 +1,3 @@
-"use server";
-
 import GetStatusBadge from "@/components/common/get-status-badge";
 import {
   Table,
@@ -55,6 +53,8 @@ const CompanyRentTable = async ({
       to,
     }),
   ]);
+
+  console.log("rentData", rentData);
 
   if (rentData?.error) return <DataFetchingFailed error={rentData?.error} />;
 
@@ -142,7 +142,7 @@ const CompanyRentTable = async ({
                   <div className="text-xs text-red-600">
                     Due: ৳{rent.payments_due}
                   </div>
-                  {rent.demurrageAmount && (
+                  {Number(rent.demurrageAmount) > 0 && (
                     <div className="text-xs text-muted-foreground">
                       Demurrage: ৳{rent.demurrageAmount}
                     </div>

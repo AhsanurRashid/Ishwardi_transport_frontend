@@ -168,10 +168,11 @@ const CompanyDetails = async ({
       {/*company wise rent*/}
       <div className="w-full">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold">Rent Management</h1>
+          <h1 className="text-2xl font-bold">Rent Management {company.data.company_name}</h1>
           {profile?.profile?.permissions?.includes("rent_create") && (
             <GenerateButton title="Create Rent">
               <AddRentForm
+                company={company.data.company_name}
                 companies={companiesForRent?.list}
                 vehicles={vehiclesForRent?.list}
                 drivers={driversForRent?.list}

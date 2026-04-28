@@ -6,7 +6,7 @@ export const LoginFormSchema = z.object({
     .string()
     .regex(
       /^(\+?88)?01[3-9]\d{8}$/,
-      "Invalid phone number. Please use a valid Bangladeshi phone number format."
+      "Invalid phone number. Please use a valid Bangladeshi phone number format.",
     ),
   password: z.string().min(5, {
     message: "Password must be at least 5 characters.",
@@ -179,9 +179,7 @@ export const RentCreationFromSchema = z.object({
   vehicle: z.string().min(1, {
     message: "Vehicle is required.",
   }),
-  driver: z.string().min(1, {
-    message: "Driver is required.",
-  }),
+  driver: z.string().optional(),
   type: z.enum(["up", "down"], {
     required_error: "Please select a type.",
   }),

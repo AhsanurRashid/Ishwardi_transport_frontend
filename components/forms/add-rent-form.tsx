@@ -31,10 +31,12 @@ import {
 import type { z } from "zod";
 
 const AddRentForm = ({
+  company,
   companies,
   vehicles,
   drivers,
 }: {
+  company?: string;
   companies: ICompanyForRent[];
   vehicles: IVehicleForRent[];
   drivers: IDriversForRent[];
@@ -63,13 +65,13 @@ const AddRentForm = ({
   const form = useForm<z.infer<typeof RentCreationFromSchema>>({
     resolver: zodResolver(RentCreationFromSchema),
     defaultValues: {
-      company: "",
+      company: company || "",
       vehicle: "",
       driver: "",
       type: "up",
       rentAmount: 0,
       demurrageAmount: 0,
-      fromLocation: "",
+      fromLocation: "Ishwardi epz",
       toLocation: "",
       dueAmount: "",
       status: 1,
@@ -112,54 +114,197 @@ const AddRentForm = ({
           <div className="grid grid-cols-1 gap-4">
             <FormField
               control={form.control}
-              name="company"
+              name="from_date"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Company</FormLabel>
-                  {!isOtherCompany ? (
-                    <Select
-                      onValueChange={(value) => {
-                        if (value === "other") {
-                          setIsOtherCompany(true);
-                          field.onChange("");
-                        } else {
-                          field.onChange(value);
-                        }
-                      }}
-                      value={field.value}
-                    >
-                      <FormControl className="w-full">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select company" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="w-full">
-                        {companyOptions.map((company) => (
-                          <SelectItem key={company.value} value={company.value}>
-                            {company.label}
-                          </SelectItem>
-                        ))}
-                        <SelectItem value="other">
-                          Other (Manual Entry)
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  ) : (
-                    <div className="space-y-2">
-                      <Input placeholder="Enter company name" {...field} />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          setIsOtherCompany(false);
-                          field.onChange("");
+                  <FormLabel>From Date</FormLabel>
+                  <FormControl className="w-full">
+                    <Input className="w-full" type="date" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="to_date"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>To Date</FormLabel>
+                  <FormControl>
+                    <Input type="date" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            {!company && (
+              <FormField
+                control={form.control}
+                name="company"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Company</FormLabel>
+                    {!isOtherCompany ? (
+                      <Select
+                        onValueChange={(value) => {
+                          if (value === "other") {
+                            setIsOtherCompany(true);
+                            field.onChange("");
+                          } else {
+                            field.onChange(value);
+                          }
                         }}
+                        value={field.value}
                       >
-                        Back to Select
-                      </Button>
-                    </div>
-                  )}
+                        <FormControl className="w-full">
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select company" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="w-full">
+                          {companyOptions.map((company) => (
+                            <SelectItem
+                              key={company.value}
+                              value={company.value}
+                            >
+                              {company.label}
+                            </SelectItem>
+                          ))}
+                          <SelectItem value="other">
+                            Other (Manual Entry)
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    ) : (
+                      <div className="space-y-2">
+                        <Input placeholder="Enter company name" {...field} />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setIsOtherCompany(false);
+                            field.onChange("");
+                          }}
+                        >
+                          Back to Select
+                        </Button>
+                      </div>
+                    )}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            <FormField
+              control={form.control}
+              name="type"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Type</FormLabel>
+                  <Select
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      if (value === "up") {
+                        form.setValue("fromLocation", "Ishwardi epz");
+                      } else {
+                        form.setValue("fromLocation", "");
+                      }
+                    }}
+                    value={field.value}
+                  >
+                    <FormControl className="w-full">
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select type" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="up">Up</SelectItem>
+                      <SelectItem value="down">Down</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="fromLocation"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>From Location</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter pickup location" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="toLocation"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>To Location</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter destination" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="rentAmount"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Rent Amount</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="Enter rent amount"
+                      value={field.value || ""}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        field.onChange(value === "" ? "" : Number(value));
+                      }}
+                      onBlur={field.onBlur}
+                      name={field.name}
+                      ref={field.ref}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="demurrageAmount"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Demurrage Amount (Optional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="Enter demurrage amount"
+                      value={field.value || ""}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        field.onChange(value === "" ? "" : Number(value));
+                      }}
+                      onBlur={field.onBlur}
+                      name={field.name}
+                      ref={field.ref}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -273,134 +418,6 @@ const AddRentForm = ({
                       </Button>
                     </div>
                   )}
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="type"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Type</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl className="w-full">
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select type" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="up">Up</SelectItem>
-                      <SelectItem value="down">Down</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="fromLocation"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>From Location</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter pickup location" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="toLocation"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>To Location</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter destination" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="from_date"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>From Date</FormLabel>
-                  <FormControl className="w-full">
-                    <Input className="w-full" type="date" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="to_date"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>To Date</FormLabel>
-                  <FormControl>
-                    <Input type="date" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="rentAmount"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Rent Amount</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="Enter rent amount"
-                      value={field.value || ""}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        field.onChange(value === "" ? "" : Number(value));
-                      }}
-                      onBlur={field.onBlur}
-                      name={field.name}
-                      ref={field.ref}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="demurrageAmount"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Demurrage Amount (Optional)</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="Enter demurrage amount"
-                      value={field.value || ""}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        field.onChange(value === "" ? "" : Number(value));
-                      }}
-                      onBlur={field.onBlur}
-                      name={field.name}
-                      ref={field.ref}
-                    />
-                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

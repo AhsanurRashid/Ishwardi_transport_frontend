@@ -20,12 +20,13 @@ import { Input } from "@/components/ui/input";
 import { LoginFormSchema } from "@/lib/schema";
 import { useRouter } from "next/navigation";
 import { logInSubmitFormAction } from "@/app/actions/loginActions";
-import { useTransition } from "react";
-import { Loader2 } from "lucide-react";
+import { useState, useTransition } from "react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useRoleStore } from "@/store/roleStore";
 
 const LoginForm = () => {
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
   const [isPending, startTransition] = useTransition();
   const { setRoleValue } = useRoleStore();
 
@@ -44,6 +45,7 @@ const LoginForm = () => {
 
     startTransition(async () => {
       const result = await logInSubmitFormAction(formData);
+      console.log("Login result:", result);
 
       if (result.error) {
         toast.error(result.error, {
@@ -101,7 +103,21 @@ const LoginForm = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} />
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      {...field}
+                      className="pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground"
+                      tabIndex={-1}
+                    >
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>

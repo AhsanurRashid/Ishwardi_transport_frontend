@@ -24,7 +24,6 @@ export async function logInSubmitFormAction(formData: FormData) {
       await setToken(response.data.token);
       await setRole(response.data.role[0]);
     }
-
     return response.data;
   } catch (error: any) {
     return error.response?.data || { error: "An error occurred during login" };
