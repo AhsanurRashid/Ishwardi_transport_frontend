@@ -36,7 +36,7 @@ const AddRentForm = ({
   vehicles,
   drivers,
 }: {
-  company?: string;
+  company?: number;
   companies: ICompanyForRent[];
   vehicles: IVehicleForRent[];
   drivers: IDriversForRent[];
@@ -65,7 +65,7 @@ const AddRentForm = ({
   const form = useForm<z.infer<typeof RentCreationFromSchema>>({
     resolver: zodResolver(RentCreationFromSchema),
     defaultValues: {
-      company: company || "",
+      company: company ? company.toString() : "",
       vehicle: "",
       driver: "",
       type: "up",

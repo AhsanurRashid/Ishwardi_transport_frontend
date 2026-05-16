@@ -174,7 +174,7 @@ const CompanyDetails = async ({
           {profile?.profile?.permissions?.includes("rent_create") && (
             <GenerateButton title="ভাড়া তৈরি করুন">
               <AddRentForm
-                company={company.data.company_name}
+                company={company.data.id}
                 companies={companiesForRent?.list}
                 vehicles={vehiclesForRent?.list}
                 drivers={driversForRent?.list}
