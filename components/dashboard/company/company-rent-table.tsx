@@ -54,8 +54,6 @@ const CompanyRentTable = async ({
     }),
   ]);
 
-  console.log("rentData", rentData);
-
   if (rentData?.error) return <DataFetchingFailed error={rentData?.error} />;
 
   if (!rentData?.list || rentData.list.length === 0) {

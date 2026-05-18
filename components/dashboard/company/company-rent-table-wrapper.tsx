@@ -3,6 +3,7 @@ import CompanyRentTable from "./company-rent-table";
 import DateRangeFilter from "../rents/date-range-filter";
 import { Suspense } from "react";
 import TableSkeleton from "@/components/skeletons/table-skeleton";
+import CompanyBillPrintButton from "./company-bill-print-button";
 
 const CompanyRentTableWrapper = ({
   companyId,
@@ -27,7 +28,12 @@ const CompanyRentTableWrapper = ({
           <div className="h-20 w-full bg-muted animate-pulse rounded" />
         }
       >
-        <DateRangeFilter route={`companies?company=${companyId}`} />
+        <DateRangeFilter
+          route={`companies?company=${companyId}`}
+          extraButtons={
+            <CompanyBillPrintButton companyId={companyId} from={from} to={to} />
+          }
+        />
       </Suspense>
       <Suspense fallback={<TableSkeleton />}>
         <CompanyRentTable

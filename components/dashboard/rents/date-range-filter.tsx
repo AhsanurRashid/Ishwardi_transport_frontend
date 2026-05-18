@@ -6,7 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Calendar, X } from "lucide-react";
 
-const DateRangeFilter = ({ route }: { route: string }) => {
+const DateRangeFilter = ({
+  route,
+  extraButtons,
+}: {
+  route: string;
+  extraButtons?: React.ReactNode;
+}) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -71,10 +77,16 @@ const DateRangeFilter = ({ route }: { route: string }) => {
       </div>
 
       <div className="flex gap-2">
-        <Button onClick={handleFilter} size="default">
+        <Button
+          disabled={!fromDate && !toDate}
+          onClick={handleFilter}
+          size="default"
+        >
           <Calendar className="h-4 w-4 mr-2" />
           ফিল্টার
         </Button>
+
+        {extraButtons}
 
         {(fromDate || toDate) && (
           <Button onClick={handleClear} variant="outline" size="default">
